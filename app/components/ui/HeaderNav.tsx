@@ -1,9 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { FiSearch } from "react-icons/fi";
-import { FiMenu } from "react-icons/fi";
-import { FiX } from "react-icons/fi";
+import { FiSearch, FiMenu, FiX } from "react-icons/fi";
 
 const HeaderNav = () => {
   const [navOpen, setNavOpen] = useState(false);
