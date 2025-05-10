@@ -13,7 +13,7 @@ const HeaderNav = () => {
       <div
         className={`${
           navOpen ? "absolute" : "hidden bigmd:block"
-        } bg-white/60 bigmd:bg-transparent backdrop-blur-sm text-black bigmd:text-white bigmd:relative right-0 top-0 rounded-bl-xl`}
+        } bg-white/60 bigmd:bg-transparent backdrop-blur-sm text-black bigmd:text-white bigmd:relative right-0 top-0 rounded-bl-lg`}
       >
         <button
           onClick={handleNavToggle}
