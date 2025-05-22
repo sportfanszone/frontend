@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { FiSearch, FiMenu, FiX } from "react-icons/fi";
+import { FiArrowRight, FiMenu, FiX } from "react-icons/fi";
 
 const HeaderNav = () => {
   const [navOpen, setNavOpen] = useState(false);
@@ -56,10 +56,10 @@ const HeaderNav = () => {
       </div>
 
       <div className="hidden bigmd:flex justify-between items-center gap-1">
-        <span className="font-light">contact us</span>
+        <span className="font-light">Login</span>
         <button className="bg-white font-semibold text-black py-1 px-4 ml-3 rounded-3xl flex justify-between items-center gap-1 cursor-pointer">
-          <span>Booking now</span>
-          <FiSearch className="size-5.5" />
+          <span>Signup</span>
+          <FiArrowRight className="size-5.5" />
         </button>
       </div>
 
