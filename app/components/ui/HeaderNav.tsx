@@ -4,10 +4,10 @@ import Link from "next/link";
 import { FiArrowRight, FiMenu, FiX } from "react-icons/fi";
 
 const navItems = [
-  { name: "Properties", href: "#" },
-  { name: "Properties", href: "#" },
-  { name: "Buy", href: "#" },
-  { name: "Rent", href: "#" },
+  { name: "Home", href: "#" },
+  { name: "Leagues", href: "#" },
+  { name: "Recents", href: "#" },
+  { name: "Trending", href: "#" },
   { name: "About", href: "#" },
 ];
 
