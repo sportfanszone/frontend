@@ -5,43 +5,49 @@ const leagues = [
     leagueName: "Premier League",
     topics: 120,
     lastActivity: "Today, 01:20",
-    description: "@username",
+    username: "@username",
     logo: "/images/premierLeagueLogo.png",
+    createdAt: "2 hours ago",
   },
   {
     leagueName: "Premier League",
     topics: 120,
     lastActivity: "Today, 01:20",
-    description: "@username",
+    username: "@username",
     logo: "/images/premierLeagueLogo.png",
+    createdAt: "2 hours ago",
   },
   {
     leagueName: "Premier League",
     topics: 120,
     lastActivity: "Today, 01:20",
-    description: "@username",
+    username: "@username",
     logo: "/images/premierLeagueLogo.png",
+    createdAt: "2 hours ago",
   },
   {
     leagueName: "Premier League",
     topics: 120,
     lastActivity: "Today, 01:20",
-    description: "@username",
+    username: "@username",
     logo: "/images/premierLeagueLogo.png",
+    createdAt: "2 hours ago",
   },
   {
     leagueName: "Premier League",
     topics: 120,
     lastActivity: "Today, 01:20",
-    description: "@username",
+    username: "@username",
     logo: "/images/premierLeagueLogo.png",
+    createdAt: "2 hours ago",
   },
   {
     leagueName: "Premier League",
     topics: 120,
     lastActivity: "Today, 01:20",
-    description: "@username",
+    username: "@username",
     logo: "/images/premierLeagueLogo.png",
+    createdAt: "2 hours ago",
   },
 ];
 
@@ -56,8 +62,9 @@ const LatestPosts = () => {
             leagueName={league.leagueName}
             topics={league.topics}
             lastActivity={league.lastActivity}
-            description={league.description}
+            username={league.username}
             logo={league.logo}
+            createdAt={league.createdAt}
             key={index}
           />
         ))}
