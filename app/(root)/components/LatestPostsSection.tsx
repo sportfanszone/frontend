@@ -84,7 +84,7 @@ const posts = [
 const LatestPosts = () => {
   return (
     <section className="p-10 font-medium max-w-400 mx-auto @container">
-      <h2 className="font-bold text-4xl text-center mb-10">Posts</h2>
+      <h2 className="font-bold text-4xl text-center mb-10">Latest Posts</h2>
 
       <div className="flex justify-center items-center flex-wrap gap-8">
         {posts.map((post, index) => (
