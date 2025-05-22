@@ -3,6 +3,14 @@ import { useState } from "react";
 import Link from "next/link";
 import { FiArrowRight, FiMenu, FiX } from "react-icons/fi";
 
+const navItems = [
+  { name: "Properties", href: "#" },
+  { name: "Properties", href: "#" },
+  { name: "Buy", href: "#" },
+  { name: "Rent", href: "#" },
+  { name: "About", href: "#" },
+];
+
 const HeaderNav = () => {
   const [navOpen, setNavOpen] = useState(false);
   const handleNavToggle = () => {
@@ -22,36 +30,15 @@ const HeaderNav = () => {
           <FiX className="size-5.5 text-black" />
         </button>
         <nav className="flex flex-col bigmd:flex-row bgimd:font-light bigmd:flex justify-between items-center bigmd:gap-6">
-          <Link
-            className="px-22 py-7 bigmd:p-0 w-full text-center hover:bg-black/10"
-            href="#"
-          >
-            Properties
-          </Link>
-          <Link
-            className="px-22 py-7 bigmd:p-0 w-full text-center hover:bg-black/10"
-            href="#"
-          >
-            Properties
-          </Link>
-          <Link
-            className="px-22 py-7 bigmd:p-0 w-full text-center hover:bg-black/10"
-            href="#"
-          >
-            Buy
-          </Link>
-          <Link
-            className="px-22 py-7 bigmd:p-0 w-full text-center hover:bg-black/10"
-            href="#"
-          >
-            Rent
-          </Link>
-          <Link
-            className="px-22 py-7 bigmd:p-0 w-full text-center hover:bg-black/10"
-            href="#"
-          >
-            About
-          </Link>
+          {navItems.map((item, index) => (
+            <Link
+              className="px-22 py-7 bigmd:p-0 w-full text-center hover:bg-black/10"
+              href={item.href}
+              key={index}
+            >
+              {item.name}
+            </Link>
+          ))}
         </nav>
       </div>
 
