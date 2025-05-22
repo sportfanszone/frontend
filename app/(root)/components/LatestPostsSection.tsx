@@ -1,52 +1,82 @@
 import PostCard from "./PostCard";
 
-const leagues = [
+const posts = [
   {
-    leagueName: "Premier League",
-    topics: 120,
-    lastActivity: "Today, 01:20",
-    username: "@username",
-    logo: "/images/premierLeagueLogo.png",
+    user: {
+      username: "@username",
+      porofileImage: "/images/premierLeagueLogo.png",
+    },
+    title: "Tottenham vs Arsenal",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit non deserunt magni alias.",
+    likes: 10,
+    comments: 5,
+    upVotes: 20,
     createdAt: "2 hours ago",
   },
   {
-    leagueName: "Premier League",
-    topics: 120,
-    lastActivity: "Today, 01:20",
-    username: "@username",
-    logo: "/images/premierLeagueLogo.png",
+    user: {
+      username: "@username",
+      porofileImage: "/images/premierLeagueLogo.png",
+    },
+    title: "Tottenham vs Arsenal",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit non deserunt magni alias.",
+    likes: 10,
+    comments: 5,
+    upVotes: 20,
     createdAt: "2 hours ago",
   },
   {
-    leagueName: "Premier League",
-    topics: 120,
-    lastActivity: "Today, 01:20",
-    username: "@username",
-    logo: "/images/premierLeagueLogo.png",
+    user: {
+      username: "@username",
+      porofileImage: "/images/premierLeagueLogo.png",
+    },
+    title: "Tottenham vs Arsenal",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit non deserunt magni alias.",
+    likes: 10,
+    comments: 5,
+    upVotes: 20,
     createdAt: "2 hours ago",
   },
   {
-    leagueName: "Premier League",
-    topics: 120,
-    lastActivity: "Today, 01:20",
-    username: "@username",
-    logo: "/images/premierLeagueLogo.png",
+    user: {
+      username: "@username",
+      porofileImage: "/images/premierLeagueLogo.png",
+    },
+    title: "Tottenham vs Arsenal",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit non deserunt magni alias.",
+    likes: 10,
+    comments: 5,
+    upVotes: 20,
     createdAt: "2 hours ago",
   },
   {
-    leagueName: "Premier League",
-    topics: 120,
-    lastActivity: "Today, 01:20",
-    username: "@username",
-    logo: "/images/premierLeagueLogo.png",
+    user: {
+      username: "@username",
+      porofileImage: "/images/premierLeagueLogo.png",
+    },
+    title: "Tottenham vs Arsenal",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit non deserunt magni alias.",
+    likes: 10,
+    comments: 5,
+    upVotes: 20,
     createdAt: "2 hours ago",
   },
   {
-    leagueName: "Premier League",
-    topics: 120,
-    lastActivity: "Today, 01:20",
-    username: "@username",
-    logo: "/images/premierLeagueLogo.png",
+    user: {
+      username: "@username",
+      porofileImage: "/images/premierLeagueLogo.png",
+    },
+    title: "Tottenham vs Arsenal",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit non deserunt magni alias.",
+    likes: 10,
+    comments: 5,
+    upVotes: 20,
     createdAt: "2 hours ago",
   },
 ];
@@ -57,14 +87,15 @@ const LatestPosts = () => {
       <h2 className="font-bold text-4xl text-center mb-10">Posts</h2>
 
       <div className="flex justify-center items-center flex-wrap gap-8">
-        {leagues.map((league, index) => (
+        {posts.map((post, index) => (
           <PostCard
-            leagueName={league.leagueName}
-            topics={league.topics}
-            lastActivity={league.lastActivity}
-            username={league.username}
-            logo={league.logo}
-            createdAt={league.createdAt}
+            user={post.user}
+            title={post.title}
+            description={post.description}
+            likes={post.likes}
+            comments={post.comments}
+            upVotes={post.upVotes}
+            createdAt={post.createdAt}
             key={index}
           />
         ))}
