@@ -1,4 +1,4 @@
-import LeagueCard from "./LeagueCard";
+import LeagueCard from "@/app/(root)/components/LeagueCard";
 import Link from "next/link";
 
 const leagues = [
