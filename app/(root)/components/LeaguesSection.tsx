@@ -54,7 +54,7 @@ const leagues = [
 
 const LeaguesSection = () => {
   return (
-    <section className="p-10 font-medium max-w-400 mx-auto @container">
+    <section className="p-10 font-medium max-w-400 mx-auto">
       <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl text-center mb-10">
         Leagues
       </h2>
