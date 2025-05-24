@@ -1,4 +1,5 @@
 import Image from "next/image";
+import * as motion from "motion/react-client";
 
 type LeagueCardProps = {
   leagueName: string;
@@ -16,7 +17,11 @@ const LeagueCard = ({
   logo,
 }: LeagueCardProps) => {
   return (
-    <div className="shadow-card hover:shadow-card-active hover:scale-102 rounded-3xl p-6 max-w-80 min-w-66 cursor-pointer transition-all duration-150 ease-in-out">
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      className="shadow-card hover:shadow-card-active hover:scale-102 rounded-3xl p-6 max-w-80 min-w-66 cursor-pointer transition-all duration-150 ease-in-out"
+    >
       <div className="mb-4 shadow-card rounded-3xl px-5 py-6 text-white bg-green-500">
         <h1 className="font-bold text-xl">{leagueName}</h1>
       </div>
@@ -43,7 +48,7 @@ const LeagueCard = ({
           <span className="text-sm">{description}</span>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
