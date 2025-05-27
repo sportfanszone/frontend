@@ -4,24 +4,42 @@ import Link from "next/link";
 import { FiArrowRight, FiMenu, FiX } from "react-icons/fi";
 
 const navItems = [
-  { name: "Home", href: "#" },
+  { name: "Home", href: "/" },
   { name: "Leagues", href: "#" },
   { name: "Recents", href: "#" },
   { name: "Trending", href: "#" },
   { name: "About", href: "#" },
 ];
 
-const HeaderNav = () => {
+const HeaderNav = ({ theme = null }: { theme?: string | null }) => {
   const [navOpen, setNavOpen] = useState(false);
   const handleNavToggle = () => {
     setNavOpen(!navOpen);
   };
+
+  let themeClass;
+  switch (theme) {
+    case "dark":
+      themeClass = "bg-white text-black";
+      break;
+    case "light":
+      themeClass = "bg-white bigmd:bg-transparent";
+      break;
+    case "transparent":
+      themeClass = "bg-transparent";
+      break;
+    default:
+      themeClass = "text-black bigmd:text-white";
+      break;
+  }
+
   return (
     <>
       <div
         className={`${
           navOpen ? "absolute" : "hidden bigmd:block"
-        } bg-white/60 bigmd:bg-transparent backdrop-blur-sm text-black bigmd:text-white bigmd:relative right-0 top-0 rounded-bl-lg`}
+        } ${themeClass} backdrop-blur-sm bigmd:backdrop-blur-none bigmd:relative right-0 top-0 rounded-bl-lg bigmd:h-fit h-screen`}
+        onClick={handleNavToggle}
       >
         <button
           onClick={handleNavToggle}
@@ -43,8 +61,18 @@ const HeaderNav = () => {
       </div>
 
       <div className="hidden bigmd:flex justify-between items-center gap-1">
-        <span className="font-light">Login</span>
-        <button className="bg-white font-semibold text-black py-1 px-4 ml-3 rounded-3xl flex justify-between items-center gap-1 cursor-pointer">
+        <span
+          className={`${
+            theme === "light"
+              ? "text-white"
+              : theme === "dark"
+              ? "text-dark"
+              : ""
+          } font-light`}
+        >
+          Login
+        </span>
+        <button className="bg-white font-semibold text-black py-1 px-4 ml-3 rounded-3xl flex justify-between items-center gap-1 cursor-pointer shadow-md hover:shadow-xl transition-all duration-300">
           <span>Signup</span>
           <FiArrowRight className="size-5.5" />
         </button>
