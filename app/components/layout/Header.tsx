@@ -25,8 +25,8 @@ const Header = ({ theme = null, className = "" }: HeaderProps) => {
   }, [theme, isAtTop, showHeader]);
 
   const blurClass = useMemo(() => {
-    if (!showHeader) return ""; // no blur when hidden
-    if (theme === "transparent" && isAtTop) return ""; // no blur at top
+    if (!showHeader) return "";
+    if (theme === "transparent" && isAtTop) return "";
     return "backdrop-blur-2xl";
   }, [theme, isAtTop, showHeader]);
 
@@ -38,7 +38,7 @@ const Header = ({ theme = null, className = "" }: HeaderProps) => {
   }, [theme, isAtTop]);
 
   const shadowClass = useMemo(() => {
-    if (!showHeader) return ""; // no shadow when hidden
+    if (!showHeader) return "";
     if (theme === "transparent" && isAtTop) return "";
     return "shadow-md";
   }, [theme, isAtTop, showHeader]);
