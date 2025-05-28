@@ -60,7 +60,7 @@ export default function Login() {
               className="w-full px-4 py-4 outline-none bg-transparent"
               id="password"
               type={showPassword ? "text" : "password"}
-              placeholder="Your Eamil"
+              placeholder="Your Password"
             />
             <button
               className="text-xl font-bold p-2 mr-2 cursor-pointer"
