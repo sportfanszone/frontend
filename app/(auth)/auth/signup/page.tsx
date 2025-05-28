@@ -3,6 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import ResponsiveIcon from "@/app/(auth)/components/ResponsiveIcon";
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,12 +14,12 @@ export default function Signup() {
   return (
     <main className="p-7 font-medium max-w-400 mx-auto min-h-screen pt-35">
       <div className="text-center max-w-xs sm:max-w-sm md:max-w-md mx-auto">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-7 sm:mb-8 md:mb-10">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-7 md:mb-10">
           Sign up
         </h1>
 
         {/* Google button */}
-        <div className="flex items-center justify-center gap-4 mx-auto px-4 py-3 sm:py-4 md:py-5 rounded-full border-2 border-black/20 hover:border-gray-500 transition-all duration-200 cursor-pointer  mb-7 sm:mb-8 md:mb-10">
+        <div className="flex items-center justify-center gap-4 mx-auto px-4 py-3 sm:py-4 md:py-5 rounded-full border-2 border-black/20 hover:border-gray-500 transition-all duration-200 cursor-pointer  mb-6 sm:mb-7 md:mb-10">
           <Image
             className="width-6 h-6 sm:w-6 sm:h-6 md:w-7.5 md:h-7.5"
             src="/svgs/google-icon-logo.svg"
@@ -32,7 +33,7 @@ export default function Signup() {
         </div>
 
         {/* Divider */}
-        <div className="flex items-center justify-center gap-4  mb-7 sm:mb-8 md:mb-10">
+        <div className="flex items-center justify-center gap-4 mb-6 sm:mb-7 md:mb-10">
           <hr className="border-b w-full border-black/20" />
           <span className="md:text-lg">or</span>
           <hr className="border-b w-full border-black/20" />
@@ -110,14 +111,14 @@ export default function Signup() {
               placeholder="Your Password"
             />
             <button
-              className="text-xl font-bold p-2 mr-2 cursor-pointer"
+              className="text-md sm:text-lg md:text-xl font-bold p-2 mr-2 cursor-pointer"
               type="button"
               onClick={handleShowPassword}
             >
               {showPassword ? (
-                <FiEye strokeWidth={3} />
+                <ResponsiveIcon Icon={FiEye} className="text-inherit" />
               ) : (
-                <FiEyeOff strokeWidth={3} />
+                <ResponsiveIcon Icon={FiEyeOff} className="text-inherit" />
               )}
             </button>
           </div>
@@ -135,14 +136,14 @@ export default function Signup() {
               placeholder="Confirm Your Password"
             />
             <button
-              className="text-xl font-bold p-2 mr-2 cursor-pointer"
+              className="text-md sm:text-lg md:text-xl font-bold p-2 mr-2 cursor-pointer"
               type="button"
               onClick={handleShowPassword}
             >
               {showPassword ? (
-                <FiEye strokeWidth={3} />
+                <ResponsiveIcon Icon={FiEye} className="text-inherit" />
               ) : (
-                <FiEyeOff strokeWidth={3} />
+                <ResponsiveIcon Icon={FiEyeOff} className="text-inherit" />
               )}
             </button>
           </div>
