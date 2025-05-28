@@ -61,7 +61,8 @@ const HeaderNav = ({ theme = null }: { theme?: string | null }) => {
       </div>
 
       <div className="hidden bigmd:flex justify-between items-center gap-1">
-        <span
+        <Link
+          href="/auth/login"
           className={`${
             theme === "light"
               ? "text-white"
@@ -71,11 +72,14 @@ const HeaderNav = ({ theme = null }: { theme?: string | null }) => {
           } font-light`}
         >
           Login
-        </span>
-        <button className="bg-white font-semibold text-black py-1 px-4 ml-3 rounded-3xl flex justify-between items-center gap-1 cursor-pointer shadow-md hover:shadow-xl transition-all duration-300">
+        </Link>
+        <Link
+          href="/auth/signup"
+          className="bg-white font-semibold text-black py-1 px-4 ml-3 rounded-3xl flex justify-between items-center gap-1 cursor-pointer shadow-md hover:shadow-xl transition-all duration-300"
+        >
           <span>Signup</span>
           <FiArrowRight className="size-5.5" />
-        </button>
+        </Link>
       </div>
 
       {!navOpen && (
