@@ -12,7 +12,7 @@ export default function Signup() {
   };
 
   return (
-    <main className="p-7 font-medium max-w-400 mx-auto min-h-screen pt-35">
+    <main className="p-7 font-medium max-w-400 mx-auto min-h-screen pt-21 sm:pt-27 md:pt-35">
       <div className="text-center max-w-xs sm:max-w-sm md:max-w-md mx-auto">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-7 md:mb-10">
           Sign up

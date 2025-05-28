@@ -66,11 +66,17 @@ const Header = ({ theme = null, className = "" }: HeaderProps) => {
     <header
       className={`${backgroundClass} ${blurClass} ${textClass} ${shadowClass}
         fixed top-0 left-0 w-full z-50 flex justify-between items-center
-        py-7 px-5 sm:px-10 md:px-17 transition-all duration-300
+        py-3 sm:py-5 md:py-7 px-5 sm:px-10 md:px-17 transition-all duration-300
         ${showHeader ? "translate-y-0" : "bigmd:-translate-y-full"}
         ${className}`}
     >
-      <Image src="/images/logo.png" alt="Logo" width={160} height={160} />
+      <Image
+        className="w-30 sm:w-40"
+        src="/images/logo.png"
+        alt="Logo"
+        width={160}
+        height={160}
+      />
       <HeaderNav theme={theme} />
     </header>
   );
