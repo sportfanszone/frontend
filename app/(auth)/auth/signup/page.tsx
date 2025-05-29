@@ -155,7 +155,7 @@ export default function Signup() {
             <input
               id="rememberMe"
               type="checkbox"
-              className="w-5 h-5 accent-green-600 border-gray-300 rounded focus:ring-green-500"
+              className="w-5 h-5 accent-green-600 border-gray-300 rounded focus:ring-green-500 cursor-pointer"
             />
             <span className="text-sm sm:text-md md:text-lg">
               Accept{" "}
