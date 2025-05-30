@@ -166,10 +166,8 @@ export default function Signup() {
           </label>
         </form>
 
-        <button className="text-white flex items-center justify-center gap-4 w-full mx-auto p-3 sm:p-3 md:p-4 rounded-full bg-green-500 transition-all duration-200 cursor-pointer  mb-7 sm:mb-8 md:mb-10">
-          <span className="text-sm sm:text-md md:text-lg font-bold">
-            Sign Up
-          </span>
+        <button className="text-white text-sm sm:text-md md:text-lg font-bold flex items-center justify-center gap-4 w-full mx-auto p-3 sm:p-3 md:p-4 rounded-full bg-green-500 transition-all duration-200 cursor-pointer  mb-7 sm:mb-8 md:mb-10">
+          Sign Up
         </button>
 
         <div className="text-sm sm:text-md md:text-lg font-bold flex items-center justify-center gap-4 mb-6">
