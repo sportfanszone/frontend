@@ -79,7 +79,7 @@ const Header = ({ theme = null, className = "" }: HeaderProps) => {
             <Link
               key={index}
               href={item.href}
-              className="hover:text-black/60 transition-all"
+              className="hover:opacity-65 transition-all"
             >
               {item.name}
             </Link>
