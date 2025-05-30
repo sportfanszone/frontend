@@ -100,7 +100,10 @@ const Header = ({ theme = null, className = "" }: HeaderProps) => {
 
         {/* Mobile Menu Button */}
         {!navOpen && (
-          <button onClick={handleNavToggle} className="md:hidden">
+          <button
+            onClick={handleNavToggle}
+            className="cursor-pointer md:hidden"
+          >
             <FiMenu className="size-5.5" />
           </button>
         )}
@@ -117,7 +120,10 @@ const Header = ({ theme = null, className = "" }: HeaderProps) => {
 
           {/* Mobile Menu */}
           <div className="md:hidden fixed top-0 right-0 h-full w-4/5 max-w-xs bg-white/75 backdrop-blur-md shadow-lg z-50 px-6 py-8 flex flex-col gap-6">
-            <button onClick={handleNavToggle} className="self-end text-black">
+            <button
+              onClick={handleNavToggle}
+              className="self-end text-black cursor-pointer"
+            >
               <FiX className="size-6" />
             </button>
 
