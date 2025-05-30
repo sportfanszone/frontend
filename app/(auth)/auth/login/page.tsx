@@ -105,7 +105,9 @@ export default function Login() {
         </button>
 
         <div className="text-sm sm:text-md md:text-lg font-bold flex items-center justify-center gap-4 mb-6">
-          <span>Don't have an account?</span>
+          <span className="text-sm sm:text-md md:text-lg">
+            Don't have an account?
+          </span>
 
           <Link className="text-green-500" href="/auth/signup">
             Sign Up Now
