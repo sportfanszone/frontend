@@ -2,7 +2,7 @@
 
 @theme inline {
   --font-montserrat: var(--font-montserrat);
-  --breakpoint-bigmd: 62rem;
+  /* --breakpoint-bigmd: 62rem; */
   --shadow-card: 0 0 13px 5px rgba(0, 0, 0, 0.07);
   --shadow-card-active: 0 0 27px 10px rgba(0, 0, 0, 0.1);
 }
