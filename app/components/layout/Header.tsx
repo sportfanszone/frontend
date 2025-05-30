@@ -142,7 +142,7 @@ const Header = ({ theme = null, className = "" }: HeaderProps) => {
               <Link
                 href="/auth/login"
                 onClick={handleNavToggle}
-                className="text-black"
+                className="text-black text-lg font-semibold hover:bg-black/10 py-2 rounded-md transition"
               >
                 Login
               </Link>
