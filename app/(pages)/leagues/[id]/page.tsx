@@ -66,7 +66,7 @@ const club = [
 
 export default function LeagueSection() {
   return (
-    <main className="p-10 font-medium max-w-400 mx-auto pt-35">
+    <main className="font-medium max-w-400 mx-auto">
       <section className=" max-w-300 mx-auto">
         <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl text-center mb-10">
           Clubs
