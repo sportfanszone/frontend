@@ -4,7 +4,7 @@ const posts = [
   {
     user: {
       username: "@username",
-      porofileImage: "/images/premierLeagueLogo.png",
+      porofileImage: "/images/blankProfile.png",
     },
     title: "Tottenham vs Arsenal",
     description:
@@ -17,7 +17,7 @@ const posts = [
   {
     user: {
       username: "@username",
-      porofileImage: "/images/premierLeagueLogo.png",
+      porofileImage: "/images/blankProfile.png",
     },
     title: "Tottenham vs Arsenal",
     description:
@@ -30,7 +30,7 @@ const posts = [
   {
     user: {
       username: "@username",
-      porofileImage: "/images/premierLeagueLogo.png",
+      porofileImage: "/images/blankProfile.png",
     },
     title: "Tottenham vs Arsenal",
     description:
@@ -43,7 +43,7 @@ const posts = [
   {
     user: {
       username: "@username",
-      porofileImage: "/images/premierLeagueLogo.png",
+      porofileImage: "/images/blankProfile.png",
     },
     title: "Tottenham vs Arsenal",
     description:
@@ -56,7 +56,7 @@ const posts = [
   {
     user: {
       username: "@username",
-      porofileImage: "/images/premierLeagueLogo.png",
+      porofileImage: "/images/blankProfile.png",
     },
     title: "Tottenham vs Arsenal",
     description:
@@ -69,7 +69,7 @@ const posts = [
   {
     user: {
       username: "@username",
-      porofileImage: "/images/premierLeagueLogo.png",
+      porofileImage: "/images/blankProfile.png",
     },
     title: "Tottenham vs Arsenal",
     description:
