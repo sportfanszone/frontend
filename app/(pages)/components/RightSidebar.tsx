@@ -3,7 +3,7 @@ import { FiCalendar, FiUsers } from "react-icons/fi";
 
 const RightSidebar = () => {
   return (
-    <div className="border-2 border-gray-200 rounded-xl">
+    <div className="border-2 border-gray-200 rounded-xl h-fit">
       <div className="flex flex-col justify-center border-black/20 border-b-2 p-6">
         <span className="text-gray-500 text-sm mb-1">Premier League</span>
         <div className="flex justify-start items-center gap-3 pb-3">

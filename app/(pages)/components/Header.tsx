@@ -1,13 +1,33 @@
+"use client";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { FiSearch, FiPlus, FiBell } from "react-icons/fi";
 
 const Header = () => {
+  const [logo, setLogo] = useState("/images/logo.png");
+
+  const updateLogo = () => {
+    const width = window.innerWidth;
+    if (width < 768) {
+      setLogo("/images/logoIcon.png"); // show icon on small devices
+    } else {
+      setLogo("/images/logo.png"); // full logo on larger devices
+    }
+  };
+
+  useEffect(() => {
+    updateLogo(); // set on mount
+
+    window.addEventListener("resize", updateLogo);
+    return () => window.removeEventListener("resize", updateLogo);
+  }, []);
+
   return (
     <div className="flex items-center justify-between p-2 gap-5 sm:gap-10 border-b-2 border-gray-200 sticky top-0 bg-white z-10 h-20">
       {/* Logo */}
       <Image
-        className="w-30 sm:w-30 md:w-40"
-        src="/images/logo.png"
+        className="max-w-6.5 w-30 md:max-w-40 md:w-40"
+        src={logo}
         alt="Logo"
         width={160}
         height={160}

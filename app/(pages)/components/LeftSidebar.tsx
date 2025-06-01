@@ -20,7 +20,7 @@ const LeftSidebar = () => {
     setIsOpen(!isOpen);
   };
   return (
-    <div className="w-fit h-fit  sticky top-20 -left-40">
+    <div className="w-fit h-fit sticky top-20 -left-40">
       {/* Toggle Button */}
       <button
         onClick={toggleSidebar}
@@ -33,7 +33,7 @@ const LeftSidebar = () => {
 
       <div
         className={`${
-          isOpen ? "min-w-65 w-65 p-4" : "min-w-0 w-0 p-0 ml-6"
+          isOpen ? "min-w-58 w-58 p-4" : "min-w-0 w-0 p-0 ml-6"
         } min-h-screen max-h-screen border-r-2 border-gray-200 overflow-hidden transition-all duration-300 ease-in-out bg-white`}
       >
         <div
