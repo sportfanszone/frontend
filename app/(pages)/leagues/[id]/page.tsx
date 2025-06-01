@@ -1,66 +1,66 @@
-import LeagueCard from "@/app/(root)/components/LeagueCard";
+import ClubCard from "@/app/(pages)/components/clubCard";
 import Link from "next/link";
 
-const leagues = [
+const club = [
   {
     id: 1,
-    leagueName: "Premier League",
+    leagueName: "Manchester City",
     topics: 142,
     lastActivity: "Today, 09:14",
     description:
       "The most competitive football league in the world, featuring top English clubs.",
-    logo: "/images/premierLeagueLogo.png",
-    backgroundImage: "/images/premierLeagueBackground.png",
+    logo: "/images/manchesterCityLogo.png",
+    backgroundImage: "/images/manchesterCityBackgroundImage.png",
   },
   {
     id: 2,
-    leagueName: "La Liga",
+    leagueName: "Arsenal",
     topics: 95,
     lastActivity: "Yesterday, 22:08",
     description:
       "Spain’s top-tier league, known for its flair, rivalries, and legendary players.",
-    logo: "/images/laLigaLogo.png",
-    backgroundImage: "/images/laLigaBackgroundImage.png",
+    logo: "/images/arsenalLogo.png",
+    backgroundImage: "/images/arsenalBackgroundImage.png",
   },
   {
     id: 3,
-    leagueName: "Bundesliga",
+    leagueName: "Liverpool",
     topics: 110,
     lastActivity: "Today, 06:45",
     description:
       "Germany’s premier league, combining strong fan culture and attacking football.",
-    logo: "/images/bundesligaLogo.png",
-    backgroundImage: "/images/bundesligaBackgroundImage.png",
+    logo: "/images/liverpool.png",
+    backgroundImage: "/images/liverpoolBackgroundImage.png",
   },
   {
     id: 4,
-    leagueName: "Serie A",
+    leagueName: "Chelsea",
     topics: 87,
     lastActivity: "2 days ago, 18:33",
     description:
       "Italy’s historic league, home to tactical brilliance and legendary defenders.",
-    logo: "/images/serieALogo.png",
-    backgroundImage: "/images/serieABackgroundImage.png",
+    logo: "/images/chelsea.png",
+    backgroundImage: "/images/chelseaBackgroundImage.png",
   },
   {
     id: 5,
-    leagueName: "Ligue 1",
+    leagueName: "Manchester United",
     topics: 74,
     lastActivity: "Today, 11:01",
     description:
       "France’s top league, spotlighting young talents and dominant PSG performances.",
-    logo: "/images/ligue1Logo.png",
-    backgroundImage: "/images/ligue1BackgroundImage.png",
+    logo: "/images/manchesterUnited.png",
+    backgroundImage: "/images/manchesterUnitedBackgroundImage.png",
   },
   {
     id: 6,
-    leagueName: "Major League Soccer",
+    leagueName: "Tottenham Hotspur",
     topics: 63,
     lastActivity: "Yesterday, 20:17",
     description:
       "North America’s growing league, blending global stars and rising talents.",
-    logo: "/images/mlsLogo.png",
-    backgroundImage: "/images/majorLeagueSoccerBackgroundImage.png",
+    logo: "/images/tottenhamHotspur.png",
+    backgroundImage: "/images/tottenhamHotspurBackgroundImage.png",
   },
 ];
 
@@ -73,10 +73,10 @@ export default function LeagueSection() {
         </h2>
 
         <div className="flex justify-center items-center flex-wrap gap-8">
-          {leagues.map((league, index) => (
-            <Link href={`/leagues/${league.id}`} key={index}>
-              <LeagueCard
-                leagueName={league.leagueName}
+          {club.map((league, index) => (
+            <Link href={`/club/${league.id}`} key={index}>
+              <ClubCard
+                clubName={league.leagueName}
                 topics={league.topics}
                 lastActivity={league.lastActivity}
                 description={league.description}
