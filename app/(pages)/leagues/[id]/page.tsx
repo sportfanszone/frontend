@@ -67,24 +67,26 @@ const leagues = [
 export default function LeagueSection() {
   return (
     <main className="p-10 font-medium max-w-400 mx-auto pt-35">
-      <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl text-center mb-10">
-        Clubs
-      </h2>
+      <section className=" max-w-300 mx-auto">
+        <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl text-center mb-10">
+          Clubs
+        </h2>
 
-      <div className="flex justify-center items-center flex-wrap gap-8">
-        {leagues.map((league, index) => (
-          <Link href={`/leagues/${league.id}`} key={index}>
-            <LeagueCard
-              leagueName={league.leagueName}
-              topics={league.topics}
-              lastActivity={league.lastActivity}
-              description={league.description}
-              logo={league.logo}
-              backgroundImage={league.backgroundImage}
-            />
-          </Link>
-        ))}
-      </div>
+        <div className="flex justify-center items-center flex-wrap gap-8">
+          {leagues.map((league, index) => (
+            <Link href={`/leagues/${league.id}`} key={index}>
+              <LeagueCard
+                leagueName={league.leagueName}
+                topics={league.topics}
+                lastActivity={league.lastActivity}
+                description={league.description}
+                logo={league.logo}
+                backgroundImage={league.backgroundImage}
+              />
+            </Link>
+          ))}
+        </div>
+      </section>
     </main>
   );
 }
