@@ -1,5 +1,85 @@
+import Image from "next/image";
+import { FiCalendar } from "react-icons/fi";
+
 const RightSidebar = () => {
-  return <div>Right bar</div>;
+  return (
+    <div className="border-2 border-gray-200 rounded-xl">
+      <div className="flex flex-col justify-center border-black/20 border-b-2 p-6">
+        <span className="text-gray-500 text-sm mb-1">Premier League</span>
+        <div className="flex justify-start items-center gap-3 pb-3">
+          <Image
+            src="/images/premierLeagueLogo.png"
+            width={200}
+            height={200}
+            alt="League logo"
+            className="h-10 w-10 object-cover rounded-full"
+          />
+          <span className="text-sm">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+          </span>
+        </div>
+        <div className="flex justify0between align-center gap-3">
+          <div className="flex flex-col justify-center mb-4">
+            <span className="text-gray-500 text-sm mb-1">TOPICS</span>
+            <span className="font-bold text-lg">24</span>
+          </div>
+          <div className="flex flex-col justify-center mb-4">
+            <span className="text-gray-500 text-sm mb-1">LAST ACTIVITY</span>
+            <span className="font-bold text-lg">Today, May 10th</span>
+          </div>
+        </div>
+        <div className="text-gray-500 text-sm flex items-center gap-2 text-md font-semibold mb-3">
+          <FiCalendar className="inline-block text-gray-700" />
+          <span className="text-gray-700 hover:text-black">
+            Created May 2, 2025
+          </span>
+        </div>
+        <div className="text-gray-500 text-sm flex items-center gap-2 text-md font-semibold">
+          <FiCalendar className="inline-block text-gray-700" />
+          <span className="text-gray-700 hover:text-black">Members 225k</span>
+        </div>
+      </div>
+
+      <div className="flex flex-col justify-center border-black/20 border-b-2 p-6">
+        <span className="text-gray-500 text-sm mb-1">USER PROFILE</span>
+        <div className="flex justify-start items-center gap-3">
+          <Image
+            src="/images/blankProfile.png"
+            width={200}
+            height={200}
+            alt="League logo"
+            className="h-10 w-10 object-cover rounded-full"
+          />
+          <span className="text-sm">@username</span>
+        </div>
+      </div>
+
+      {/* Related */}
+      <div className="flex flex-col justify-center p-6">
+        <span className="text-gray-500 text-sm mb-1">RELATED</span>
+        <div className="flex justify-start items-center gap-3">
+          <Image
+            src="/images/bundesligaLogo.png"
+            width={200}
+            height={200}
+            alt="Related league logo"
+            className="h-10 w-10 object-cover rounded-full"
+          />
+          <span className="text-sm">Bundesliga</span>
+        </div>
+        <div className="flex justify-start items-center gap-3 mt-2">
+          <Image
+            src="/images/laLigaLogo.png"
+            width={200}
+            height={200}
+            alt="Related league logo"
+            className="h-10 w-10 object-cover rounded-full"
+          />
+          <span className="text-sm">La Liga</span>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default RightSidebar;
