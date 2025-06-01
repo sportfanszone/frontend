@@ -3,7 +3,7 @@ import { FiSearch, FiPlus, FiBell, FiChevronRight } from "react-icons/fi";
 
 export default function Home() {
   return (
-    <main className="font-medium max-w-400 mx-auto">
+    <main className="font-medium mx-auto">
       {/* Header */}
       <div className="flex items-center justify-between p-2 gap-5 sm:gap-10 border-b-2 border-gray-200 sticky top-0 bg-white z-10 h-20">
         {/* Logo */}
