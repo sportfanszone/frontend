@@ -83,7 +83,7 @@ const posts = [
 
 const LatestPosts = () => {
   return (
-    <section className="p-10 font-medium max-w-400 mx-auto @container">
+    <section className="p-10 font-medium max-w-300 mx-auto @container">
       <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl text-center mb-10">
         Trending Posts
       </h2>
