@@ -12,9 +12,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="flex items-start min-h-full">
         <div className="flex justify-between w-[100%]">
           {/* Left Sidebar */}
-          <div className="min-h-screen max-h-screen p-4 sticky min-w-65 top-20 left-0 border-r-2 border-gray-200">
-            <LeftSidebar />
-          </div>
+          <LeftSidebar />
 
           {/* Main Content Area */}
           <div className="min-h-screen w-[100%] px-4 py-10">{children}</div>
