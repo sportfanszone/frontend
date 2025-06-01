@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { FiCalendar } from "react-icons/fi";
+import { FiCalendar, FiUsers } from "react-icons/fi";
 
 const RightSidebar = () => {
   return (
@@ -35,7 +35,7 @@ const RightSidebar = () => {
           </span>
         </div>
         <div className="text-gray-500 text-sm flex items-center gap-2 text-md font-semibold">
-          <FiCalendar className="inline-block text-gray-700" />
+          <FiUsers className="inline-block text-gray-700" />
           <span className="text-gray-700 hover:text-black">Members 225k</span>
         </div>
       </div>

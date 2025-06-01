@@ -17,7 +17,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* Main Content Area */}
-          <div className="min-h-screen w-[100%] p-4">{children}</div>
+          <div className="min-h-screen w-[100%] px-4 py-10">{children}</div>
 
           {/* Right Sidebar */}
           <div className="min-h-screen w-120 mr-4 mt-4">
