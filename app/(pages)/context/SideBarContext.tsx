@@ -1,5 +1,11 @@
 "use client";
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
 
 type SidebarContextType = {
   isBarOpen: boolean;
@@ -9,11 +15,16 @@ type SidebarContextType = {
 const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
 
 export const SidebarProvider = ({ children }: { children: ReactNode }) => {
-  const [isBarOpen, setIsBarOpen] = useState(true);
+  const [isBarOpen, setIsBarOpen] = useState(false);
 
-  const toggleSidebar = () => {
-    setIsBarOpen((prev) => !prev);
-  };
+  useEffect(() => {
+    const width = window.innerWidth;
+    if (width >= 768) {
+      setIsBarOpen(true);
+    }
+  }, []);
+
+  const toggleSidebar = () => setIsBarOpen((prev) => !prev);
 
   return (
     <SidebarContext.Provider value={{ isBarOpen, toggleSidebar }}>

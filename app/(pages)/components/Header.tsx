@@ -5,7 +5,7 @@ import { FiSearch, FiPlus, FiBell, FiMenu } from "react-icons/fi";
 import { useSidebar } from "../context/SideBarContext";
 
 const Header = () => {
-  const { toggleSidebar } = useSidebar();
+  const { isBarOpen, toggleSidebar } = useSidebar();
   const [logo, setLogo] = useState("/images/logo.png");
 
   const updateLogo = () => {
@@ -26,11 +26,19 @@ const Header = () => {
 
   return (
     <div className="flex items-center justify-between p-2 gap-5 sm:gap-10 border-b-2 border-gray-200 sticky top-0 bg-white z-10 h-20">
+      {/* Overlay for mobile sidebar */}
+      {isBarOpen && (
+        <div
+          onClick={toggleSidebar}
+          className="w-full h-screen absolute top-20 left-0 bg-black/50 md:hidden backdrop-blur-xs"
+        />
+      )}
+
       <div className="flex items-center justify-between gap-2">
         {/* Mobile Hamburger Toggle */}
         <button
           onClick={toggleSidebar}
-          className="md:hidden cursor-pointer hover:opacity-90 transition"
+          className="md:hidden cursor-pointer hover:opacity-90 transition mr-2 z-10"
         >
           <FiMenu className="w-5 h-5" />
         </button>
