@@ -1,9 +1,25 @@
-import Header from "@/app/components/layout/Header";
+import React, { ReactElement } from "react";
 
-export default function PagesLayout({
+type PageData = {
+  posts: number;
+  followers: number;
+};
+
+async function getData(): Promise<PageData> {
+  return {
+    posts: 10,
+    followers: 200,
+  };
+}
+
+export default async function PagesLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return <>{children}</>;
+}: {
+  children: ReactElement<{ data: PageData }>;
+}) {
+  const data = await getData();
+
+  const childrenWithProps = React.cloneElement(children, { data });
+
+  return <>{childrenWithProps}</>;
 }
