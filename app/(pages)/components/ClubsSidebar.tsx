@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { FiCalendar, FiUsers } from "react-icons/fi";
 
-const RightSidebar = () => {
+const ClubsSidebar = () => {
   return (
     <div className="border-2 border-gray-200 rounded-xl h-fit">
       <div className="flex flex-col justify-center border-black/20 border-b-2 p-6">
@@ -82,4 +82,4 @@ const RightSidebar = () => {
   );
 };
 
-export default RightSidebar;
+export default ClubsSidebar;

@@ -74,7 +74,7 @@ export default function Clubs() {
 
         <div className="flex justify-center items-center flex-wrap gap-8">
           {club.map((league, index) => (
-            <Link href={`/posts/?club=${league.id}`} key={index}>
+            <Link href={`/topics/?club=${league.id}`} key={index}>
               <ClubCard
                 clubName={league.leagueName}
                 topics={league.topics}
