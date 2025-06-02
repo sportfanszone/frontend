@@ -1,4 +1,5 @@
 import Header from "@/app/components/layout/Header";
+import Footer from "@/app/components/layout/Footer";
 
 export default function AuthLayout({
   children,
@@ -9,6 +10,7 @@ export default function AuthLayout({
     <>
       <Header theme="dark" />
       {children}
+      <Footer />
     </>
   );
 }
