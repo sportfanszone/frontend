@@ -31,7 +31,7 @@ const LeftSidebar = () => {
       <div
         className={`${
           isBarOpen ? "min-w-58 w-58 p-4" : "min-w-0 w-0 p-0 md:ml-6"
-        } min-h-screen max-h-screen border-r-2 border-gray-200 overflow-hidden transition-all duration-300 ease-in-out bg-white`}
+        } min-h-[calc(100vh-5em)] max-h-[calc(100vh-5em)] border-r-2 border-gray-200 overflow-hidden transition-all duration-300 ease-in-out bg-white`}
       >
         <div
           className={`${
