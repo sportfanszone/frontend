@@ -23,7 +23,7 @@ const LeftSidebar = () => {
         onClick={toggleSidebar}
         className={`${
           isBarOpen ? "rotate-z-0" : "rotate-z-180"
-        } bg-white absolute top-[50%] right-0 w-8 h-8 border-black/40 border-2 rounded-full cursor-pointer hidden md:grid place-content-center -translate-y-[100%] translate-x-[50%] transition-transform duration-500 hover:bg-gray-100 hover:border-black/60`}
+        } bg-white absolute top-[50%] right-0 w-8 h-8 border-black/40 border-2 rounded-full cursor-pointer hidden md:grid place-content-center -translate-y-[100%] translate-x-[50%] transition-transform duration-500 hover:bg-gray-100 hover:border-black/60 z-10`}
       >
         <FiChevronRight />
       </button>
