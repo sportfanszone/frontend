@@ -73,7 +73,7 @@ const LeaguesSection = () => {
 
       <div className="flex justify-center items-center flex-wrap gap-8">
         {leagues.map((league, index) => (
-          <Link href={`/leagues/${league.id}`} key={index}>
+          <Link href={`/clubs?league=${league.id}`} key={index}>
             <LeagueCard
               leagueName={league.leagueName}
               topics={league.topics}
