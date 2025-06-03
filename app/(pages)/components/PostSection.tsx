@@ -2,7 +2,6 @@ import Image from "next/image";
 import BackButton from "@/app/(pages)/components/BackButton";
 
 import {
-  FiArrowLeft,
   FiChevronDown,
   FiChevronUp,
   FiMessageCircle,
