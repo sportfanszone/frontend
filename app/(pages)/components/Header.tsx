@@ -78,7 +78,7 @@ const Header = () => {
         </div>
         <div className="w-8 h-8 border-black/40 border-2 rounded-full cursor-pointer overflow-hidden">
           <Image
-            src="/images/premierLeagueLogo.png"
+            src="/images/blankProfile.png"
             alt="Profile image"
             className="w-full h-full object-cover"
             width={50}

@@ -1,4 +1,4 @@
-import ClubCard from "@/app/(pages)/components/clubCard";
+import ClubCard from "@/app/(pages)/components/ClubCard";
 import Link from "next/link";
 
 const club = [
