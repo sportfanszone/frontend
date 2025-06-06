@@ -19,7 +19,7 @@ export default function Login() {
         </h1>
 
         {/* Google button */}
-        <div className="flex items-center justify-center gap-4 mx-auto px-4 py-3 sm:py-4 md:py-5 rounded-full border-2 border-black/20 hover:border-gray-500 transition-all duration-200 cursor-pointer  mb-6 sm:mb-7 md:mb-10">
+        <div className="googleButtonContainer">
           <Image
             className="width-6 h-6 sm:w-6 sm:h-6 md:w-7.5 md:h-7.5"
             src="/svgs/google-icon-logo.svg"
@@ -41,35 +41,29 @@ export default function Login() {
 
         {/* Form */}
         <form action="">
-          <div className="border-2 border-black/20 rounded-full relative bg-black/3 mb-5 sm:mb-6 md:mb-8.5">
-            <label
-              className="text-sm sm:text-md md:text-lg font-bold absolute top-0 left-4 md:left-7 -translate-y-[50%]"
-              htmlFor="email"
-            >
+          <div className="formGroup">
+            <label className="formLabel" htmlFor="email">
               Email
             </label>
             <input
-              className="text-xs sm:text-md md:text-lg w-full p-3 sm:p-3 md:p-4 outline-none bg-transparent"
+              className="formInput"
               id="email"
               type="email"
               placeholder="Your Eamil"
             />
           </div>
-          <div className="flex items-center justify-between border-2 border-black/20 rounded-full relative bg-black/5 mb-8.5">
-            <label
-              className="text-sm sm:text-md md:text-lg font-bold absolute top-0 left-4 md:left-7 -translate-y-[50%]"
-              htmlFor="password"
-            >
+          <div className="formGroup flex items-center justify-between">
+            <label className="formLabel" htmlFor="password">
               Password
             </label>
             <input
-              className="text-xs sm:text-md md:text-lg w-full p-3 sm:p-3 md:p-4 outline-none bg-transparent"
+              className="formInput"
               id="password"
               type={showPassword ? "text" : "password"}
               placeholder="Your Password"
             />
             <button
-              className="text-md sm:text-lg md:text-xl font-bold p-2 mr-2 cursor-pointer"
+              className="formInputIcon"
               type="button"
               onClick={handleShowPassword}
             >
@@ -98,11 +92,9 @@ export default function Login() {
               Forgot Password
             </Link>
           </div>
-        </form>
 
-        <button className="text-white text-sm sm:text-md md:text-lg font-bold flex items-center justify-center gap-4 w-full mx-auto p-3 sm:p-3 md:p-4 rounded-full bg-green-500 transition-all duration-200 cursor-pointer  mb-7 sm:mb-8 md:mb-10">
-          Login
-        </button>
+          <button className="formButton">Login</button>
+        </form>
 
         <div className="text-sm sm:text-md md:text-lg font-bold flex items-center justify-center gap-4 mb-6">
           <span className="text-sm sm:text-md md:text-lg">
