@@ -6,7 +6,7 @@
   --shadow-card-active: 0 0 27px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Form */
+/* Auth Form */
 .formGroup {
   @apply border-2 border-black/20 rounded-full relative bg-black/3 mb-5 sm:mb-6 md:mb-8.5;
 }
@@ -25,3 +25,4 @@
 .googleButtonContainer {
   @apply flex items-center justify-center gap-4 mx-auto px-4 py-3 sm:py-4 md:py-5 rounded-full border-2 border-black/20 hover:border-gray-500 transition-all duration-200 cursor-pointer  mb-6 sm:mb-7 md:mb-10;
 }
+/* X End Auth Form X */
