@@ -1,14 +1,50 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import ResponsiveIcon from "@/app/(auth)/components/ResponsiveIcon";
 
 export default function Signup() {
+  const router = useRouter();
+  const [form, setForm] = useState({
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    username: "",
+    email: "",
+    password: "",
+    passwordConfirm: "",
+    tremsAndConditions: "",
+  });
   const [showPassword, setShowPassword] = useState(false);
+
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
+    console.log(form);
+    e.preventDefault();
+
+    const res = await fetch("http://localhost:3001/api/auth/signup", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(form),
+    });
+
+    const data = await res.json();
+
+    if (res.ok || data.status === "success") {
+      router.push("/auth/otp");
+    } else {
+      const data = await res.json();
+      // setDefaultResultOrder(data.error)
+    }
   };
 
   return (
@@ -40,7 +76,7 @@ export default function Signup() {
         </div>
 
         {/* Form */}
-        <form action="">
+        <form onSubmit={handleLogin}>
           <div className="formGroup">
             <label className="formLabel" htmlFor="firstName">
               First Name
@@ -50,6 +86,8 @@ export default function Signup() {
               id="firstName"
               type="text"
               placeholder="Your First Name"
+              onChange={(e) => setForm({ ...form, firstName: e.target.value })}
+              value={form.firstName}
             />
           </div>
           <div className="formGroup">
@@ -61,6 +99,21 @@ export default function Signup() {
               id="middleName"
               type="text"
               placeholder="Your Middle Name"
+              onChange={(e) => setForm({ ...form, middleName: e.target.value })}
+              value={form.middleName}
+            />
+          </div>
+          <div className="formGroup">
+            <label className="formLabel" htmlFor="lastName">
+              Last Name
+            </label>
+            <input
+              className="formInput"
+              id="lastName"
+              type="text"
+              placeholder="Your Middle Name"
+              onChange={(e) => setForm({ ...form, lastName: e.target.value })}
+              value={form.lastName}
             />
           </div>
           <div className="formGroup">
@@ -72,6 +125,8 @@ export default function Signup() {
               id="username"
               type="text"
               placeholder="Your Eamil"
+              onChange={(e) => setForm({ ...form, username: e.target.value })}
+              value={form.username}
             />
           </div>
           <div className="formGroup">
@@ -83,6 +138,8 @@ export default function Signup() {
               id="email"
               type="text"
               placeholder="Your Eamil"
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              value={form.email}
             />
           </div>
           <div className="formGroup flex items-center justify-between">
@@ -94,6 +151,8 @@ export default function Signup() {
               id="password"
               type={showPassword ? "text" : "password"}
               placeholder="Your Password"
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              value={form.password}
             />
             <button
               className="formInputIcon"
@@ -108,14 +167,18 @@ export default function Signup() {
             </button>
           </div>
           <div className="formGroup flex items-center justify-between">
-            <label className="formLabel" htmlFor="password">
+            <label className="formLabel" htmlFor="passwordConfirm">
               Confirm Password
             </label>
             <input
               className="formInput"
-              id="password"
+              id="passwordConfirm"
               type={showPassword ? "text" : "password"}
               placeholder="Confirm Your Password"
+              onChange={(e) =>
+                setForm({ ...form, passwordConfirm: e.target.value })
+              }
+              value={form.passwordConfirm}
             />
             <button
               className="formInputIcon"
@@ -138,6 +201,10 @@ export default function Signup() {
               id="rememberMe"
               type="checkbox"
               className="w-5 h-5 accent-green-600 border-gray-300 rounded focus:ring-green-500 cursor-pointer"
+              onChange={(e) =>
+                setForm({ ...form, tremsAndConditions: e.target.value })
+              }
+              value={form.tremsAndConditions}
             />
             <span className="text-sm sm:text-md md:text-lg">
               Accept{" "}
