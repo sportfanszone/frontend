@@ -8,10 +8,16 @@
 
 /* Auth Form */
 .formGroup {
-  @apply border-2 border-black/20 rounded-full relative bg-black/3 mb-5 sm:mb-6 md:mb-8.5;
+  @apply border-2 border-black/20 rounded-full relative bg-black/3;
+}
+.formGroupError {
+  @apply border-2 border-red-800/50 rounded-full relative bg-red-500/7;
 }
 .formLabel {
   @apply text-sm sm:text-base md:text-lg font-bold absolute top-0 left-4 md:left-7 -translate-y-[50%];
+}
+.formLabelError {
+  @apply text-red-800 text-sm sm:text-base md:text-lg font-bold absolute top-0 left-4 md:left-7 -translate-y-[50%];
 }
 .formInput {
   @apply text-xs sm:text-base md:text-lg w-full p-3 sm:p-3 md:p-4 outline-none bg-transparent;
