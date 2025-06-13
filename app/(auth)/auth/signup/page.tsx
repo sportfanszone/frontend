@@ -3,8 +3,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { FiEye, FiEyeOff } from "react-icons/fi";
-import ResponsiveIcon from "@/app/(auth)/components/ResponsiveIcon";
+import InputGroup from "@/app/(auth)/components/InputGroup";
+import PasswordInputGroup from "@/app/(auth)/components/PasswordInputGroup";
+import { signupSchema } from "@/lib/validation/signupSchema";
 
 export default function Signup() {
   const router = useRouter();
@@ -16,34 +17,75 @@ export default function Signup() {
     email: "",
     password: "",
     passwordConfirm: "",
-    tremsAndConditions: "",
+    termsAndConditions: "",
   });
-  const [showPassword, setShowPassword] = useState(false);
 
-  const handleShowPassword = () => {
-    setShowPassword(!showPassword);
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof typeof form, string>>
+  >({});
+
+  const validateForm = () => {
+    const result = signupSchema.safeParse(form);
+    if (!result.success) {
+      const fieldErrors: typeof errors = {};
+      result.error.issues.forEach((issue) => {
+        const key = issue.path[0] as keyof typeof form;
+        fieldErrors[key] = issue.message;
+      });
+      setErrors(fieldErrors);
+      return false;
+    }
+    setErrors({});
+    return true;
   };
 
-  const handleLogin = async (e: React.FormEvent) => {
-    console.log(form);
+  const handleChange = (key: keyof typeof form, value: string) => {
+    setForm((prev) => {
+      const updatedForm = { ...prev, [key]: value };
+      const result = signupSchema.safeParse(updatedForm);
+      if (!result.success) {
+        const fieldError = result.error.issues.find(
+          (issue) => issue.path[0] === key
+        );
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [key]: fieldError?.message || "",
+        }));
+      } else {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [key]: "",
+        }));
+      }
+      return updatedForm;
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const res = await fetch("http://localhost:3001/api/auth/signup", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
-    });
+    if (!validateForm()) return;
 
-    const data = await res.json();
+    try {
+      const res = await fetch("http://localhost:3001/api/auth/signup", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
 
-    if (res.ok || data.status === "success") {
-      router.push("/auth/otp");
-    } else {
       const data = await res.json();
-      // setDefaultResultOrder(data.error)
+
+      if (res.ok || data.status === "success") {
+        router.push("/auth/otp");
+      } else {
+        alert(data?.error || "Signup failed.");
+      }
+    } catch (err) {
+      console.error("Signup error:", err);
+      alert("An unexpected error occurred.");
     }
   };
 
@@ -75,136 +117,53 @@ export default function Signup() {
           <hr className="border-b w-full border-black/20" />
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleLogin}>
-          <div className="formGroup">
-            <label className="formLabel" htmlFor="firstName">
-              First Name
-            </label>
-            <input
-              className="formInput"
-              id="firstName"
-              type="text"
-              placeholder="Your First Name"
-              onChange={(e) => setForm({ ...form, firstName: e.target.value })}
-              value={form.firstName}
+        <form onSubmit={handleSubmit}>
+          {[
+            { id: "firstName", label: "First Name" },
+            { id: "middleName", label: "Middle Name" },
+            { id: "lastName", label: "Last Name" },
+            { id: "username", label: "Username" },
+            { id: "email", label: "Email", type: "email" },
+          ].map(({ id, label, type = "text" }) => (
+            <InputGroup
+              key={id}
+              id={id as keyof typeof form}
+              label={label}
+              type={type}
+              errors={errors}
+              form={form}
+              handleChange={handleChange}
             />
-          </div>
-          <div className="formGroup">
-            <label className="formLabel" htmlFor="middleName">
-              Middle Name
-            </label>
-            <input
-              className="formInput"
-              id="middleName"
-              type="text"
-              placeholder="Your Middle Name"
-              onChange={(e) => setForm({ ...form, middleName: e.target.value })}
-              value={form.middleName}
-            />
-          </div>
-          <div className="formGroup">
-            <label className="formLabel" htmlFor="lastName">
-              Last Name
-            </label>
-            <input
-              className="formInput"
-              id="lastName"
-              type="text"
-              placeholder="Your Middle Name"
-              onChange={(e) => setForm({ ...form, lastName: e.target.value })}
-              value={form.lastName}
-            />
-          </div>
-          <div className="formGroup">
-            <label className="formLabel" htmlFor="username">
-              Username
-            </label>
-            <input
-              className="formInput"
-              id="username"
-              type="text"
-              placeholder="Your Eamil"
-              onChange={(e) => setForm({ ...form, username: e.target.value })}
-              value={form.username}
-            />
-          </div>
-          <div className="formGroup">
-            <label className="formLabel" htmlFor="email">
-              Email
-            </label>
-            <input
-              className="formInput"
-              id="email"
-              type="text"
-              placeholder="Your Eamil"
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-              value={form.email}
-            />
-          </div>
-          <div className="formGroup flex items-center justify-between">
-            <label className="formLabel" htmlFor="password">
-              Password
-            </label>
-            <input
-              className="formInput"
-              id="password"
-              type={showPassword ? "text" : "password"}
-              placeholder="Your Password"
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-              value={form.password}
-            />
-            <button
-              className="formInputIcon"
-              type="button"
-              onClick={handleShowPassword}
-            >
-              {showPassword ? (
-                <ResponsiveIcon Icon={FiEye} className="text-inherit" />
-              ) : (
-                <ResponsiveIcon Icon={FiEyeOff} className="text-inherit" />
-              )}
-            </button>
-          </div>
-          <div className="formGroup flex items-center justify-between">
-            <label className="formLabel" htmlFor="passwordConfirm">
-              Confirm Password
-            </label>
-            <input
-              className="formInput"
-              id="passwordConfirm"
-              type={showPassword ? "text" : "password"}
-              placeholder="Confirm Your Password"
-              onChange={(e) =>
-                setForm({ ...form, passwordConfirm: e.target.value })
-              }
-              value={form.passwordConfirm}
-            />
-            <button
-              className="formInputIcon"
-              type="button"
-              onClick={handleShowPassword}
-            >
-              {showPassword ? (
-                <ResponsiveIcon Icon={FiEye} className="text-inherit" />
-              ) : (
-                <ResponsiveIcon Icon={FiEyeOff} className="text-inherit" />
-              )}
-            </button>
-          </div>
+          ))}
 
+          {/* Password */}
+          {["password", "passwordConfirm"].map((id) => (
+            <PasswordInputGroup
+              key={id}
+              id={id as keyof typeof form}
+              errors={errors}
+              form={form}
+              handleChange={handleChange}
+            />
+          ))}
+
+          {/* Terms */}
           <label
             htmlFor="rememberMe"
-            className="font-bold text-center mb-6 flex items-center justify-center gap-2 cursor-pointer text-sm text-gray-700"
+            className="font-bold text-center flex items-center justify-center gap-2 cursor-pointer text-sm text-gray-700"
           >
             <input
               id="rememberMe"
               type="checkbox"
               className="w-5 h-5 accent-green-600 border-gray-300 rounded focus:ring-green-500 cursor-pointer"
               onChange={(e) =>
-                setForm({ ...form, tremsAndConditions: e.target.value })
+                handleChange(
+                  "termsAndConditions",
+                  e.target.checked ? "true" : "false"
+                )
               }
-              value={form.tremsAndConditions}
+              checked={form.termsAndConditions === "true"}
+              // value={form.termsAndConditions}
             />
             <span className="text-sm sm:text-md md:text-lg">
               Accept{" "}
@@ -213,13 +172,17 @@ export default function Signup() {
               </Link>
             </span>
           </label>
+          {errors.termsAndConditions && (
+            <p className="text-red-500 text-sm">{errors.termsAndConditions}</p>
+          )}
 
-          <button className="formButton">Sign Up</button>
+          <button className="formButton mt-6" type="submit">
+            Sign Up
+          </button>
         </form>
 
         <div className="text-sm sm:text-md md:text-lg font-bold flex items-center justify-center gap-4 mb-6">
           <span>Already have an account?</span>
-
           <Link className="text-green-500" href="/auth/login">
             Login Now
           </Link>
