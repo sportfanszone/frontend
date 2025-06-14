@@ -195,7 +195,6 @@ export default function Signup() {
                 )
               }
               checked={form.termsAndConditions === "true"}
-              // value={form.termsAndConditions}
             />
             <span className="text-sm sm:text-md md:text-lg">
               Accept{" "}

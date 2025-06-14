@@ -64,7 +64,11 @@ export default function OtpVerification() {
     const data = await res.json();
 
     if (res.ok && data.status === "success") {
-      // router.push("/dashboard");
+      router.push("/topics");
+      Toast.fire({
+        icon: "success",
+        title: "OTP verified successfully!",
+      });
     } else {
       setError(data.message || "Invalid OTP. Please try again.");
     }

@@ -1,14 +1,124 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { FiEye, FiEyeOff } from "react-icons/fi";
-import ResponsiveIcon from "@/app/(auth)/components/ResponsiveIcon";
+import InputGroup from "@/app/(auth)/components/InputGroup";
+import PasswordInputGroup from "@/app/(auth)/components/PasswordInputGroup";
+import { loginSchema } from "@/lib/validation/loginSchema";
+import { useAuth } from "@/app/providers/AuthProvider";
+import Swal from "sweetalert2";
 
 export default function Login() {
-  const [showPassword, setShowPassword] = useState(false);
-  const handleShowPassword = () => {
-    setShowPassword(!showPassword);
+  const { setIsLoggedIn } = useAuth();
+  const router = useRouter();
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+    rememberMe: "",
+  });
+
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof typeof form, string>>
+  >({});
+
+  const validateForm = () => {
+    const result = loginSchema.safeParse(form);
+    if (!result.success) {
+      const fieldErrors: typeof errors = {};
+      result.error.issues.forEach((issue) => {
+        const key = issue.path[0] as keyof typeof form;
+        fieldErrors[key] = issue.message;
+      });
+      setErrors(fieldErrors);
+      return false;
+    }
+    setErrors({});
+    return true;
+  };
+
+  const handleChange = (key: keyof typeof form, value: string) => {
+    setForm((prev) => {
+      const updatedForm = { ...prev, [key]: value };
+      const result = loginSchema.safeParse(updatedForm);
+      if (!result.success) {
+        const fieldError = result.error.issues.find(
+          (issue) => issue.path[0] === key
+        );
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [key]: fieldError?.message || "",
+        }));
+      } else {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [key]: "",
+        }));
+      }
+      return updatedForm;
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    console.log("Form submitted:", form);
+    e.preventDefault();
+
+    if (!validateForm()) return;
+
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "bottom-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      },
+    });
+
+    try {
+      const res = await fetch("http://localhost:3001/api/auth/login", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+
+      if (res.ok || data.status === "success") {
+        setIsLoggedIn(true);
+        router.push("/topics");
+        Toast.fire({
+          icon: "success",
+          title: "Login successful",
+        });
+      } else {
+        if (data.message) {
+          Toast.fire({
+            icon: "error",
+            title: data.message,
+          });
+        }
+        if (data.errors.length > 0) {
+          console.log("Field errors:", data.errors);
+          const fieldErrors: Partial<typeof errors> = {};
+          data.errors.forEach(
+            (error: { field: keyof typeof form; message: string }) => {
+              fieldErrors[error.field] = error.message;
+            }
+          );
+          setErrors((prevErrors) => ({ ...prevErrors, ...fieldErrors }));
+        }
+      }
+    } catch (err) {
+      Toast.fire({
+        icon: "error",
+        title: "Error signing up",
+      });
+    }
   };
 
   return (
@@ -40,60 +150,49 @@ export default function Login() {
         </div>
 
         {/* Form */}
-        <form action="">
-          <div className="formGroup">
-            <label className="formLabel" htmlFor="email">
-              Email
-            </label>
+        <form onSubmit={handleSubmit}>
+          <InputGroup
+            id="email"
+            label="Email"
+            type="email"
+            errors={errors}
+            form={form}
+            handleChange={handleChange}
+          />
+
+          <PasswordInputGroup
+            id="password"
+            errors={errors}
+            form={form}
+            handleChange={handleChange}
+          />
+
+          {/* Terms */}
+          <label
+            htmlFor="rememberMe"
+            className="font-bold text-center flex items-center justify-center gap-2 cursor-pointer text-sm text-gray-700"
+          >
             <input
-              className="formInput"
-              id="email"
-              type="email"
-              placeholder="Your Eamil"
+              id="rememberMe"
+              type="checkbox"
+              className="w-5 h-5 accent-green-600 border-gray-300 rounded focus:ring-green-500 cursor-pointer"
+              onChange={(e) =>
+                handleChange("rememberMe", e.target.checked ? "true" : "false")
+              }
+              checked={form.rememberMe === "true"}
             />
-          </div>
-          <div className="formGroup flex items-center justify-between">
-            <label className="formLabel" htmlFor="password">
-              Password
-            </label>
-            <input
-              className="formInput"
-              id="password"
-              type={showPassword ? "text" : "password"}
-              placeholder="Your Password"
-            />
-            <button
-              className="formInputIcon"
-              type="button"
-              onClick={handleShowPassword}
-            >
-              {showPassword ? (
-                <ResponsiveIcon Icon={FiEye} className="text-inherit" />
-              ) : (
-                <ResponsiveIcon Icon={FiEyeOff} className="text-inherit" />
-              )}
-            </button>
-          </div>
+            <span className="text-sm sm:text-md md:text-lg">
+              Accept{" "}
+              <Link className="text-green-500" href="#">
+                terms and conditions
+              </Link>
+            </span>
+          </label>
+          {errors.rememberMe && (
+            <p className="text-red-500 text-sm">{errors.rememberMe}</p>
+          )}
 
-          <div className="font-bold flex items-center justify-between mb-6">
-            <label
-              htmlFor="rememberMe"
-              className="flex items-center space-x-2 cursor-pointer text-sm text-gray-700"
-            >
-              <input
-                id="rememberMe"
-                type="checkbox"
-                className="w-5 h-5 accent-green-600 border-gray-300 rounded focus:ring-green-500"
-              />
-              <span className="text-sm sm:text-md md:text-lg">Remember me</span>
-            </label>
-
-            <Link className="text-green-500" href="#">
-              Forgot Password
-            </Link>
-          </div>
-
-          <button className="formButton">Login</button>
+          <button className="formButton mt-6">Login</button>
         </form>
 
         <div className="text-sm sm:text-md md:text-lg font-bold flex items-center justify-center gap-4 mb-6">

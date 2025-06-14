@@ -3,6 +3,9 @@ import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight, FiMenu, FiX } from "react-icons/fi";
+import { useAuth } from "@/app/providers/AuthProvider";
+import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -17,11 +20,51 @@ interface HeaderProps {
 }
 
 const Header = ({ theme = null, className = "" }: HeaderProps) => {
+  const router = useRouter();
   const [navOpen, setNavOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [showHeader, setShowHeader] = useState(true);
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "bottom-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
+
+  const handleLoggout = async () => {
+    try {
+      const res = await fetch("http://localhost:3001/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      const data = await res.json();
+
+      if (res.ok || data.status === "success") {
+        router.push("/auth/login");
+        setIsLoggedIn(false);
+        Toast.fire({
+          icon: "success",
+          title: "Logout successful",
+        });
+      }
+    } catch (error) {
+      Toast.fire({
+        icon: "error",
+        title: "Logout failed",
+      });
+    }
+  };
+
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  console.log("isLoggedIn:", isLoggedIn);
   const isAtTop = scrollY === 0;
 
   const handleNavToggle = () => setNavOpen((prev) => !prev);
@@ -87,16 +130,33 @@ const Header = ({ theme = null, className = "" }: HeaderProps) => {
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center justify-between gap-6">
-          <Link href="/auth/login">Login</Link>
-          <Link
-            href="/auth/signup"
-            className="bg-white font-semibold text-black py-1 px-4 ml-3 rounded-3xl flex items-center gap-1 shadow-md hover:shadow-xl transition-all"
-          >
-            <span>Signup</span>
-            <FiArrowRight className="size-5.5" />
-          </Link>
-        </div>
+        {isLoggedIn ? (
+          <div className="hidden md:flex items-center justify-between gap-6">
+            <button className="cursor-pointer" onClick={handleLoggout}>
+              Logout
+            </button>
+            <Link
+              href="/auth/dashboard"
+              className="bg-white font-semibold text-black py-1 px-4 ml-3 rounded-3xl flex items-center gap-1 shadow-md hover:shadow-xl transition-all"
+            >
+              <span>Profile</span>
+              <FiArrowRight className="size-5.5" />
+            </Link>
+          </div>
+        ) : (
+          <div className="hidden md:flex items-center justify-between gap-6">
+            <Link href="/auth/login">Login</Link>
+            <Link
+              href="/auth/signup"
+              className="bg-white font-semibold text-black py-1 px-4 ml-3 rounded-3xl flex items-center gap-1 shadow-md hover:shadow-xl transition-all"
+            >
+              <span>Signup</span>
+              <FiArrowRight className="size-5.5" />
+            </Link>
+          </div>
+        )}
+
+        {/* Login/Signup Buttons */}
 
         {/* Mobile Menu Button */}
         {!navOpen && (
