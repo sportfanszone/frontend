@@ -6,9 +6,6 @@ export default async function Page() {
   const cookieStore = await cookies();
   const allowOtp = cookieStore.get("allowOtp");
 
-  console.log("cookieStore", cookieStore);
-  console.log("allowOtp", allowOtp);
-
   if (!allowOtp || allowOtp.value !== "true") {
     redirect("/auth/signup");
   }

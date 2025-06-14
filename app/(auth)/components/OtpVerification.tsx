@@ -1,11 +1,24 @@
 "use client";
 import { useState } from "react";
 import { useRouter, redirect } from "next/navigation";
+import Swal from "sweetalert2";
 
 export default function OtpVerification() {
   const router = useRouter();
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [error, setError] = useState("");
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "bottom-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
 
   const handleChange = (value: string, index: number) => {
     if (!/^\d?$/.test(value)) return;
@@ -39,7 +52,7 @@ export default function OtpVerification() {
       return;
     }
 
-    const res = await fetch("http://localhost:3001/api/auth/verify-otp", {
+    const res = await fetch("http://localhost:3001/api/auth/verify_otp", {
       method: "POST",
       credentials: "include",
       headers: {
@@ -51,9 +64,36 @@ export default function OtpVerification() {
     const data = await res.json();
 
     if (res.ok && data.status === "success") {
-      router.push("/dashboard");
+      // router.push("/dashboard");
     } else {
       setError(data.message || "Invalid OTP. Please try again.");
+    }
+  };
+
+  const resendOtp = async () => {
+    const res = await fetch("http://localhost:3001/api/auth/resend_otp", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await res.json();
+
+    if (res.ok && data.status === "success") {
+      setError("");
+      setOtp(["", "", "", "", "", ""]);
+      Toast.fire({
+        icon: "success",
+        title: "OTP has been resent to your email.",
+      });
+    } else {
+      setError(data.message || "Failed to resend OTP. Please try again.");
+      Toast.fire({
+        icon: "error",
+        title: "Failed to resend OTP. Please try again.",
+      });
     }
   };
 
@@ -95,8 +135,8 @@ export default function OtpVerification() {
           <span>Didn't receive a code? </span>
           <button
             type="button"
-            onClick={() => alert("Resend logic goes here")}
-            className="text-green-500"
+            onClick={() => resendOtp()}
+            className="text-green-500 cursor-pointer hover:underline"
           >
             Resend
           </button>

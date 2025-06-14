@@ -6,6 +6,7 @@ import Image from "next/image";
 import InputGroup from "@/app/(auth)/components/InputGroup";
 import PasswordInputGroup from "@/app/(auth)/components/PasswordInputGroup";
 import { signupSchema } from "@/lib/validation/signupSchema";
+import Swal from "sweetalert2";
 
 export default function Signup() {
   const router = useRouter();
@@ -62,9 +63,22 @@ export default function Signup() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log("Form submitted:", form);
     e.preventDefault();
 
     if (!validateForm()) return;
+
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "bottom-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      },
+    });
 
     try {
       const res = await fetch("http://localhost:3001/api/auth/signup", {
@@ -75,17 +89,35 @@ export default function Signup() {
         },
         body: JSON.stringify(form),
       });
-
       const data = await res.json();
 
+      console.log("Response data:", res);
+      console.log("Response data:", data);
       if (res.ok || data.status === "success") {
         router.push("/auth/otp");
       } else {
-        alert(data?.error || "Signup failed.");
+        if (data.message) {
+          Toast.fire({
+            icon: "error",
+            title: data.message,
+          });
+        }
+        if (data.errors.length > 0) {
+          console.log("Field errors:", data.errors);
+          const fieldErrors: Partial<typeof errors> = {};
+          data.errors.forEach(
+            (error: { field: keyof typeof form; message: string }) => {
+              fieldErrors[error.field] = error.message;
+            }
+          );
+          setErrors((prevErrors) => ({ ...prevErrors, ...fieldErrors }));
+        }
       }
     } catch (err) {
-      console.error("Signup error:", err);
-      alert("An unexpected error occurred.");
+      Toast.fire({
+        icon: "error",
+        title: "Error signing up",
+      });
     }
   };
 
