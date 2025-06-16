@@ -4,9 +4,6 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get("userToken")?.value;
   const isAuthPage = pathname.startsWith("/auth");
-  // const isProtectedPath = ["/dashboard", "/profile", "/post"].includes(
-  //   pathname
-  // );
   const isProtectedPath = ["/dashboard", "/profile", "/post"].some((path) =>
     pathname.startsWith(path)
   );
