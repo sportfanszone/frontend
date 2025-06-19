@@ -4,7 +4,7 @@ const posts = [
   {
     user: {
       username: "@username",
-      porofileImage: "/images/blankProfile.png",
+      profileImage: "/images/blankProfile.png",
     },
     title: "Tottenham vs Arsenal",
     description:
@@ -17,7 +17,7 @@ const posts = [
   {
     user: {
       username: "@username",
-      porofileImage: "/images/blankProfile.png",
+      profileImage: "/images/blankProfile.png",
     },
     title: "Tottenham vs Arsenal",
     description:
@@ -30,7 +30,7 @@ const posts = [
   {
     user: {
       username: "@username",
-      porofileImage: "/images/blankProfile.png",
+      profileImage: "/images/blankProfile.png",
     },
     title: "Tottenham vs Arsenal",
     description:
@@ -43,7 +43,7 @@ const posts = [
   {
     user: {
       username: "@username",
-      porofileImage: "/images/blankProfile.png",
+      profileImage: "/images/blankProfile.png",
     },
     title: "Tottenham vs Arsenal",
     description:
@@ -56,7 +56,7 @@ const posts = [
   {
     user: {
       username: "@username",
-      porofileImage: "/images/blankProfile.png",
+      profileImage: "/images/blankProfile.png",
     },
     title: "Tottenham vs Arsenal",
     description:
@@ -69,7 +69,7 @@ const posts = [
   {
     user: {
       username: "@username",
-      porofileImage: "/images/blankProfile.png",
+      profileImage: "/images/blankProfile.png",
     },
     title: "Tottenham vs Arsenal",
     description:
@@ -90,16 +90,7 @@ const LatestPosts = () => {
 
       <div className="flex justify-center items-center flex-wrap gap-8">
         {posts.map((post, index) => (
-          <PostCard
-            user={post.user}
-            title={post.title}
-            description={post.description}
-            likes={post.likes}
-            comments={post.comments}
-            upVotes={post.upVotes}
-            createdAt={post.createdAt}
-            key={index}
-          />
+          <PostCard key={index} {...post} />
         ))}
       </div>
     </section>

@@ -9,7 +9,7 @@ import {
 type PostCardProps = {
   user: {
     username: string;
-    porofileImage: string;
+    profileImage: string;
   };
   title: string;
   description: string;
@@ -20,7 +20,7 @@ type PostCardProps = {
 };
 
 const PostCard = ({
-  user: { username, porofileImage },
+  user: { username, profileImage },
   title,
   description,
   likes,
@@ -40,7 +40,7 @@ const PostCard = ({
       <div className="min-w-[1em] w-[18em] mxa-h-[10.5em]">
         <div className="flex justify-start items-center gap-3 mb-2 md:mb-4">
           <Image
-            src={porofileImage}
+            src={profileImage}
             width={200}
             height={200}
             alt="User porofile image"
