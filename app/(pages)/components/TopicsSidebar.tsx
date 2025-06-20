@@ -1,42 +1,13 @@
 import ContributorCard from "./ContributorCard";
+import { PageData } from "@/app/(pages)/topics/layout";
 
-const ClubsSidebar = () => {
-  const data = {
-    topContributors: [
-      {
-        id: 1,
-        name: "John",
-        profileImage: "/images/blankProfile.png",
-      },
-      {
-        id: 2,
-        name: "Jane",
-        profileImage: "/images/blankProfile.png",
-      },
-      {
-        id: 3,
-        name: "Alice",
-        profileImage: "/images/blankProfile.png",
-      },
-      {
-        id: 4,
-        name: "Bob",
-        profileImage: "/images/blankProfile.png",
-      },
-      {
-        id: 5,
-        name: "Charlie",
-        profileImage: "/images/blankProfile.png",
-      },
-      {
-        id: 6,
-        name: "Dave",
-        profileImage: "/images/blankProfile.png",
-      },
-    ],
-  };
+type Props = {
+  data: PageData;
+};
 
+const ClubsSidebar = ({ data }: Props) => {
   const { topContributors } = data;
+
   return (
     <div className="border-2 border-gray-200 rounded-xl w-full h-fit">
       {/* Top contributors */}
