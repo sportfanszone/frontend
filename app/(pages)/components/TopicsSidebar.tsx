@@ -1,11 +1,11 @@
 import ContributorCard from "./ContributorCard";
-import { PageData } from "@/app/(pages)/topics/layout";
+import { PageData } from "@/types";
 
 type Props = {
   data: PageData;
 };
 
-const ClubsSidebar = ({ data }: Props) => {
+const TopicsSidebar = ({ data }: Props) => {
   const { topContributors } = data;
 
   return (
@@ -30,4 +30,4 @@ const ClubsSidebar = ({ data }: Props) => {
   );
 };
 
-export default ClubsSidebar;
+export default TopicsSidebar;
