@@ -26,3 +26,17 @@ export type TopicPageData = {
   }[];
   topics: Topic[];
 };
+
+export type Club = {
+  id: string;
+  clubName: string;
+  topicCount: number;
+  lastActivity: string;
+  description: string;
+  logo: string;
+  backgroundImage: string;
+};
+
+export type ClubPageData = {
+  clubs: Club[];
+};
