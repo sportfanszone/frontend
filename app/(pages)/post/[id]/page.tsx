@@ -1,5 +1,5 @@
-import PostSection from "@/app/(pages)/components/PostSection";
-import Comment from "@/app/(pages)/components/CommentSection";
+import PostSection from "@/app/(pages)/components/posts/PostSection";
+import Comment from "@/app/(pages)/components/posts/CommentSection";
 
 const comments = [
   {

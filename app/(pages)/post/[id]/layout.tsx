@@ -1,4 +1,4 @@
-import TopicsSidebar from "@/app/(pages)/components/TopicsSidebar";
+import TopicsSidebar from "@/app/(pages)/components/topics/TopicsSidebar";
 import React, { ReactElement } from "react";
 
 type PageData = {
