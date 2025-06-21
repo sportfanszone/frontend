@@ -5,11 +5,9 @@ export default async function TopicsPageSkeleton() {
   return (
     <main className="font-medium max-w-400 mx-auto px-4">
       <section className="w-full max-w-300 mx-auto">
-        <Skeleton
-          height={45}
-          width={160}
-          className="font-bold text-2xl sm:text-3xl md:text-4xl mb-10"
-        />
+        <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl mb-10">
+          Topics
+        </h2>
 
         <div className="flex flex-col gap-6 max-w-250 mx-auto w-full">
           {[...Array(6)].map((_, index) => (
