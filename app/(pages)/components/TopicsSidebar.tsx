@@ -1,8 +1,8 @@
 import ContributorCard from "./ContributorCard";
-import { PageData } from "@/types";
+import { TopicPageData } from "@/types";
 
 type Props = {
-  data: PageData;
+  data: TopicPageData;
 };
 
 const TopicsSidebar = ({ data }: Props) => {

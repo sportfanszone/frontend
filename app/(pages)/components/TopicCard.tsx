@@ -5,22 +5,10 @@ import {
   FiMessageCircle,
   FiThumbsUp,
 } from "react-icons/fi";
+import { Topic } from "@/types";
 
-type TopicCardProps = {
-  topic: {
-    id: number;
-    title: string;
-    createdAt: string;
-    likes: number;
-    comments: number;
-    upVotes: number;
-    user: {
-      firstName: string;
-      middleName: string;
-      lastName: string;
-      profileImage: string;
-    };
-  };
+type Prop = {
+  topic: Topic;
 };
 
 const TopicCard = ({
@@ -33,7 +21,7 @@ const TopicCard = ({
     upVotes,
     user: { firstName, middleName, lastName, profileImage },
   },
-}: TopicCardProps) => {
+}: Prop) => {
   return (
     <div className="flex gap-4 shadow-card hover:shadow-card-active hover:scale-102 rounded-3xl p-6 cursor-pointer transition-all duration-150 ease-in-out">
       <Image

@@ -2,31 +2,23 @@ import React, { ReactElement, Suspense, use } from "react";
 import TopicsSidebar from "@/app/(pages)/components/TopicsSidebar";
 import TopicsSidebarSkeleton from "@/app/(pages)/components/TopicsSidebarSkeleton";
 import getTopicsData from "@/lib/getTopicsData";
-import { PageData } from "@/types";
+import { TopicPageData } from "@/types";
 
 function Sidebar() {
   const data = use(getTopicsData());
   return <TopicsSidebar data={data} />;
 }
 
-function Main({ children }: { children: ReactElement<{ data: PageData }> }) {
-  const data = use(getTopicsData());
-  const childrenWithProps = React.cloneElement(children, { data });
-  return (
-    <div className="min-h-screen w-[100%] px-4 py-10">{childrenWithProps}</div>
-  );
-}
-
 export default async function TopicsLayout({
   children,
 }: {
-  children: ReactElement<{ data: PageData }>;
+  children: ReactElement<{ data: TopicPageData }>;
 }) {
   return (
     <>
-      <Suspense>
-        <Main children={children} />
-      </Suspense>
+      <div className="min-h-screen w-[100%] px-4 py-10">
+        <Suspense fallback={<p>Loading data...</p>}>{children}</Suspense>
+      </div>
 
       {/* Sidebar */}
       <div className="hidden md:flex min-h-screen w-120 mr-4 mt-4">
