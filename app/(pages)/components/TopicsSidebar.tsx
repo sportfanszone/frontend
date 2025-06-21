@@ -1,11 +1,13 @@
 import ContributorCard from "./ContributorCard";
+import getTopicsData from "@/lib/getTopicsData";
 import { TopicPageData } from "@/types";
 
-type Props = {
-  data: TopicPageData;
-};
+const TopicsSidebar = async () => {
+  const data: TopicPageData = await getTopicsData();
 
-const TopicsSidebar = ({ data }: Props) => {
+  if (!data || !data.topContributors) {
+    return <p>Failed to load sidebar</p>;
+  }
   const { topContributors } = data;
 
   return (

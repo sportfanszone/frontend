@@ -2,18 +2,11 @@ import React, { ReactElement, Suspense, use } from "react";
 import TopicsSidebar from "@/app/(pages)/components/TopicsSidebar";
 import TopicsPageSkeleton from "../components/TopicsPageSkeleton";
 import TopicsSidebarSkeleton from "@/app/(pages)/components/TopicsSidebarSkeleton";
-import getTopicsData from "@/lib/getTopicsData";
-import { TopicPageData } from "@/types";
-
-function Sidebar() {
-  const data = use(getTopicsData());
-  return <TopicsSidebar data={data} />;
-}
 
 export default async function TopicsLayout({
   children,
 }: {
-  children: ReactElement<{ data: TopicPageData }>;
+  children: React.ReactNode;
 }) {
   return (
     <>
@@ -25,7 +18,7 @@ export default async function TopicsLayout({
       {/* Sidebar */}
       <div className="hidden md:flex min-h-screen w-120 mr-4 mt-4">
         <Suspense fallback={<TopicsSidebarSkeleton />}>
-          <Sidebar />
+          <TopicsSidebar />
         </Suspense>
       </div>
     </>
