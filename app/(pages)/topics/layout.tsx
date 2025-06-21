@@ -1,5 +1,6 @@
 import TopicsSidebar from "@/app/(pages)/components/TopicsSidebar";
 import React, { ReactElement } from "react";
+import fetcher from "@/lib/fetcher";
 
 export type PageData = {
   posts: number;
@@ -11,51 +12,25 @@ export type PageData = {
   }[];
 };
 
-async function getData(): Promise<PageData> {
-  return {
-    posts: 10,
-    followers: 200,
-    topContributors: [
-      {
-        id: 1,
-        name: "John",
-        profileImage: "/images/blankProfile.png",
-      },
-      {
-        id: 2,
-        name: "Jane",
-        profileImage: "/images/blankProfile.png",
-      },
-      {
-        id: 3,
-        name: "Alice",
-        profileImage: "/images/blankProfile.png",
-      },
-      {
-        id: 4,
-        name: "Bob",
-        profileImage: "/images/blankProfile.png",
-      },
-      {
-        id: 5,
-        name: "Charlie",
-        profileImage: "/images/blankProfile.png",
-      },
-      {
-        id: 6,
-        name: "Dave",
-        profileImage: "/images/blankProfile.png",
-      },
-    ],
-  };
-}
-
 export default async function TopicsLayout({
   children,
 }: {
   children: ReactElement<{ data: PageData }>;
 }) {
-  const data = await getData();
+  let data: PageData | null = null;
+
+  try {
+    data = await fetcher<PageData>(`${process.env.DOMAIN_URL}/api/root/topics`);
+  } catch (error) {
+    console.error("Error fetching topics data:", error);
+    // Handle the error appropriately, e.g., show an error message or fallback UI
+    return (
+      <div className="min-h-screen w-[100%] px-4 py-10">
+        <p className="text-red-500">Failed to load topics data.</p>
+      </div>
+    );
+  }
+
   const childrenWithProps = React.cloneElement(children, { data });
 
   return (
