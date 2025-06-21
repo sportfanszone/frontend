@@ -17,7 +17,7 @@ export default async function TopicsPageSkeleton() {
               key={index}
               className="flex gap-4 shadow-card hover:shadow-card-active hover:scale-102 rounded-3xl p-6 cursor-pointer transition-all duration-150 ease-in-out"
             >
-              <Skeleton height={170} width={170} className="rounded-3xl" />
+              <Skeleton height={150} width={150} className="rounded-3xl" />
 
               <div className="min-w-[1em] w-full">
                 <Skeleton height={30} width="100%" className="mb-3" />
