@@ -1,4 +1,4 @@
-import ClubsSidebar from "@/app/(pages)/components/ClubsSidebar";
+import ClubsSidebar from "@/app/(pages)/components/clubs/ClubsSidebar";
 import React, { ReactElement } from "react";
 
 type PageData = {
