@@ -1,7 +1,7 @@
 import React, { ReactElement, Suspense, use } from "react";
-import TopicsSidebar from "@/app/(pages)/components/TopicsSidebar";
-import TopicsPageSkeleton from "../components/TopicsPageSkeleton";
-import TopicsSidebarSkeleton from "@/app/(pages)/components/TopicsSidebarSkeleton";
+import TopicsSidebar from "@/app/(pages)/components/topics/TopicsSidebar";
+import TopicsPageSkeleton from "../components/topics/TopicsPageSkeleton";
+import TopicsSidebarSkeleton from "@/app/(pages)/components/topics/TopicsSidebarSkeleton";
 
 export default async function TopicsLayout({
   children,

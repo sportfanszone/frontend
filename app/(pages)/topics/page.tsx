@@ -1,5 +1,5 @@
 import Link from "next/link";
-import TopicCard from "@/app/(pages)/components/TopicCard";
+import TopicCard from "@/app/(pages)/components/topics/TopicCard";
 import getTopicsData from "@/lib/getTopicsData";
 import { TopicPageData } from "@/types";
 

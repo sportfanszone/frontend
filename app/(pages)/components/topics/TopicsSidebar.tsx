@@ -1,4 +1,4 @@
-import ContributorCard from "./ContributorCard";
+import ContributorCard from "@/app/(pages)/components/ContributorCard";
 import getTopicsData from "@/lib/getTopicsData";
 import { TopicPageData } from "@/types";
 
@@ -8,11 +8,11 @@ const TopicsSidebar = async () => {
   if (!data || !data.topContributors) {
     return <p>Failed to load sidebar</p>;
   }
+
   const { topContributors } = data;
 
   return (
     <div className="border-2 border-gray-200 rounded-xl w-full h-fit">
-      {/* Top contributors */}
       <div className="p-6">
         <span className="text-gray-500 text-sm inline-block mb-4">
           Top Contributors
