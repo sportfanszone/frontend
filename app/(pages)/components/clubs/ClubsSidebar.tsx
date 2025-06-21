@@ -1,85 +1,99 @@
 import Image from "next/image";
 import { FiCalendar, FiUsers } from "react-icons/fi";
+import getClubsData from "@/lib/getClubsData";
+import { ClubPageData } from "@/types";
 
-const ClubsSidebar = () => {
-  return (
-    <div className="border-2 border-gray-200 rounded-xl h-fit">
-      <div className="flex flex-col justify-center border-black/20 border-b-2 p-6">
-        <span className="text-gray-500 text-sm mb-1">Premier League</span>
-        <div className="flex justify-start items-center gap-3 pb-3">
-          <Image
-            src="/images/premierLeagueLogo.png"
-            width={200}
-            height={200}
-            alt="League logo"
-            className="h-10 w-10 object-cover rounded-full"
-          />
-          <span className="text-sm">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-          </span>
-        </div>
-        <div className="flex justify0between align-center gap-3">
-          <div className="flex flex-col justify-center mb-4">
-            <span className="text-gray-500 text-sm mb-1">TOPICS</span>
-            <span className="font-bold text-lg">24</span>
+const ClubsSidebar = async () => {
+  try {
+    const { league, user, relatedLeagues }: ClubPageData = await getClubsData();
+
+    return (
+      <div className="border-2 border-gray-200 rounded-xl h-fit">
+        {/* League */}
+        {league && (
+          <div className="flex flex-col justify-center border-black/20 border-b-2 p-6">
+            <span className="text-gray-500 text-sm mb-1">{league.name}</span>
+            <div className="flex justify-start items-center gap-3 pb-3">
+              <Image
+                src={league.logo}
+                width={200}
+                height={200}
+                alt="League logo"
+                className="h-10 w-10 object-cover rounded-full"
+              />
+              <span className="text-sm">{league.description}</span>
+            </div>
+            <div className="flex justify0between align-center gap-3">
+              <div className="flex flex-col justify-center mb-4">
+                <span className="text-gray-500 text-sm mb-1">CLUBS</span>
+                <span className="font-bold text-lg">{league.clubCount}</span>
+              </div>
+              <div className="flex flex-col justify-center mb-4">
+                <span className="text-gray-500 text-sm mb-1">
+                  LAST ACTIVITY
+                </span>
+                <span className="font-bold text-lg">{league.lastActivity}</span>
+              </div>
+            </div>
+            <div className="text-gray-500 text-sm flex items-center gap-2 text-md font-semibold mb-3">
+              <FiCalendar className="inline-block text-gray-700" />
+              <span className="text-gray-700 hover:text-black">
+                Created {league.createdAt}
+              </span>
+            </div>
+            <div className="text-gray-500 text-sm flex items-center gap-2 text-md font-semibold">
+              <FiUsers className="inline-block text-gray-700" />
+              <span className="text-gray-700 hover:text-black">
+                Members {league.memberCount}
+              </span>
+            </div>
           </div>
-          <div className="flex flex-col justify-center mb-4">
-            <span className="text-gray-500 text-sm mb-1">LAST ACTIVITY</span>
-            <span className="font-bold text-lg">Today, May 10th</span>
+        )}
+
+        {/* User */}
+        {user && (
+          <div className="flex flex-col justify-center border-black/20 border-b-2 p-6">
+            <span className="text-gray-500 text-sm mb-1">USER PROFILE</span>
+            <div className="flex justify-start items-center gap-3">
+              <Image
+                src={user.profileImage}
+                width={200}
+                height={200}
+                alt="League logo"
+                className="h-10 w-10 object-cover rounded-full"
+              />
+              <span className="text-sm">@{user.username}</span>
+            </div>
           </div>
-        </div>
-        <div className="text-gray-500 text-sm flex items-center gap-2 text-md font-semibold mb-3">
-          <FiCalendar className="inline-block text-gray-700" />
-          <span className="text-gray-700 hover:text-black">
-            Created May 2, 2025
-          </span>
-        </div>
-        <div className="text-gray-500 text-sm flex items-center gap-2 text-md font-semibold">
-          <FiUsers className="inline-block text-gray-700" />
-          <span className="text-gray-700 hover:text-black">Members 225k</span>
-        </div>
-      </div>
+        )}
 
-      <div className="flex flex-col justify-center border-black/20 border-b-2 p-6">
-        <span className="text-gray-500 text-sm mb-1">USER PROFILE</span>
-        <div className="flex justify-start items-center gap-3">
-          <Image
-            src="/images/blankProfile.png"
-            width={200}
-            height={200}
-            alt="League logo"
-            className="h-10 w-10 object-cover rounded-full"
-          />
-          <span className="text-sm">@username</span>
-        </div>
+        {/* Related Leagues*/}
+        {relatedLeagues && (
+          <div className="flex flex-col justify-center p-6">
+            <span className="text-gray-500 text-sm mb-1">RELATED</span>
+            {relatedLeagues.map((league) => (
+              <div
+                key={league.id}
+                className="flex justify-start items-center gap-3"
+              >
+                <Image
+                  src={league.logo}
+                  width={200}
+                  height={200}
+                  alt="Related league logo"
+                  className="h-10 w-10 object-cover rounded-full"
+                />
+                <span className="text-sm">{league.name}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-
-      {/* Related */}
-      <div className="flex flex-col justify-center p-6">
-        <span className="text-gray-500 text-sm mb-1">RELATED</span>
-        <div className="flex justify-start items-center gap-3">
-          <Image
-            src="/images/bundesligaLogo.png"
-            width={200}
-            height={200}
-            alt="Related league logo"
-            className="h-10 w-10 object-cover rounded-full"
-          />
-          <span className="text-sm">Bundesliga</span>
-        </div>
-        <div className="flex justify-start items-center gap-3 mt-2">
-          <Image
-            src="/images/laLigaLogo.png"
-            width={200}
-            height={200}
-            alt="Related league logo"
-            className="h-10 w-10 object-cover rounded-full"
-          />
-          <span className="text-sm">La Liga</span>
-        </div>
-      </div>
-    </div>
-  );
+    );
+  } catch (error) {
+    console.error("Error fetching clubs data:", error);
+    return <p>An error occurred while loading clubs data</p>;
+  }
 };
 
 export default ClubsSidebar;

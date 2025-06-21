@@ -3,6 +3,8 @@ export type User = {
   firstName: string;
   middleName: string;
   lastName: string;
+  username: string;
+  email: string;
   profileImage: string;
 };
 
@@ -37,6 +39,20 @@ export type Club = {
   backgroundImage: string;
 };
 
+export type League = {
+  id: string;
+  name: string;
+  logo: string;
+  description: string;
+  clubCount: number;
+  lastActivity: string;
+  createdAt: string;
+  memberCount: number;
+};
+
 export type ClubPageData = {
   clubs: Club[];
+  league: League;
+  user: User;
+  relatedLeagues: League[];
 };
