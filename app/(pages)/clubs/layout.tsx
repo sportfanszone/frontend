@@ -1,34 +1,24 @@
+import React, { Suspense } from "react";
 import ClubsSidebar from "@/app/(pages)/components/clubs/ClubsSidebar";
-import React, { ReactElement } from "react";
+import ClubSidebarSkeleton from "@/app/(pages)/components/clubs/ClubSidebarSkeleton";
 
-type PageData = {
-  posts: number;
-  followers: number;
-};
-
-async function getData(): Promise<PageData> {
-  return {
-    posts: 10,
-    followers: 200,
-  };
-}
-
-export default async function ClubsLayout({
+export default function ClubsLayout({
   children,
 }: {
-  children: ReactElement<{ data: PageData }>;
+  children: React.ReactNode;
 }) {
-  const data = await getData();
-  const childrenWithProps = React.cloneElement(children, { data });
-
   return (
     <>
+      {/* Main */}
       <div className="min-h-screen w-[100%] px-4 py-10">
-        {childrenWithProps}
+        <Suspense fallback={<p>Loading clubs..</p>}>{children}</Suspense>
       </div>
+
       {/* Sidebar */}
       <div className="hidden md:flex min-h-screen w-120 mr-4 mt-4">
-        <ClubsSidebar />
+        <Suspense fallback={<ClubSidebarSkeleton />}>
+          <ClubsSidebar />
+        </Suspense>
       </div>
     </>
   );
