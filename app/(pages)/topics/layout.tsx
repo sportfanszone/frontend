@@ -1,5 +1,6 @@
 import React, { ReactElement, Suspense, use } from "react";
 import TopicsSidebar from "@/app/(pages)/components/TopicsSidebar";
+import TopicsPageSkeleton from "../components/TopicsPageSkeleton";
 import TopicsSidebarSkeleton from "@/app/(pages)/components/TopicsSidebarSkeleton";
 import getTopicsData from "@/lib/getTopicsData";
 import { TopicPageData } from "@/types";
@@ -16,8 +17,9 @@ export default async function TopicsLayout({
 }) {
   return (
     <>
+      {/* Main */}
       <div className="min-h-screen w-[100%] px-4 py-10">
-        <Suspense fallback={<p>Loading data...</p>}>{children}</Suspense>
+        <Suspense fallback={<TopicsPageSkeleton />}>{children}</Suspense>
       </div>
 
       {/* Sidebar */}
