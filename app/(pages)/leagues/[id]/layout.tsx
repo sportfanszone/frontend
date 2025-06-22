@@ -1,4 +1,4 @@
-import ClubsSidebar from "@/app/(pages)/components/ClubsSidebar";
+import ClubsSidebar from "@/app/(pages)/components/clubs/ClubsSidebar";
 
 export default function LeagueClubsLayout({
   children,
