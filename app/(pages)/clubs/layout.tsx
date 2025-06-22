@@ -1,6 +1,7 @@
 import React, { Suspense } from "react";
 import ClubsSidebar from "@/app/(pages)/components/clubs/ClubsSidebar";
 import ClubSidebarSkeleton from "@/app/(pages)/components/clubs/ClubSidebarSkeleton";
+import ClubsPageSkeleton from "../components/clubs/ClubsPageSkeleton";
 
 export default function ClubsLayout({
   children,
@@ -11,7 +12,7 @@ export default function ClubsLayout({
     <>
       {/* Main */}
       <div className="min-h-screen w-[100%] px-4 py-10">
-        <Suspense fallback={<p>Loading clubs..</p>}>{children}</Suspense>
+        <Suspense fallback={<ClubsPageSkeleton />}>{children}</Suspense>
       </div>
 
       {/* Sidebar */}
