@@ -9,11 +9,12 @@ const ClubsSidebar = () => {
         <Skeleton height={18} width={140} className="mb-4" />
         <div className="flex justify-start items-center gap-3 pb-3">
           <Skeleton width={40} height={40} circle={true} />
-          <div className="leading-tight">
+          <Skeleton height={9} width={80} count={3} />
+          {/* <div className="leading-tight">
             <Skeleton height={9} width={40} />
             <Skeleton height={9} width={60} />
             <Skeleton height={9} width={80} />
-          </div>
+          </div> */}
         </div>
         <div className="flex justify0between align-center gap-3">
           <div className="flex flex-col justify-center mb-4">
