@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import ClubsSidebar from "@/app/(pages)/components/clubs/ClubsSidebar";
 import ClubSidebarSkeleton from "@/app/(pages)/components/clubs/ClubSidebarSkeleton";
-import ClubsPageSkeleton from "../components/clubs/ClubsPageSkeleton";
+import ClubsPageSkeleton from "@/app/(pages)/components/clubs/ClubsPageSkeleton";
 
 export default function ClubsLayout({
   children,
