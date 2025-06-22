@@ -3,55 +3,74 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 const ClubsSidebar = () => {
   return (
-    <div className="border-2 border-gray-200 rounded-xl h-fit">
+    <div className="border-2 border-gray-200 rounded-xl w-full h-fit">
       {/* League */}
       <div className="flex flex-col justify-center border-black/20 border-b-2 p-6">
-        <Skeleton height={18} width={140} className="mb-4" />
+        <span className="text-gray-500 text-sm mb-1">
+          <Skeleton width={95} />
+        </span>
         <div className="flex justify-start items-center gap-3 pb-3">
           <Skeleton width={40} height={40} circle={true} />
-          <Skeleton height={9} width={80} count={3} />
-          {/* <div className="leading-tight">
-            <Skeleton height={9} width={40} />
-            <Skeleton height={9} width={60} />
-            <Skeleton height={9} width={80} />
-          </div> */}
+          <span className="text-sm">
+            <Skeleton width={135} count={3} />
+          </span>
         </div>
         <div className="flex justify0between align-center gap-3">
           <div className="flex flex-col justify-center mb-4">
-            <Skeleton height={15} width={47} />
-            <Skeleton height={19} width={25} />
+            <span className="text-gray-500 text-sm mb-1">
+              <Skeleton width={60} />
+            </span>
+            <span className="font-bold text-lg">
+              <Skeleton width={35} />
+            </span>
           </div>
           <div className="flex flex-col justify-center mb-4">
-            <Skeleton height={15} width={90} />
-            <Skeleton height={19} width={125} />
+            <span className="text-gray-500 text-sm mb-1">
+              <Skeleton width={57} />
+            </span>
+            <span className="font-bold text-lg">
+              <Skeleton width={110} />
+            </span>
           </div>
         </div>
         <div className="text-gray-500 text-sm flex items-center gap-2 text-md font-semibold mb-3">
-          <Skeleton height={20} width={20} />
-          <Skeleton height={14} width={120} />
+          <Skeleton width={17} height={17} />
+          <span className="text-gray-700 hover:text-black">
+            <Skeleton width={50} />
+          </span>
         </div>
         <div className="text-gray-500 text-sm flex items-center gap-2 text-md font-semibold">
-          <Skeleton height={20} width={20} />
-          <Skeleton height={14} width={80} />
+          <Skeleton width={17} height={17} />
+          <span className="text-gray-700 hover:text-black">
+            <Skeleton width={50} />
+          </span>
         </div>
       </div>
 
       {/* User */}
       <div className="flex flex-col justify-center border-black/20 border-b-2 p-6">
-        <Skeleton height={20} width={100} className="mb-1" />
+        <span className="text-gray-500 text-sm mb-1">
+          <Skeleton width={95} />
+        </span>
         <div className="flex justify-start items-center gap-3">
-          <Skeleton height={40} width={40} circle={true} />
-          <Skeleton height={18} width={120} />
+          <Skeleton width={40} height={40} circle={true} />
+          <span className="text-sm">
+            <Skeleton width={100} />
+          </span>
         </div>
       </div>
 
       {/* Related Leagues*/}
       <div className="flex flex-col justify-center p-6">
-        <Skeleton height={20} width={80} className="mb-4" />
-        {[...Array(3)].map((_, key) => (
-          <div key={key} className="flex justify-start items-center gap-3">
+        <span className="text-gray-500 text-sm mb-1">
+          <Skeleton width={70} />
+        </span>
+        {[...Array(3)].map((_, index) => (
+          <div key={index} className="flex justify-start items-center gap-3">
             <Skeleton width={40} height={40} circle={true} />
-            <Skeleton height={20} width={150} />
+            <span className="text-sm">
+              <Skeleton width={135} />
+            </span>
           </div>
         ))}
       </div>
