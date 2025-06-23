@@ -136,10 +136,10 @@ const Header = ({ theme = null, className = "", user }: HeaderProps) => {
               Logout
             </button>
             <Link
-              href="/auth/dashboard"
+              href="/user/dashboard"
               className="bg-white font-semibold text-black py-1 px-4 ml-3 rounded-3xl flex items-center gap-1 shadow-md hover:shadow-xl transition-all"
             >
-              <span>Profile</span>
+              <span>Dashboard</span>
               <FiArrowRight className="size-5.5" />
             </Link>
           </div>
