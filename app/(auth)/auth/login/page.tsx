@@ -8,25 +8,36 @@ import PasswordInputGroup from "@/app/(auth)/components/PasswordInputGroup";
 import { loginSchema } from "@/lib/validation/loginSchema";
 import Swal from "sweetalert2";
 
+type FormFields = {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+};
+
+type ErrorFields = Partial<
+  Record<Exclude<keyof FormFields, "rememberMe">, string>
+>;
+
 export default function Login() {
   const router = useRouter();
-  const [form, setForm] = useState({
+
+  const [form, setForm] = useState<FormFields>({
     email: "",
     password: "",
-    rememberMe: "",
+    rememberMe: false,
   });
 
-  const [errors, setErrors] = useState<
-    Partial<Record<keyof typeof form, string>>
-  >({});
+  const [errors, setErrors] = useState<ErrorFields>({});
 
   const validateForm = () => {
     const result = loginSchema.safeParse(form);
     if (!result.success) {
-      const fieldErrors: typeof errors = {};
+      const fieldErrors: ErrorFields = {};
       result.error.issues.forEach((issue) => {
-        const key = issue.path[0] as keyof typeof form;
-        fieldErrors[key] = issue.message;
+        const key = issue.path[0] as keyof FormFields;
+        if (key !== "rememberMe") {
+          fieldErrors[key] = issue.message;
+        }
       });
       setErrors(fieldErrors);
       return false;
@@ -35,30 +46,38 @@ export default function Login() {
     return true;
   };
 
-  const handleChange = (key: keyof typeof form, value: string) => {
+  const handleChange = <K extends keyof FormFields>(
+    key: K,
+    value: FormFields[K]
+  ) => {
     setForm((prev) => {
       const updatedForm = { ...prev, [key]: value };
+
       const result = loginSchema.safeParse(updatedForm);
       if (!result.success) {
         const fieldError = result.error.issues.find(
           (issue) => issue.path[0] === key
         );
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          [key]: fieldError?.message || "",
-        }));
+        if (key !== "rememberMe") {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            [key]: fieldError?.message || "",
+          }));
+        }
       } else {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          [key]: "",
-        }));
+        if (key !== "rememberMe") {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            [key]: "",
+          }));
+        }
       }
+
       return updatedForm;
     });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log("Form submitted:", form);
     e.preventDefault();
 
     if (!validateForm()) return;
@@ -84,6 +103,7 @@ export default function Login() {
         },
         body: JSON.stringify(form),
       });
+
       const data = await res.json();
 
       if (res.ok || data.status === "success") {
@@ -99,12 +119,13 @@ export default function Login() {
             title: data.message,
           });
         }
-        if (data.errors.length > 0) {
-          console.log("Field errors:", data.errors);
-          const fieldErrors: Partial<typeof errors> = {};
+        if (data.errors?.length > 0) {
+          const fieldErrors: ErrorFields = {};
           data.errors.forEach(
-            (error: { field: keyof typeof form; message: string }) => {
-              fieldErrors[error.field] = error.message;
+            (error: { field: keyof FormFields; message: string }) => {
+              if (error.field !== "rememberMe") {
+                fieldErrors[error.field] = error.message;
+              }
             }
           );
           setErrors((prevErrors) => ({ ...prevErrors, ...fieldErrors }));
@@ -113,7 +134,7 @@ export default function Login() {
     } catch (err) {
       Toast.fire({
         icon: "error",
-        title: "Error signing up",
+        title: "Error signing in",
       });
     }
   };
@@ -164,7 +185,7 @@ export default function Login() {
             handleChange={handleChange}
           />
 
-          {/* Terms */}
+          {/* Remember Me */}
           <label
             htmlFor="rememberMe"
             className="font-bold text-center flex items-center justify-center gap-2 cursor-pointer text-sm text-gray-700"
@@ -173,30 +194,17 @@ export default function Login() {
               id="rememberMe"
               type="checkbox"
               className="w-5 h-5 accent-green-600 border-gray-300 rounded focus:ring-green-500 cursor-pointer"
-              onChange={(e) =>
-                handleChange("rememberMe", e.target.checked ? "true" : "false")
-              }
-              checked={form.rememberMe === "true"}
+              onChange={(e) => handleChange("rememberMe", e.target.checked)}
+              checked={form.rememberMe}
             />
-            <span className="text-sm sm:text-md md:text-lg">
-              Accept{" "}
-              <Link className="text-green-500" href="#">
-                terms and conditions
-              </Link>
-            </span>
+            <span className="text-sm sm:text-md md:text-lg">Remember me</span>
           </label>
-          {errors.rememberMe && (
-            <p className="text-red-500 text-sm">{errors.rememberMe}</p>
-          )}
 
           <button className="formButton mt-6">Login</button>
         </form>
 
         <div className="text-sm sm:text-md md:text-lg font-bold flex items-center justify-center gap-4 mb-6">
-          <span className="text-sm sm:text-md md:text-lg">
-            Don't have an account?
-          </span>
-
+          <span>Don't have an account?</span>
           <Link className="text-green-500" href="/auth/signup">
             Sign Up Now
           </Link>
