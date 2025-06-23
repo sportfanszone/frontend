@@ -43,19 +43,34 @@ const Header = ({ theme = null, className = "", user }: HeaderProps) => {
 
   const handleLoggout = async () => {
     try {
-      const res = await fetch("http://localhost:3001/api/auth/logout", {
-        method: "POST",
-        credentials: "include",
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "You will be logged out of your account.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#22c55e", // Tailwind green-500
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, logout",
       });
 
-      const data = await res.json();
+      if (result.isConfirmed) {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/auth/logout`,
+          {
+            method: "POST",
+            credentials: "include",
+          }
+        );
 
-      if (res.ok || data.status === "success") {
-        router.push("/auth/login");
-        Toast.fire({
-          icon: "success",
-          title: "Logout successful",
-        });
+        const data = await res.json();
+
+        if (res.ok || data.status === "success") {
+          router.push("/auth/login");
+          Toast.fire({
+            icon: "success",
+            title: "Logout successful",
+          });
+        }
       }
     } catch (error) {
       Toast.fire({
