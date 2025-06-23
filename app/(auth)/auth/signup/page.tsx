@@ -81,14 +81,17 @@ export default function Signup() {
     });
 
     try {
-      const res = await fetch("http://localhost:3001/api/auth/signup", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/auth/signup`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(form),
+        }
+      );
       const data = await res.json();
 
       console.log("Response data:", res);
