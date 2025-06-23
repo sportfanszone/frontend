@@ -56,3 +56,7 @@ export type ClubPageData = {
   user: User;
   relatedLeagues: League[];
 };
+
+export type LeftSidebarProps = {
+  user: User;
+};
