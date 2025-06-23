@@ -1,50 +1,40 @@
-type InputGroupProps = {
-  id: string;
+type InputGroupProps<T extends Record<string, any>> = {
+  id: keyof T;
   label: string;
   type?: string;
-  errors: Record<string, string>;
-  form: Record<string, string>;
-  handleChange: (key: any, value: string) => void;
+  errors: Partial<Record<keyof T, string>>;
+  form: T;
+  handleChange: <K extends keyof T>(key: K, value: T[K]) => void;
 };
 
-const InputGroup = ({
+const InputGroup = <T extends Record<string, any>>({
   id,
   errors,
   label,
-  type,
+  type = "text",
   form,
   handleChange,
-}: InputGroupProps) => {
+}: InputGroupProps<T>) => {
   return (
     <div className="mb-5 sm:mb-6 md:mb-8.5">
-      <div
-        className={
-          errors[id as keyof typeof form] ? "formGroupError" : "formGroup"
-        }
-      >
+      <div className={errors[id] ? "formGroupError" : "formGroup"}>
         <label
-          className={
-            errors[id as keyof typeof form] ? "formLabelError" : "formLabel"
-          }
-          htmlFor={id}
+          className={errors[id] ? "formLabelError" : "formLabel"}
+          htmlFor={id as string}
         >
           {label}
         </label>
         <input
           className="formInput"
-          id={id}
+          id={id as string}
           type={type}
           placeholder={`Your ${label}`}
-          value={form[id as keyof typeof form]}
-          onChange={(e) =>
-            handleChange(id as keyof typeof form, e.target.value)
-          }
+          value={form[id] as string}
+          onChange={(e) => handleChange(id, e.target.value as T[keyof T])}
         />
       </div>
-      {errors[id as keyof typeof form] && (
-        <p className="text-red-500 text-left text-sm">
-          {errors[id as keyof typeof form]}
-        </p>
+      {errors[id] && (
+        <p className="text-red-500 text-left text-sm">{errors[id]}</p>
       )}
     </div>
   );
