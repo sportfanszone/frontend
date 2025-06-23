@@ -78,10 +78,13 @@ type leagueType = {
 const LeaguesSection = async () => {
   try {
     const getLeagues = async () => {
-      const res = await fetch("http://localhost:3001/api/root/getLeagues", {
-        cache: "no-store",
-        credentials: "include",
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/root/getLeagues`,
+        {
+          cache: "no-store",
+          credentials: "include",
+        }
+      );
 
       if (res.ok) {
         const data = await res.json();
