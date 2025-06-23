@@ -52,14 +52,17 @@ export default function OtpVerification() {
       return;
     }
 
-    const res = await fetch("http://localhost:3001/api/auth/verify_otp", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ otp: code }),
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/auth/verify_otp`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ otp: code }),
+      }
+    );
 
     const data = await res.json();
 
@@ -75,13 +78,16 @@ export default function OtpVerification() {
   };
 
   const resendOtp = async () => {
-    const res = await fetch("http://localhost:3001/api/auth/resend_otp", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/auth/resend_otp`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     const data = await res.json();
 
