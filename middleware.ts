@@ -4,16 +4,11 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get("userToken")?.value;
   const isAuthPage = pathname.startsWith("/auth");
-  const isProtectedPath = ["/dashboard", "/profile", "/post"].some((path) =>
+  const isProtectedPath = ["/user", "/post"].some((path) =>
     pathname.startsWith(path)
   );
 
   console.log("Middleware triggered for path:", pathname);
-
-  // if (!token && !isAuthPage) {
-  //   const loginUrl = new URL("/auth/login", request.url);
-  //   return NextResponse.redirect(loginUrl);
-  // }
 
   if (!token && isProtectedPath) {
     const loginUrl = new URL("/auth/login", request.url);
