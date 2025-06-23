@@ -90,7 +90,7 @@ export default function Login() {
 
       if (res.ok || data.status === "success") {
         setIsLoggedIn(true);
-        router.push("/topics");
+        router.push("/user/dashboard");
         Toast.fire({
           icon: "success",
           title: "Login successful",
