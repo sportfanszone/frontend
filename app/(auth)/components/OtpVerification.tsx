@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useRouter, redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
 export default function OtpVerification() {
@@ -64,7 +64,7 @@ export default function OtpVerification() {
     const data = await res.json();
 
     if (res.ok && data.status === "success") {
-      router.push("/topics");
+      router.push("/user/dashboard");
       Toast.fire({
         icon: "success",
         title: "OTP verified successfully!",
