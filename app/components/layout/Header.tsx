@@ -3,9 +3,9 @@ import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight, FiMenu, FiX } from "react-icons/fi";
-import { useAuth } from "@/app/providers/AuthProvider";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
+import { User } from "@/types";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -17,9 +17,12 @@ const navItems = [
 interface HeaderProps {
   theme?: "dark" | "light" | "transparent" | null;
   className?: string;
+  user: User;
 }
 
-const Header = ({ theme = null, className = "" }: HeaderProps) => {
+const Header = ({ theme = null, className = "", user }: HeaderProps) => {
+  console.log("user:");
+  console.log(user);
   const router = useRouter();
   const [navOpen, setNavOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
@@ -49,7 +52,6 @@ const Header = ({ theme = null, className = "" }: HeaderProps) => {
 
       if (res.ok || data.status === "success") {
         router.push("/auth/login");
-        setIsLoggedIn(false);
         Toast.fire({
           icon: "success",
           title: "Logout successful",
@@ -63,8 +65,6 @@ const Header = ({ theme = null, className = "" }: HeaderProps) => {
     }
   };
 
-  const { isLoggedIn, setIsLoggedIn } = useAuth();
-  console.log("isLoggedIn:", isLoggedIn);
   const isAtTop = scrollY === 0;
 
   const handleNavToggle = () => setNavOpen((prev) => !prev);
@@ -130,7 +130,7 @@ const Header = ({ theme = null, className = "" }: HeaderProps) => {
         </div>
 
         {/* Desktop Navigation */}
-        {isLoggedIn ? (
+        {user ? (
           <div className="hidden md:flex items-center justify-between gap-6">
             <button className="cursor-pointer" onClick={handleLoggout}>
               Logout

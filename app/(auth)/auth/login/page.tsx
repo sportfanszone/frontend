@@ -6,11 +6,9 @@ import Image from "next/image";
 import InputGroup from "@/app/(auth)/components/InputGroup";
 import PasswordInputGroup from "@/app/(auth)/components/PasswordInputGroup";
 import { loginSchema } from "@/lib/validation/loginSchema";
-import { useAuth } from "@/app/providers/AuthProvider";
 import Swal from "sweetalert2";
 
 export default function Login() {
-  const { setIsLoggedIn } = useAuth();
   const router = useRouter();
   const [form, setForm] = useState({
     email: "",
@@ -89,7 +87,6 @@ export default function Login() {
       const data = await res.json();
 
       if (res.ok || data.status === "success") {
-        setIsLoggedIn(true);
         router.push("/user/dashboard");
         Toast.fire({
           icon: "success",
