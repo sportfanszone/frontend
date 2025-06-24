@@ -6,6 +6,7 @@ export type User = {
   username: string;
   email: string;
   profileImage: string;
+  coverPhotoUrl: string;
 };
 
 export type Topic = {
@@ -48,6 +49,12 @@ export type League = {
   lastActivity: string;
   createdAt: string;
   memberCount: number;
+  backgroundImage: string;
+};
+
+export type LeagueData = {
+  leagues: League[];
+  status: string;
 };
 
 export type ClubPageData = {

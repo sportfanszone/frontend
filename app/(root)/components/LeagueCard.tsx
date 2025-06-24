@@ -3,7 +3,7 @@ import * as motion from "motion/react-client";
 
 type LeagueCardProps = {
   leagueName: string;
-  topics: number;
+  clubCount: number;
   lastActivity: string;
   description: string;
   logo: string;
@@ -12,7 +12,7 @@ type LeagueCardProps = {
 
 const LeagueCard = ({
   leagueName,
-  topics,
+  clubCount,
   lastActivity,
   description,
   logo,
@@ -29,8 +29,8 @@ const LeagueCard = ({
       </div>
       <div className="flex justify0between align-center gap-3">
         <div className="flex flex-col justify-center mb-4">
-          <span className="text-gray-500 text-sm mb-1">TOPICS</span>
-          <span className="font-bold text-lg">{topics}</span>
+          <span className="text-gray-500 text-sm mb-1">CLUBS</span>
+          <span className="font-bold text-lg">{clubCount}</span>
         </div>
         <div className="flex flex-col justify-center mb-4">
           <span className="text-gray-500 text-sm mb-1">LAST ACTIVITY</span>

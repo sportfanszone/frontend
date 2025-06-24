@@ -1,37 +1,13 @@
 export const dynamic = "force-dynamic";
 import LeagueCard from "@/app/(root)/components/LeagueCard";
 import Link from "next/link";
-
-type leagueType = {
-  id: number;
-  leagueName: string;
-  topics: number;
-  lastActivity: string;
-  description: string;
-  logo: string;
-  backgroundImage: string;
-};
+import getLeaguesData from "@/lib/getLeaguesData";
+import { League } from "@/types";
 
 const LeaguesSection = async () => {
   try {
-    const getLeagues = async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/root/getLeagues`,
-        {
-          cache: "no-store",
-          credentials: "include",
-        }
-      );
+    const leagues: League[] = (await getLeaguesData())?.leagues;
 
-      if (res.ok) {
-        const data = await res.json();
-        return data?.leagues;
-      }
-
-      throw new Error("Failed to fetch leagues");
-    };
-
-    const leagues = (await getLeagues()) as leagueType[];
     if (!leagues || leagues.length === 0) {
       return (
         <section className="p-10 font-medium max-w-300 mx-auto">
@@ -53,8 +29,8 @@ const LeaguesSection = async () => {
           {leagues.map((league, index) => (
             <Link href={`/clubs?league=${league.id}`} key={index}>
               <LeagueCard
-                leagueName={league.leagueName}
-                topics={league.topics}
+                leagueName={league.name}
+                clubCount={league.clubCount}
                 lastActivity={league.lastActivity}
                 description={league.description}
                 logo={league.logo}
