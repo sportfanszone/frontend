@@ -214,21 +214,41 @@ const Header = ({ theme = null, className = "", user }: HeaderProps) => {
                 </Link>
               ))}
 
-              <Link
-                href="/auth/login"
-                onClick={handleNavToggle}
-                className="text-black text-lg font-semibold hover:bg-black/10 py-2 rounded-md transition"
-              >
-                Login
-              </Link>
+              {user ? (
+                <>
+                  <Link
+                    href="/user/dashboard"
+                    onClick={handleNavToggle}
+                    className="text-black text-lg font-semibold hover:bg-black/10 py-2 rounded-md transition"
+                  >
+                    Dashboard
+                  </Link>
+                  <span
+                    onClick={handleLoggout}
+                    className="text-black text-lg font-semibold hover:bg-black/10 py-2 rounded-md transition cursor-pointer"
+                  >
+                    Logout
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/auth/login"
+                    onClick={handleNavToggle}
+                    className="text-black text-lg font-semibold hover:bg-black/10 py-2 rounded-md transition"
+                  >
+                    Login
+                  </Link>
 
-              <Link
-                href="/auth/signup"
-                onClick={handleNavToggle}
-                className="bg-black text-white py-2 px-4 rounded-full flex items-center gap-2 justify-center"
-              >
-                Signup <FiArrowRight />
-              </Link>
+                  <Link
+                    href="/auth/signup"
+                    onClick={handleNavToggle}
+                    className="bg-black text-white py-2 px-4 rounded-full flex items-center gap-2 justify-center"
+                  >
+                    Signup <FiArrowRight />
+                  </Link>
+                </>
+              )}
             </nav>
           </div>
         </>
