@@ -14,7 +14,9 @@ import {
   FiShield,
 } from "react-icons/fi";
 
-const LeftSidebar = () => {
+import { LeftSidebarProps } from "@/types";
+
+const LeftSidebar = ({ user }: LeftSidebarProps) => {
   const { isBarOpen, toggleSidebar } = useSidebar();
   return (
     <div className="w-fit h-fit fixed md:sticky top-20 left-0 z-20">
@@ -50,7 +52,7 @@ const LeftSidebar = () => {
               <div className="flex items-center gap-2 text-md font-semibold">
                 <FiUsers className="inline-block mr-2 text-gray-700" />
                 <a href="#" className="text-gray-700 hover:text-black">
-                  Teams
+                  Leagues
                 </a>
               </div>
               <div className="flex items-center gap-2 text-md font-semibold">
@@ -65,6 +67,38 @@ const LeftSidebar = () => {
                   Standings
                 </a>
               </div>
+              {user ? (
+                <div className="flex items-center gap-2 text-md font-semibold">
+                  <FiBarChart2 className="inline-block mr-2 text-gray-700" />
+                  <a
+                    href="/user/dashboard"
+                    className="text-gray-700 hover:text-black"
+                  >
+                    Dashboard
+                  </a>
+                </div>
+              ) : (
+                <>
+                  <div className="flex items-center gap-2 text-md font-semibold">
+                    <FiCalendar className="inline-block mr-2 text-gray-700" />
+                    <a
+                      href="/auth/login"
+                      className="text-gray-700 hover:text-black"
+                    >
+                      Login
+                    </a>
+                  </div>
+                  <div className="flex items-center gap-2 text-md font-semibold">
+                    <FiCalendar className="inline-block mr-2 text-gray-700" />
+                    <a
+                      href="/auth/signup"
+                      className="text-gray-700 hover:text-black"
+                    >
+                      Signup
+                    </a>
+                  </div>
+                </>
+              )}
             </nav>
 
             {/* Colapsable nav */}
