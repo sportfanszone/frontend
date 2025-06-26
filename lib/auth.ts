@@ -1,16 +1,19 @@
-"use server";
-import jwt, { JwtPayload } from "jsonwebtoken";
-import { cookies } from "next/headers";
+export const dynamic = "force-dynamic";
+import fetcher from "@/lib/fetcher";
+import { User } from "@/types";
+
+type GetUser = { status: string; user: User | null };
 
 export async function getUserFromCookie() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("userToken")?.value;
-
-  if (!token) return null;
-
   try {
-    const tokenPayload: any = jwt.verify(token, process.env.USER_TOKEN_SECRET!);
-    return tokenPayload.user;
+    const data: GetUser = await fetcher(
+      `${process.env.DOMAIN_URL}/api/user/get_user`,
+      "GET"
+    );
+    const user = data?.user;
+
+    console.log(user);
+    return user;
   } catch {
     return null;
   }
