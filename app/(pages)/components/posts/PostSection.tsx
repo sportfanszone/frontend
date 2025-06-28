@@ -9,12 +9,16 @@ import {
   FiShare2,
 } from "react-icons/fi";
 
-const PostSection = () => {
+type PostSectionProps = {
+  showBackbutton?: boolean;
+};
+
+const PostSection = ({ showBackbutton = true }: PostSectionProps) => {
   return (
     <section className="max-w-180 2xl:max-w-200 mx-auto p-4 pt-0">
       {/* Profile */}
       <div className="flex items-center justify-start gap-3 mb-1">
-        <BackButton />
+        {showBackbutton && <BackButton />}
         <Image
           src="/images/blankProfile.png"
           width={100}
