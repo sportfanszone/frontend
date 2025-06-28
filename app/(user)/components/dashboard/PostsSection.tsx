@@ -1,5 +1,4 @@
 import Link from "next/link";
-import PostCard from "@/app/(root)/components/PostCard";
 import Post from "@/app/(pages)/components/posts/PostSection";
 
 const posts = [
