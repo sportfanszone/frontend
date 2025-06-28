@@ -42,34 +42,44 @@ const LeftSidebar = ({ user }: LeftSidebarProps) => {
         >
           {/* Sidebar Content */}
           <div className="flex flex-col gap-4">
-            <nav className="flex flex-col gap-2 border-b-2 border-gray-200 pr-4 pb-4">
-              <div className="flex items-center gap-2 text-md font-semibold">
-                <FiHome className="inline-block mr-2 text-gray-700" />
+            <nav className="flex flex-col gap-8 pr-4 pb-4">
+              <div className="flex items-center gap-3 text-md font-semibold">
+                <div className="bg-black/12 w-10 h-10 rounded-lg grid place-content-center">
+                  <FiHome className="inline-block text-gray-700" />
+                </div>
                 <a href="/" className="text-gray-700 hover:text-black">
                   Home
                 </a>
               </div>
-              <div className="flex items-center gap-2 text-md font-semibold">
-                <FiUsers className="inline-block mr-2 text-gray-700" />
+              <div className="flex items-center gap-3 text-md font-semibold">
+                <div className="bg-black/12 w-10 h-10 rounded-lg grid place-content-center">
+                  <FiUsers className="inline-block text-gray-700" />
+                </div>
                 <a href="#" className="text-gray-700 hover:text-black">
                   Leagues
                 </a>
               </div>
-              <div className="flex items-center gap-2 text-md font-semibold">
-                <FiCalendar className="inline-block mr-2 text-gray-700" />
+              <div className="flex items-center gap-3 text-md font-semibold">
+                <div className="bg-black/12 w-10 h-10 rounded-lg grid place-content-center">
+                  <FiCalendar className="inline-block text-gray-700" />
+                </div>
                 <a href="#" className="text-gray-700 hover:text-black">
                   Fixtures
                 </a>
               </div>
-              <div className="flex items-center gap-2 text-md font-semibold">
-                <FiBarChart2 className="inline-block mr-2 text-gray-700" />
+              <div className="flex items-center gap-3 text-md font-semibold">
+                <div className="bg-black/12 w-10 h-10 rounded-lg grid place-content-center">
+                  <FiBarChart2 className="inline-block text-gray-700" />
+                </div>
                 <a href="#" className="text-gray-700 hover:text-black">
                   Standings
                 </a>
               </div>
               {user ? (
-                <div className="flex items-center gap-2 text-md font-semibold">
-                  <FiBarChart2 className="inline-block mr-2 text-gray-700" />
+                <div className="flex items-center gap-3 text-md font-semibold">
+                  <div className="bg-black/12 w-10 h-10 rounded-lg grid place-content-center">
+                    <FiBarChart2 className="inline-block text-gray-700" />
+                  </div>
                   <a
                     href="/user/dashboard"
                     className="text-gray-700 hover:text-black"
@@ -79,8 +89,10 @@ const LeftSidebar = ({ user }: LeftSidebarProps) => {
                 </div>
               ) : (
                 <>
-                  <div className="flex items-center gap-2 text-md font-semibold">
-                    <FiCalendar className="inline-block mr-2 text-gray-700" />
+                  <div className="flex items-center gap-3 text-md font-semibold">
+                    <div className="bg-black/12 w-10 h-10 rounded-lg grid place-content-center">
+                      <FiCalendar className="inline-block text-gray-700" />
+                    </div>
                     <a
                       href="/auth/login"
                       className="text-gray-700 hover:text-black"
@@ -89,7 +101,9 @@ const LeftSidebar = ({ user }: LeftSidebarProps) => {
                     </a>
                   </div>
                   <div className="flex items-center gap-2 text-md font-semibold">
-                    <FiCalendar className="inline-block mr-2 text-gray-700" />
+                    <div className="bg-black/12 w-10 h-10 rounded-lg grid place-content-center">
+                      <FiCalendar className="inline-block mr-2 text-gray-700" />
+                    </div>
                     <a
                       href="/auth/signup"
                       className="text-gray-700 hover:text-black"
@@ -102,7 +116,7 @@ const LeftSidebar = ({ user }: LeftSidebarProps) => {
             </nav>
 
             {/* Colapsable nav */}
-            <div className="flex flex-col gap-2">
+            {/* <div className="flex flex-col gap-2">
               <div className="text-md font-semibold text-gray-700 flex items-center justify-start gap-2 cursor-pointer">
                 <span>Resources</span> <FiChevronDown />
               </div>
@@ -144,7 +158,7 @@ const LeftSidebar = ({ user }: LeftSidebarProps) => {
                   </a>
                 </div>
               </nav>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
