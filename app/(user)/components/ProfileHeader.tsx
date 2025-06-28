@@ -13,7 +13,7 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
       </div>
 
       <div className="flex items-center flex-wrap absolute bottom-0 left-5 sm:left-7 md:left-8 lg:left-10 translate-y-[50%]">
-        <div className="h-20 min-h-20 sm:h-28 sm:min-h-28 md:h-30 md:min-h-30 w-20 min-w-20 sm:w-28 sm:min-w-28 md:w-30 md:min-w-30  rounded-full overflow-hidden border-red-500 border-2">
+        <div className="h-20 min-h-20 sm:h-28 sm:min-h-28 md:h-30 md:min-h-30 w-20 min-w-20 sm:w-28 sm:min-w-28 md:w-30 md:min-w-30  rounded-full overflow-hidden">
           <Image
             src={user.profileImageUrl}
             alt="Cover Photo"

@@ -21,7 +21,6 @@ export default async function Layout({
           <div className="flex justify-between w-[100%]">
             {/* Left Sidebar */}
             <LeftSidebar user={user as User} />
-
             {children}
           </div>
         </div>
