@@ -86,7 +86,7 @@ const LatestPosts = () => {
     <section className="font-medium bg-gray-800">
       <div className="w-full p-10 mx-auto max-w-300">
         <h2 className="text-white font-bold text-2xl sm:text-3xl md:text-4xl text-center mb-10">
-          Latest Conversations
+          Top Conversations
         </h2>
 
         <div className="flex justify-center items-center flex-wrap gap-8">
