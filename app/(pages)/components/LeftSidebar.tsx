@@ -8,6 +8,8 @@ import {
   FiCalendar,
   FiBarChart2,
   FiGrid,
+  FiLogIn,
+  FiUserPlus,
 } from "react-icons/fi";
 
 import { LeftSidebarProps } from "@/types";
@@ -87,7 +89,7 @@ const LeftSidebar = ({ user }: LeftSidebarProps) => {
                 <>
                   <div className="flex items-center gap-3 text-md font-semibold">
                     <div className="bg-black/12 w-10 h-10 rounded-lg grid place-content-center">
-                      <FiCalendar className="inline-block text-gray-700" />
+                      <FiLogIn className="inline-block text-gray-700" />
                     </div>
                     <a
                       href="/auth/login"
@@ -98,7 +100,7 @@ const LeftSidebar = ({ user }: LeftSidebarProps) => {
                   </div>
                   <div className="flex items-center gap-2 text-md font-semibold">
                     <div className="bg-black/12 w-10 h-10 rounded-lg grid place-content-center">
-                      <FiCalendar className="inline-block mr-2 text-gray-700" />
+                      <FiUserPlus className="inline-block text-gray-700" />
                     </div>
                     <a
                       href="/auth/signup"
