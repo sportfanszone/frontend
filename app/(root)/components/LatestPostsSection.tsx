@@ -83,15 +83,17 @@ const posts = [
 
 const LatestPosts = () => {
   return (
-    <section className="p-10 font-medium max-w-300 mx-auto @container">
-      <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl text-center mb-10">
-        Latest Conversations
-      </h2>
+    <section className="font-medium bg-gray-800">
+      <div className="w-full p-10 mx-auto max-w-300">
+        <h2 className="text-white font-bold text-2xl sm:text-3xl md:text-4xl text-center mb-10">
+          Latest Conversations
+        </h2>
 
-      <div className="flex justify-center items-center flex-wrap gap-8">
-        {posts.map((post, index) => (
-          <PostCard key={index} {...post} />
-        ))}
+        <div className="flex justify-center items-center flex-wrap gap-8">
+          {posts.map((post, index) => (
+            <PostCard key={index} {...post} />
+          ))}
+        </div>
       </div>
     </section>
   );

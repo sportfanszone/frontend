@@ -24,7 +24,7 @@ const PostCard = ({
   createdAt,
 }: PostCardProps) => {
   return (
-    <div className="flex items-center justify-between gap-4 max-h-10em max-w-130 shadow-card hover:shadow-card-active hover:scale-102 rounded-3xl p-6 cursor-pointer transition-all duration-150 ease-in-out">
+    <div className="bg-white flex items-center justify-between gap-4 max-h-10em max-w-130 shadow-card hover:shadow-card-active hover:scale-102 rounded-3xl p-6 cursor-pointer transition-all duration-150 ease-in-out">
       <Image
         src="/images/postImage1.jpg"
         width={170}
