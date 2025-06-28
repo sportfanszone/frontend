@@ -14,7 +14,7 @@ export default async function Layout({
     <main className="font-medium mx-auto">
       <SidebarProvider>
         {/* Header */}
-        <Header />
+        <Header user={user as User} />
 
         {/* Main content */}
         <div className="flex items-start min-h-full">

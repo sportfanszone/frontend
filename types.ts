@@ -72,3 +72,5 @@ export type DashboardPageData = {
 };
 
 export type ProfileHeaderProps = { user: User };
+
+export type HeaderProps = { user: User };

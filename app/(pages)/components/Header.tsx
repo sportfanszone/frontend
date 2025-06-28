@@ -1,10 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { FiSearch, FiPlus, FiBell, FiMenu } from "react-icons/fi";
+import Link from "next/link";
+import { FiSearch, FiPlus, FiBell, FiMenu, FiArrowRight } from "react-icons/fi";
 import { useSidebar } from "../context/SideBarContext";
+import { HeaderProps } from "@/types";
 
-const Header = () => {
+const Header = ({ user }: HeaderProps) => {
   const { isBarOpen, toggleSidebar } = useSidebar();
   const [logo, setLogo] = useState("/images/logo.png");
 
@@ -66,26 +68,39 @@ const Header = () => {
       </div>
 
       {/* Nav */}
-      <div className="text-2xl hidden sm:flex items-center justify-between gap-3">
-        <button className="text-[0.9em] cursor-pointer relative">
-          <FiBell />
-          <div className="font-semibold bg-red-500 text-white text-[0.4em] grid content-center w-4 h-4 rounded-full absolute -top-1.5 -right-1">
-            23
+      {user ? (
+        <div className="text-2xl hidden sm:flex items-center justify-between gap-3">
+          <button className="text-[0.9em] cursor-pointer relative">
+            <FiBell />
+            <div className="font-semibold bg-red-500 text-white text-[0.4em] grid content-center w-4 h-4 rounded-full absolute -top-1.5 -right-1">
+              23
+            </div>
+          </button>
+          <div className="text-[0.9em] flex items-center justify-between gap-    1 cursor-pointer">
+            <FiPlus /> <span className="text-[0.8em] ">Create</span>
           </div>
-        </button>
-        <div className="text-[0.9em] flex items-center justify-between gap-    1 cursor-pointer">
-          <FiPlus /> <span className="text-[0.8em] ">Create</span>
+          <div className="w-8 h-8 border-black/40 border-2 rounded-full cursor-pointer overflow-hidden">
+            <Image
+              src="/images/blankProfile.png"
+              alt="Profile image"
+              className="w-full h-full object-cover"
+              width={50}
+              height={50}
+            />
+          </div>
         </div>
-        <div className="w-8 h-8 border-black/40 border-2 rounded-full cursor-pointer overflow-hidden">
-          <Image
-            src="/images/blankProfile.png"
-            alt="Profile image"
-            className="w-full h-full object-cover"
-            width={50}
-            height={50}
-          />
+      ) : (
+        <div className="hidden md:flex items-center justify-between gap-6 pr-2">
+          <Link href="/auth/login">Login</Link>
+          <Link
+            href="/auth/signup"
+            className="bg-white font-semibold text-black py-1 px-4 ml-3 rounded-3xl flex items-center gap-1 shadow-md hover:shadow-xl transition-all"
+          >
+            <span>Signup</span>
+            <FiArrowRight className="size-5.5" />
+          </Link>
         </div>
-      </div>
+      )}
     </div>
   );
 };
