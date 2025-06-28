@@ -1,5 +1,4 @@
 import Image from "next/image";
-import ContributorCard from "@/app/(pages)/components/ContributorCard";
 import getDashboardData from "@/lib/getDashboardData";
 import { DashboardPageData } from "@/types";
 
