@@ -1,10 +1,5 @@
 import Image from "next/image";
-import {
-  FiChevronDown,
-  FiChevronUp,
-  FiMessageCircle,
-  FiThumbsUp,
-} from "react-icons/fi";
+import { FiShare2, FiMessageCircle, FiThumbsUp } from "react-icons/fi";
 
 type PostCardProps = {
   user: {
@@ -64,10 +59,13 @@ const PostCard = ({
             <div className="flex justify-between items-center gap-1">
               <FiMessageCircle /> <b>{comments}</b>
             </div>
+            <div className="flex justify-between items-center gap-1">
+              <FiShare2 />
+            </div>
           </div>
-          <div className="flex justify-between items-center gap-2">
-            <FiChevronUp /> <b>{upVotes}</b> <FiChevronDown />
-          </div>
+          {/* <div className="flex justify-between items-center gap-2">
+            <FiShare2 />
+          </div> */}
         </div>
       </div>
     </div>
