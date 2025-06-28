@@ -68,6 +68,11 @@ export type LeftSidebarProps = {
   user: User;
 };
 
-export type DashboardPageData = {};
+export type DashboardPageData = {
+  posts: number;
+  followers: number;
+  profileViews: User[];
+  topics: Topic[];
+};
 
 export type ProfileHeaderProps = { user: User };

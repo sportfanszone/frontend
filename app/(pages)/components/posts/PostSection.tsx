@@ -63,11 +63,8 @@ const PostSection = ({ showBackbutton = true }: PostSectionProps) => {
         <div className="flex justify-between items-center gap-1 bg-black/10 px-2.5 py-1 rounded-full">
           <FiMessageCircle /> <b>9</b>
         </div>
-        <div className="flex justify-between items-center gap-2 bg-black/10 px-2.5 py-1 rounded-full">
-          <FiChevronUp /> <b>7</b> <FiChevronDown />
-        </div>
         <div className="flex justify-between items-center gap-1 bg-black/10 px-2.5 py-1 rounded-full">
-          <FiShare2 /> <b>Sshare</b>
+          <FiShare2 />
         </div>
       </div>
     </section>
