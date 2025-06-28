@@ -17,13 +17,8 @@ const TopicsSidebar = async () => {
             Top Contributors
           </span>
           <div className="flex items-center justify-center-safe flex-wrap gap-4">
-            {topContributors.map(({ id, name, profileImage }) => (
-              <ContributorCard
-                key={id}
-                id={id}
-                name={name}
-                profileImage={profileImage}
-              />
+            {topContributors.map((contributor, id) => (
+              <ContributorCard key={id} {...contributor} />
             ))}
           </div>
         </div>

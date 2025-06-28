@@ -19,7 +19,7 @@ const TopicCard = ({
     likes,
     comments,
     upVotes,
-    user: { firstName, middleName, lastName, profileImage },
+    user: { firstName, middleName, lastName, profileImageUrl },
   },
 }: Prop) => {
   return (
@@ -50,7 +50,7 @@ const TopicCard = ({
 
         <div className="flex justify-start items-center gap-3">
           <Image
-            src={profileImage}
+            src={profileImageUrl}
             width={200}
             height={200}
             alt="User porofile image"

@@ -22,11 +22,7 @@ export type Topic = {
 export type TopicPageData = {
   posts: number;
   followers: number;
-  topContributors: {
-    id: string;
-    name: string;
-    profileImage: string;
-  }[];
+  topContributors: User[];
   topics: Topic[];
 };
 
