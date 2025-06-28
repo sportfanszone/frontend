@@ -56,7 +56,7 @@ const ClubsSidebar = async () => {
             <span className="text-gray-500 text-sm mb-1">USER PROFILE</span>
             <div className="flex justify-start items-center gap-3">
               <Image
-                src={user.profileImage}
+                src={user.profileImageUrl}
                 width={200}
                 height={200}
                 alt="League logo"
