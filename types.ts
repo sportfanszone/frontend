@@ -5,7 +5,7 @@ export type User = {
   lastName: string;
   username: string;
   email: string;
-  profileImage: string;
+  profileImageUrl: string;
   coverPhotoUrl: string;
 };
 
@@ -67,3 +67,7 @@ export type ClubPageData = {
 export type LeftSidebarProps = {
   user: User;
 };
+
+export type DashboardPageData = {};
+
+export type ProfileHeaderProps = { user: User };
