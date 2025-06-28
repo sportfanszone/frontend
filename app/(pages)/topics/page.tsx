@@ -20,9 +20,9 @@ export default async function TopicsPage() {
 
           <div className="flex flex-col gap-6 max-w-250 mx-auto w-full">
             {topics.map((topic, index) => (
-              <Link href={`/post/${topic.id}`} key={index}>
-                <TopicCard topic={topic} />
-              </Link>
+              // <Link href={`/post/${topic.id}`} key={index}>
+              <TopicCard key={index} topic={topic} />
+              // </Link>
             ))}
           </div>
         </section>
