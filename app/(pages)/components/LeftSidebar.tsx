@@ -3,15 +3,10 @@ import { useSidebar } from "../context/SideBarContext";
 
 import {
   FiChevronRight,
-  FiChevronDown,
   FiHome,
   FiUsers,
   FiCalendar,
   FiBarChart2,
-  FiHelpCircle,
-  FiInfo,
-  FiFileText,
-  FiShield,
   FiGrid,
 } from "react-icons/fi";
 
