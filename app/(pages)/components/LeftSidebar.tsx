@@ -12,6 +12,7 @@ import {
   FiInfo,
   FiFileText,
   FiShield,
+  FiGrid,
 } from "react-icons/fi";
 
 import { LeftSidebarProps } from "@/types";
@@ -78,7 +79,7 @@ const LeftSidebar = ({ user }: LeftSidebarProps) => {
               {user ? (
                 <div className="flex items-center gap-3 text-md font-semibold">
                   <div className="bg-black/12 w-10 h-10 rounded-lg grid place-content-center">
-                    <FiBarChart2 className="inline-block text-gray-700" />
+                    <FiGrid className="inline-block text-gray-700" />
                   </div>
                   <a
                     href="/user/dashboard"
