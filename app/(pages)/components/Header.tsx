@@ -3,10 +3,11 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FiSearch, FiPlus, FiBell, FiMenu, FiArrowRight } from "react-icons/fi";
-import { useSidebar } from "../context/SideBarContext";
+import { useSidebar } from "@/app/(pages)/context/SideBarContext";
 import { HeaderProps } from "@/types";
 
 const Header = ({ user }: HeaderProps) => {
+  console.log(user);
   const { isBarOpen, toggleSidebar } = useSidebar();
   const [logo, setLogo] = useState("/images/logo.png");
 
@@ -68,6 +69,7 @@ const Header = ({ user }: HeaderProps) => {
       </div>
 
       {/* Nav */}
+
       {user ? (
         <div className="text-2xl hidden sm:flex items-center justify-between gap-3">
           <button className="text-[0.9em] cursor-pointer relative">
