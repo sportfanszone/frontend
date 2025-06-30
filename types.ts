@@ -1,3 +1,5 @@
+import { IconType } from "react-icons";
+
 export type User = {
   id: string;
   firstName: string;
@@ -74,3 +76,9 @@ export type DashboardPageData = {
 export type ProfileHeaderProps = { user: User };
 
 export type HeaderProps = { user: User };
+
+export type LeftSidebarLinkProps = {
+  href: string;
+  text: string;
+  icon: IconType;
+};

@@ -11,7 +11,7 @@ const DashboardSidebar = async () => {
     }
 
     return (
-      <div className="border-2 border-gray-200 rounded-xl w-full h-fit">
+      <div className="border-2 bg-white border-gray-200 rounded-xl w-full h-fit">
         <div className="p-6">
           <span className="text-gray-500 text-sm inline-block mb-4">
             Profile views

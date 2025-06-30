@@ -11,7 +11,7 @@ export default async function Layout({
 }) {
   const user = await getUserFromCookie();
   return (
-    <main className="font-medium mx-auto">
+    <main className="font-medium mx-auto bg-gray-100">
       <SidebarProvider>
         {/* Header */}
         <Header user={user as User} />
