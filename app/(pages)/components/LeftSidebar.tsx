@@ -1,4 +1,5 @@
 "use client";
+import { usePathname } from "next/navigation";
 import { useSidebar } from "@/app/(pages)/context/SideBarContext";
 import {
   FiChevronRight,
@@ -20,6 +21,7 @@ const navItems = [
 import { LeftSidebarProps } from "@/types";
 
 const LeftSidebar = ({ user }: LeftSidebarProps) => {
+  const pathName = usePathname();
   const { isBarOpen, toggleSidebar } = useSidebar();
   return (
     <div className="w-fit h-fit fixed md:sticky top-20 left-0 z-20">
@@ -50,6 +52,7 @@ const LeftSidebar = ({ user }: LeftSidebarProps) => {
                 <LeftSidebarLink
                   href="/user/dashboard"
                   text="Dashboard"
+                  isActive={pathName === "/user/dashboard"}
                   icon={FiGrid}
                 />
               )}
@@ -58,6 +61,7 @@ const LeftSidebar = ({ user }: LeftSidebarProps) => {
                   key={index}
                   href={href}
                   text={text}
+                  isActive={href === pathName}
                   icon={icon}
                 />
               ))}

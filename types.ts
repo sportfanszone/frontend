@@ -80,5 +80,6 @@ export type HeaderProps = { user: User };
 export type LeftSidebarLinkProps = {
   href: string;
   text: string;
+  isActive: boolean;
   icon: IconType;
 };
