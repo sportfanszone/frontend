@@ -3,9 +3,19 @@ import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight, FiMenu, FiX } from "react-icons/fi";
-import { useRouter } from "next/navigation";
-import Swal from "sweetalert2";
 import { User } from "@/types";
+
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/app/components/ui/alert-dialog";
+import { useLogout } from "@/hooks/useLogout";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -21,62 +31,12 @@ interface HeaderProps {
 }
 
 const Header = ({ theme = null, className = "", user }: HeaderProps) => {
-  const router = useRouter();
+  const logout = useLogout();
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [showHeader, setShowHeader] = useState(true);
-
-  const Toast = Swal.mixin({
-    toast: true,
-    position: "bottom-end",
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.onmouseenter = Swal.stopTimer;
-      toast.onmouseleave = Swal.resumeTimer;
-    },
-  });
-
-  const handleLoggout = async () => {
-    try {
-      const result = await Swal.fire({
-        title: "Are you sure?",
-        text: "You will be logged out of your account.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#22c55e", // Tailwind green-500
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, logout",
-      });
-
-      if (result.isConfirmed) {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/auth/logout`,
-          {
-            method: "POST",
-            credentials: "include",
-          }
-        );
-
-        const data = await res.json();
-
-        if (res.ok || data.status === "success") {
-          router.push("/auth/login");
-          Toast.fire({
-            icon: "success",
-            title: "Logout successful",
-          });
-        }
-      }
-    } catch (error) {
-      Toast.fire({
-        icon: "error",
-        title: "Logout failed",
-      });
-    }
-  };
 
   const isAtTop = scrollY === 0;
 
@@ -145,9 +105,33 @@ const Header = ({ theme = null, className = "", user }: HeaderProps) => {
         {/* Desktop Navigation */}
         {user ? (
           <div className="hidden md:flex items-center justify-between gap-6">
-            <button className="cursor-pointer" onClick={handleLoggout}>
+            <button
+              className="cursor-pointer"
+              onClick={() => setShowLogoutConfirm(true)}
+            >
               Logout
             </button>
+
+            <AlertDialog
+              open={showLogoutConfirm}
+              onOpenChange={setShowLogoutConfirm}
+            >
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Log out of your account?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    You will be logged out from your current session. You can
+                    log in again at any time using your credentials.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={logout}>
+                    Log out
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
             <Link
               href="/user/dashboard"
               className="bg-white font-semibold text-black py-1 px-4 ml-3 rounded-3xl flex items-center gap-1 shadow-md hover:shadow-xl transition-all"
@@ -222,7 +206,7 @@ const Header = ({ theme = null, className = "", user }: HeaderProps) => {
                     Dashboard
                   </Link>
                   <span
-                    onClick={handleLoggout}
+                    onClick={() => setShowLogoutConfirm(true)}
                     className="text-black text-lg font-semibold hover:bg-black/10 py-2 rounded-md transition cursor-pointer"
                   >
                     Logout
