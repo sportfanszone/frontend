@@ -30,7 +30,7 @@ const TopicCard = ({
   },
 }: TopicCardProp) => {
   return (
-    <div className="flex cursor-pointer transition-all duration-150 ease-in-out shadow-card hover:shadow-card-active hover:scale-102  rounded-3xl">
+    <div className="bg-white flex cursor-pointer transition-all duration-150 ease-in-out shadow-card hover:shadow-card-active hover:scale-102  rounded-3xl">
       <Link href={`/post/${id}`} key={id} className="flex gap-4 p-6 pr-0-">
         <Image
           src="/images/postImage1.jpg"
