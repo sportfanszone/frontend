@@ -1,24 +1,37 @@
 "use client";
+
 import { useState, useEffect } from "react";
+
+import { useSidebar } from "@/app/(pages)/context/SideBarContext";
+import { HeaderProps } from "@/types";
+import { useLogout } from "@/hooks/useLogout";
+
 import Image from "next/image";
 import Link from "next/link";
 import { FiSearch, FiPlus, FiBell, FiMenu, FiArrowRight } from "react-icons/fi";
-import { useSidebar } from "@/app/(pages)/context/SideBarContext";
-import { HeaderProps } from "@/types";
-
 import {
   DropdownMenu,
+  DropdownMenuTrigger,
   DropdownMenuContent,
+  DropdownMenuLabel,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
 } from "@/app/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/app/components/ui/alert-dialog";
 
 const Header = ({ user }: HeaderProps) => {
-  console.log(user);
+  const logout = useLogout();
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const { isBarOpen, toggleSidebar } = useSidebar();
   const [logo, setLogo] = useState("/images/logo.png");
 
@@ -109,26 +122,41 @@ const Header = ({ user }: HeaderProps) => {
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuGroup>
                 <DropdownMenuItem>
-                  Profile
-                  <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                  <Link href="/user/dashboard">Profile</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  Settings
-                  <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                  <Link href="/user/settings">Settings</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  Advert
-                  <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
+                  <Link href="/ad">Advert</Link>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
 
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setShowLogoutConfirm(true)}>
                 Log out
-                <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+
+          <AlertDialog
+            open={showLogoutConfirm}
+            onOpenChange={setShowLogoutConfirm}
+          >
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete
+                  your account and remove your data from our servers.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={logout}>Continue</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       ) : (
         <div className="hidden md:flex items-center justify-between gap-6 pr-2">
