@@ -1,8 +1,8 @@
 import Image from "next/image";
 
-import { AchievementType } from "@/types";
+import { AchievementCardProps } from "@/types";
 
-const AchievementCards = ({ achievements }: AchievementType) => {
+const AchievementCards = ({ achievements }: AchievementCardProps) => {
   return (
     <div className="flex ml-[0.4em]">
       {achievements.map(({ name, image }, index) => (

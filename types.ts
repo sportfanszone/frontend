@@ -9,6 +9,7 @@ export type User = {
   email: string;
   profileImageUrl: string;
   coverPhotoUrl: string;
+  achievements: Achievement[];
 };
 
 export type Topic = {
@@ -84,9 +85,11 @@ export type LeftSidebarLinkProps = {
   icon: IconType;
 };
 
-export type AchievementType = {
-  achievements: {
-    name: string;
-    image: string;
-  }[];
+export type Achievement = {
+  name: string;
+  image: string;
+};
+
+export type AchievementCardProps = {
+  achievements: Achievement[];
 };
