@@ -7,7 +7,6 @@ import {
   FiUsers,
   FiCalendar,
   FiBarChart2,
-  FiGrid,
 } from "react-icons/fi";
 import LeftSidebarLink from "@/app/components/ui/LeftSidebarLink";
 
