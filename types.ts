@@ -22,6 +22,10 @@ export type Topic = {
   user: User;
 };
 
+export type TopicCardProp = {
+  topic: Topic;
+};
+
 export type TopicPageData = {
   posts: number;
   followers: number;

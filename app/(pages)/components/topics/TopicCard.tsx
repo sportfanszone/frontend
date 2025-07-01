@@ -16,11 +16,7 @@ import {
   FiMessageCircle,
   FiThumbsUp,
 } from "react-icons/fi";
-import { Topic } from "@/types";
-
-type Prop = {
-  topic: Topic;
-};
+import { TopicCardProp } from "@/types";
 
 const TopicCard = ({
   topic: {
@@ -32,7 +28,7 @@ const TopicCard = ({
     upVotes,
     user: { firstName, middleName, lastName, profileImageUrl },
   },
-}: Prop) => {
+}: TopicCardProp) => {
   return (
     <div className="flex cursor-pointer transition-all duration-150 ease-in-out shadow-card hover:shadow-card-active hover:scale-102  rounded-3xl">
       <Link href={`/post/${id}`} key={id} className="flex gap-4 p-6 pr-0-">
