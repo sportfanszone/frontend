@@ -1,13 +1,7 @@
 import Image from "next/image";
 import BackButton from "@/app/(pages)/components/BackButton";
 
-import {
-  FiChevronDown,
-  FiChevronUp,
-  FiMessageCircle,
-  FiThumbsUp,
-  FiShare2,
-} from "react-icons/fi";
+import { FiMessageCircle, FiThumbsUp, FiShare2 } from "react-icons/fi";
 
 type PostSectionProps = {
   showBackbutton?: boolean;
