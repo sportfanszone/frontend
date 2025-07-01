@@ -2,25 +2,20 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  FiSearch,
-  FiPlus,
-  FiBell,
-  FiMenu,
-  FiArrowRight,
-  FiUserPlus,
-  FiBookmark,
-  FiEyeOff,
-  FiFlag,
-} from "react-icons/fi";
+import { FiSearch, FiPlus, FiBell, FiMenu, FiArrowRight } from "react-icons/fi";
 import { useSidebar } from "@/app/(pages)/context/SideBarContext";
 import { HeaderProps } from "@/types";
 
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/app/components/ui/popover";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from "@/app/components/ui/dropdown-menu";
 
 const Header = ({ user }: HeaderProps) => {
   console.log(user);
@@ -97,8 +92,9 @@ const Header = ({ user }: HeaderProps) => {
           <div className="text-[0.9em] flex items-center justify-between gap-    1 cursor-pointer">
             <FiPlus /> <span className="text-[0.8em] ">Create</span>
           </div>
-          <Popover>
-            <PopoverTrigger className="self-start p-4 cursor-pointer">
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
               <div className="w-8 h-8 border-black/40 border-2 rounded-full cursor-pointer overflow-hidden">
                 <Image
                   src={user?.profileImageUrl || "/images/blankProfile.png"}
@@ -108,23 +104,31 @@ const Header = ({ user }: HeaderProps) => {
                   height={50}
                 />
               </div>
-            </PopoverTrigger>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56" align="start">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuGroup>
+                <DropdownMenuItem>
+                  Profile
+                  <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  Settings
+                  <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  Advert
+                  <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
 
-            <PopoverContent className="py-3">
-              <div className="flex items-center gap-2 p-2 px-5 cursor-pointer hover:bg-black/10">
-                <FiUserPlus /> Follow
-              </div>
-              <div className="flex items-center gap-2 p-2 px-5 cursor-pointer hover:bg-black/10">
-                <FiBookmark /> Save
-              </div>
-              <div className="flex items-center gap-2 p-2 px-5 cursor-pointer hover:bg-black/10">
-                <FiEyeOff /> Hide
-              </div>
-              <div className="flex items-center gap-2 p-2 px-5 cursor-pointer hover:bg-black/10">
-                <FiFlag /> Report
-              </div>
-            </PopoverContent>
-          </Popover>
+              <DropdownMenuItem>
+                Log out
+                <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       ) : (
         <div className="hidden md:flex items-center justify-between gap-6 pr-2">

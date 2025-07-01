@@ -48,14 +48,6 @@ const LeftSidebar = ({ user }: LeftSidebarProps) => {
           {/* Sidebar Content */}
           <div className="flex flex-col gap-4">
             <nav className="flex flex-col gap-6 pr-4 pb-4">
-              {user && (
-                <LeftSidebarLink
-                  href="/user/dashboard"
-                  text="Dashboard"
-                  isActive={pathName === "/user/dashboard"}
-                  icon={FiGrid}
-                />
-              )}
               {navItems.map(({ href, text, icon }, index) => (
                 <LeftSidebarLink
                   key={index}
