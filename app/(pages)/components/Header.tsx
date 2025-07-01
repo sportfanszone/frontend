@@ -28,6 +28,7 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/app/components/ui/alert-dialog";
+import { Badge } from "@/app/components/ui/badge";
 
 const Header = ({ user }: HeaderProps) => {
   const logout = useLogout();
@@ -98,9 +99,12 @@ const Header = ({ user }: HeaderProps) => {
         <div className="text-2xl hidden sm:flex items-center justify-between gap-3">
           <button className="text-[0.9em] cursor-pointer relative">
             <FiBell />
-            <div className="font-semibold bg-red-500 text-white text-[0.4em] grid content-center w-4 h-4 rounded-full absolute -top-1.5 -right-1">
-              23
-            </div>
+            <Badge
+              className="absolute top-0 right-0 translate-x-[45%] -translate-y-[50%] h-5 min-w-5 rounded-full px-1 font-mono tabular-nums"
+              variant="destructive"
+            >
+              99
+            </Badge>
           </button>
           <div className="text-[0.9em] flex items-center justify-between gap-    1 cursor-pointer">
             <FiPlus /> <span className="text-[0.8em] ">Create</span>
