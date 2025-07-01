@@ -7,6 +7,7 @@ type CommentType = {
   id: number;
   user: { username: string };
   content: string;
+  replyTo?: { username: string };
   replies?: CommentType[];
 };
 
@@ -32,6 +33,15 @@ const Comment: FC<Props> = ({ comment, level = 0 }) => {
             className="text-sm font-semibold text-blac cursor-pointer hover:text-blue-700 transition-all"
           >
             @{comment.user.username}
+            {comment.replyTo && (
+              <span className="text-black/40">
+                {" "}
+                &gt;&gt;{" "}
+                <span className="text-blue-500/60">
+                  @{comment.replyTo?.username}
+                </span>
+              </span>
+            )}
           </Link>
           <p className="text-gray-500 mb-1">{comment.content}</p>
           <div className="flex items-center gap-4">
