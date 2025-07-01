@@ -8,10 +8,10 @@ const ClubsSidebar = async () => {
     const { league, user, relatedLeagues }: ClubPageData = await getClubsData();
 
     return (
-      <div className="border-2 border-gray-200 rounded-xl h-fit">
+      <div className="w-full h-fit">
         {/* League */}
         {league && (
-          <div className="flex flex-col justify-center border-black/20 border-b-2 p-6">
+          <div className="bg-white border-2 border-gray-200 rounded-xl flex flex-col justify-center mb-4 p-6">
             <span className="text-gray-500 text-sm mb-1">{league.name}</span>
             <div className="flex justify-start items-center gap-3 pb-3">
               <Image
@@ -52,7 +52,7 @@ const ClubsSidebar = async () => {
 
         {/* User */}
         {user && (
-          <div className="flex flex-col justify-center border-black/20 border-b-2 p-6">
+          <div className="bg-white border-2 border-gray-200 rounded-xl flex flex-col justify-center mb-4 p-6">
             <span className="text-gray-500 text-sm mb-1">USER PROFILE</span>
             <div className="flex justify-start items-center gap-3">
               <Image
@@ -69,7 +69,7 @@ const ClubsSidebar = async () => {
 
         {/* Related Leagues*/}
         {relatedLeagues && (
-          <div className="flex flex-col justify-center p-6">
+          <div className="bg-white border-2 border-gray-200 rounded-xl flex flex-col justify-center p-6">
             <span className="text-gray-500 text-sm mb-1">RELATED</span>
             {relatedLeagues.map((league) => (
               <div
