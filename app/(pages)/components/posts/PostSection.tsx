@@ -51,14 +51,14 @@ const PostSection = ({ showBackbutton = true }: PostSectionProps) => {
         />
       </div>
       <div className="flex items-center gap-2">
-        <div className="flex justify-between items-center gap-1 bg-black/10 px-2.5 py-1 rounded-full">
+        <div className="flex justify-between items-center gap-1 bg-black/10 px-2.5 py-1 rounded-full cursor-pointer">
           <FiThumbsUp /> <b>10</b>
         </div>
-        <div className="flex justify-between items-center gap-1 bg-black/10 px-2.5 py-1 rounded-full">
+        <div className="flex justify-between items-center gap-1 bg-black/10 px-2.5 py-1 rounded-full cursor-pointer">
           <FiMessageCircle /> <b>9</b>
         </div>
-        <div className="flex justify-between items-center gap-1 bg-black/10 px-2.5 py-1 rounded-full">
-          <FiShare2 />
+        <div className="flex justify-between items-center gap-1 bg-black/10 px-2.5 py-1 rounded-full cursor-pointer">
+          <FiShare2 /> <b>1</b>
         </div>
       </div>
     </section>

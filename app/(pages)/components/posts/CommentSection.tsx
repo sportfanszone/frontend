@@ -1,4 +1,5 @@
 import { FC } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { FiMessageCircle, FiThumbsUp, FiShare2 } from "react-icons/fi";
 
@@ -26,19 +27,22 @@ const Comment: FC<Props> = ({ comment, level = 0 }) => {
           className="rounded-full w-10 h-10 object-cover"
         />
         <div className="mb-2">
-          <p className="text-sm font-semibold text-blac">
-            {comment.user.username}
-          </p>
+          <Link
+            href={`/user/@${comment.user.username}`}
+            className="text-sm font-semibold text-blac cursor-pointer hover:text-blue-700 transition-all"
+          >
+            @{comment.user.username}
+          </Link>
           <p className="text-gray-500 mb-1">{comment.content}</p>
           <div className="flex items-center gap-4">
-            <div className="text-sm flex justify-between items-center gap-1">
+            <div className="text-sm flex justify-between items-center gap-1 cursor-pointer">
               <FiThumbsUp /> <b className="text-gray-700">10</b>
             </div>
-            <div className="text-sm flex justify-between items-center gap-1">
+            <div className="text-sm flex justify-between items-center gap-1 cursor-pointer">
               <FiMessageCircle /> <b className="text-gray-700">9</b>
             </div>
-            <div className="text-sm flex justify-between items-center gap-1">
-              <FiShare2 /> <b className="text-gray-700">Sshare</b>
+            <div className="text-sm flex justify-between items-center gap-1 cursor-pointer">
+              <FiShare2 /> <b className="text-gray-700">2</b>
             </div>
           </div>
         </div>

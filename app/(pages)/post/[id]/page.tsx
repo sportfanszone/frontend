@@ -4,7 +4,7 @@ import Comment from "@/app/(pages)/components/posts/CommentSection";
 const comments = [
   {
     id: 1,
-    user: { username: "@Sharp_Athlete_6847" },
+    user: { username: "Sharp_Athlete_6847" },
     content: "The swallow to soup ratio is diabolical oga",
     replies: [
       {
@@ -26,7 +26,7 @@ const comments = [
   },
   {
     id: 2,
-    user: { username: "@Sharp_Athlete_6847" },
+    user: { username: "Sharp_Athlete_6847" },
     content: "The swallow to soup ratio is diabolical oga",
     replies: [
       {
