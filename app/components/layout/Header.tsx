@@ -21,8 +21,6 @@ interface HeaderProps {
 }
 
 const Header = ({ theme = null, className = "", user }: HeaderProps) => {
-  console.log("user:");
-  console.log(user);
   const router = useRouter();
   const [navOpen, setNavOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
