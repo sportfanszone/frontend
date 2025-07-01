@@ -2,9 +2,25 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FiSearch, FiPlus, FiBell, FiMenu, FiArrowRight } from "react-icons/fi";
+import {
+  FiSearch,
+  FiPlus,
+  FiBell,
+  FiMenu,
+  FiArrowRight,
+  FiUserPlus,
+  FiBookmark,
+  FiEyeOff,
+  FiFlag,
+} from "react-icons/fi";
 import { useSidebar } from "@/app/(pages)/context/SideBarContext";
 import { HeaderProps } from "@/types";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/app/components/ui/popover";
 
 const Header = ({ user }: HeaderProps) => {
   console.log(user);
@@ -81,15 +97,34 @@ const Header = ({ user }: HeaderProps) => {
           <div className="text-[0.9em] flex items-center justify-between gap-    1 cursor-pointer">
             <FiPlus /> <span className="text-[0.8em] ">Create</span>
           </div>
-          <div className="w-8 h-8 border-black/40 border-2 rounded-full cursor-pointer overflow-hidden">
-            <Image
-              src={user?.profileImageUrl || "/images/blankProfile.png"}
-              alt="Profile image"
-              className="w-full h-full object-cover"
-              width={50}
-              height={50}
-            />
-          </div>
+          <Popover>
+            <PopoverTrigger className="self-start p-4 cursor-pointer">
+              <div className="w-8 h-8 border-black/40 border-2 rounded-full cursor-pointer overflow-hidden">
+                <Image
+                  src={user?.profileImageUrl || "/images/blankProfile.png"}
+                  alt="Profile image"
+                  className="w-full h-full object-cover"
+                  width={50}
+                  height={50}
+                />
+              </div>
+            </PopoverTrigger>
+
+            <PopoverContent className="py-3">
+              <div className="flex items-center gap-2 p-2 px-5 cursor-pointer hover:bg-black/10">
+                <FiUserPlus /> Follow
+              </div>
+              <div className="flex items-center gap-2 p-2 px-5 cursor-pointer hover:bg-black/10">
+                <FiBookmark /> Save
+              </div>
+              <div className="flex items-center gap-2 p-2 px-5 cursor-pointer hover:bg-black/10">
+                <FiEyeOff /> Hide
+              </div>
+              <div className="flex items-center gap-2 p-2 px-5 cursor-pointer hover:bg-black/10">
+                <FiFlag /> Report
+              </div>
+            </PopoverContent>
+          </Popover>
         </div>
       ) : (
         <div className="hidden md:flex items-center justify-between gap-6 pr-2">
