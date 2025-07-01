@@ -10,6 +10,8 @@ export type User = {
   profileImageUrl: string;
   coverPhotoUrl: string;
   achievements: Achievement[];
+  leaguesYouFollow: League[];
+  clubsYouFollow: Club[];
 };
 
 export type Topic = {
@@ -35,7 +37,7 @@ export type TopicPageData = {
 
 export type Club = {
   id: string;
-  clubName: string;
+  name: string;
   topicCount: number;
   lastActivity: string;
   description: string;
@@ -76,6 +78,8 @@ export type DashboardPageData = {
   followers: number;
   profileViews: User[];
   topics: Topic[];
+  leaguesYouFollow: League[];
+  clubsYouFollow: Club[];
 };
 
 export type ProfileHeaderProps = { user: User };
