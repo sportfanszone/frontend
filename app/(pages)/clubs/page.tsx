@@ -23,7 +23,7 @@ export default async function Clubs() {
               <Link href={`/topics/?club=${club.id}`} key={index}>
                 <ClubCard
                   id={club.id}
-                  clubName={club.clubName}
+                  name={club.name}
                   topicCount={club.topicCount}
                   lastActivity={club.lastActivity}
                   description={club.description}

@@ -3,7 +3,7 @@ import * as motion from "motion/react-client";
 import { Club } from "@/types";
 
 const ClubCard = ({
-  clubName,
+  name,
   topicCount,
   lastActivity,
   description,
@@ -11,12 +11,12 @@ const ClubCard = ({
   backgroundImage,
 }: Club) => {
   return (
-    <motion.div className="shadow-card hover:shadow-card-active hover:scale-102 rounded-3xl p-6 max-w-80 min-w-66 cursor-pointer transition-all duration-150 ease-in-out">
+    <motion.div className="bg-white shadow-card hover:shadow-card-active hover:scale-102 rounded-3xl p-6 max-w-80 min-w-66 cursor-pointer transition-all duration-150 ease-in-out">
       <div
         className={`mb-4 shadow-card rounded-3xl px-5 py-6 text-white bg-cover bg-center`}
         style={{ backgroundImage: `url(${backgroundImage})` }}
       >
-        <h1 className="font-bold text-xl">{clubName}</h1>
+        <h1 className="font-bold text-xl">{name}</h1>
       </div>
       <div className="flex justify0between align-center gap-3">
         <div className="flex flex-col justify-center mb-4">
