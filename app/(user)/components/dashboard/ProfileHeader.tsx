@@ -1,6 +1,26 @@
 import Image from "next/image";
+import AchievementCards from "@/app/(user)/components/dashboard/AchievementCards";
 
 import { ProfileHeaderProps } from "@/types";
+
+const achievements = [
+  {
+    name: "",
+    image: "/images/blankProfile.png",
+  },
+  {
+    name: "",
+    image: "/images/blankProfile.png",
+  },
+  {
+    name: "",
+    image: "/images/blankProfile.png",
+  },
+  {
+    name: "",
+    image: "/images/blankProfile.png",
+  },
+];
 
 const ProfileHeader = ({ user }: ProfileHeaderProps) => {
   return (
@@ -30,6 +50,9 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
           <div className="text-black/90 text-xs sm:text-sm flex items-center gap-4 sm:gap-5 md:gap-6 p-2 py-1 sm:p-3 md:p-4">
             <div>12.2k Followers</div>
             <div>1.2k Following</div>
+            <div className="flex  items-center gap-4">
+              <AchievementCards achievements={achievements} /> Achievements
+            </div>
             {/* <div>Joined 2nd Jan 1972</div> */}
           </div>
         </div>

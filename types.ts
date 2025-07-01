@@ -83,3 +83,10 @@ export type LeftSidebarLinkProps = {
   isActive: boolean;
   icon: IconType;
 };
+
+export type AchievementType = {
+  achievements: {
+    name: string;
+    image: string;
+  }[];
+};
