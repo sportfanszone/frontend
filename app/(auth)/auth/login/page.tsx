@@ -29,6 +29,11 @@ export default function Login() {
 
   const [errors, setErrors] = useState<ErrorFields>({});
 
+  const handleGoogleAuth = async () => {
+    sessionStorage.setItem("showLoginSuccessAlert", "true");
+    window.location.href = `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/auth/google`;
+  };
+
   const validateForm = () => {
     const result = loginSchema.safeParse(form);
     if (!result.success) {
@@ -150,10 +155,7 @@ export default function Login() {
         </h1>
 
         {/* Google button */}
-        <Link
-          href={`${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/auth/google`}
-          className="googleButtonContainer"
-        >
+        <div onClick={handleGoogleAuth} className="googleButtonContainer">
           <Image
             className="width-6 h-6 sm:w-6 sm:h-6 md:w-7.5 md:h-7.5"
             src="/svgs/google-icon-logo.svg"
@@ -164,7 +166,7 @@ export default function Login() {
           <span className="text-sm sm:text-md md:text-lg font-bold">
             Login with Google
           </span>
-        </Link>
+        </div>
 
         {/* Divider */}
         <div className="flex items-center justify-center gap-4 mb-6 sm:mb-7 md:mb-10">
