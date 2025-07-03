@@ -94,7 +94,6 @@ const Header = ({ user }: HeaderProps) => {
       </div>
 
       {/* Nav */}
-
       {user ? (
         <div className="text-2xl hidden sm:flex items-center justify-between gap-3">
           <button className="text-[0.9em] cursor-pointer relative">
@@ -103,7 +102,7 @@ const Header = ({ user }: HeaderProps) => {
               className="absolute top-0 right-0 translate-x-[45%] -translate-y-[50%] h-5 min-w-5 rounded-full px-1 font-mono tabular-nums"
               variant="destructive"
             >
-              99
+              99+
             </Badge>
           </button>
           <div className="text-[0.9em] flex items-center justify-between gap-    1 cursor-pointer">
