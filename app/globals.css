@@ -4,6 +4,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --color-acent-1: var(--acent-1);
+  --color-acent-2: var(--acent-2);
+  --color-acent-3: var(--acent-3);
   --font-montserrat: var(--font-montserrat);
   --shadow-card: 0 0 13px 5px rgba(0, 0, 0, 0.07);
   --shadow-card-active: 0 0 27px 10px rgba(0, 0, 0, 0.1);
@@ -73,13 +76,16 @@
 
 :root {
   --radius: 0.625rem;
+  --acent-1: oklch(47.959% 0.12248 268.067);
+  --acent-2: oklch(61.314% 0.12751 78.569);
+  --acent-3: oklch(54.825% 0.1646 20.553);
   --background: oklch(100% 0.00011 271.152);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(52.413% 0.20937 262.708);
+  --primary: var(--acent-1);
   --primary-foreground: oklch(94.254% 0.02836 283.626);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);

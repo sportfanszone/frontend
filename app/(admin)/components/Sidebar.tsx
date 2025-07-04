@@ -40,16 +40,15 @@ const data = {
   },
   navMain: [
     {
+      isActive: true,
       title: "Dashboard",
       url: "/admin/dashboard",
       icon: Home,
-      isActive: true,
     },
     {
       title: "User",
       url: "#",
       icon: Users,
-      isActive: true,
       items: [
         {
           title: "All Users",

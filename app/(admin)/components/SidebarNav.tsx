@@ -46,7 +46,13 @@ export function NavMain({
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
                 <Link href={item.url || "#"}>
-                  <SidebarMenuButton tooltip={item.title}>
+                  <SidebarMenuButton
+                    className={`hover:bg-acent-1/20 ${
+                      item.isActive &&
+                      "bg-acent-1 text-white hover:bg-acent-1 hover:text-white"
+                    }`}
+                    tooltip={item.title}
+                  >
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
                     {item.items && (
@@ -60,7 +66,13 @@ export function NavMain({
                   <SidebarMenuSub>
                     {item.items?.map((subItem) => (
                       <SidebarMenuSubItem key={subItem.title}>
-                        <SidebarMenuSubButton asChild>
+                        <SidebarMenuSubButton
+                          className={`hover:bg-acent-1/20 ${
+                            item.isActive &&
+                            "bg-acent-1 text-white hover:bg-acent-1 hover:text-white"
+                          }`}
+                          asChild
+                        >
                           <Link href={subItem.url}>
                             <span>{subItem.title}</span>
                           </Link>
