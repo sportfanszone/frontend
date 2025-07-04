@@ -11,30 +11,6 @@ type User = {
   status: "active" | "inactive";
 };
 
-const users: User[] = [
-  {
-    id: "1",
-    name: "Chisom Njoku",
-    email: "chisom@example.com",
-    role: "admin",
-    status: "active",
-  },
-  {
-    id: "2",
-    name: "Blessing Ojo",
-    email: "blessing@example.com",
-    role: "user",
-    status: "inactive",
-  },
-  {
-    id: "3",
-    name: "Tunde James",
-    email: "tunde@example.com",
-    role: "user",
-    status: "active",
-  },
-];
-
 export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "name",
