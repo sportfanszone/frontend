@@ -64,7 +64,7 @@ export function AdminSidebar({ ...props }: SidebarProps) {
           },
           {
             title: "Add User",
-            url: "#",
+            url: "/admin/add_user",
             icon: UserPlus,
           },
         ],
