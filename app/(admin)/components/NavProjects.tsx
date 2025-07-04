@@ -18,6 +18,7 @@ export function NavProjects({
     name: string;
     url: string;
     icon: LucideIcon;
+    isActive?: boolean;
   }[];
 }) {
   const { isMobile } = useSidebar();
@@ -28,7 +29,13 @@ export function NavProjects({
       <SidebarMenu>
         {projects.map((item) => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton asChild>
+            <SidebarMenuButton
+              className={`hover:bg-acent-1/10 ${
+                item.isActive &&
+                "bg-acent-1 text-white hover:bg-acent-1 hover:text-white"
+              }`}
+              asChild
+            >
               <a href={item.url}>
                 <item.icon />
                 <span>{item.name}</span>
