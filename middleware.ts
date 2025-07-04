@@ -1,23 +1,48 @@
 import { NextRequest, NextResponse } from "next/server";
+import { jwtVerify } from "jose";
 
-export function middleware(request: NextRequest) {
+const secret = new TextEncoder().encode(process.env.USER_TOKEN_SECRET);
+
+async function getUserFromToken(token: string) {
+  try {
+    const { payload }: any = await jwtVerify(token, secret);
+    return payload.user;
+  } catch (error) {
+    console.error("Invalid token:", error);
+    return null;
+  }
+}
+
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get("userToken")?.value;
+
   const isAuthPage = pathname.startsWith("/auth");
   const isProtectedPath = ["/user", "/post"].some((path) =>
     pathname.startsWith(path)
   );
+  const isAdminPath = pathname.startsWith("/admin");
 
   console.log("Middleware triggered for path:", pathname);
 
-  if (!token && isProtectedPath) {
-    const loginUrl = new URL("/auth/login", request.url);
-    return NextResponse.redirect(loginUrl);
+  if (!token && (isProtectedPath || isAdminPath)) {
+    return NextResponse.redirect(new URL("/auth/login", request.url));
   }
 
-  if (token && isAuthPage) {
-    const homeUrl = new URL("/", request.url);
-    return NextResponse.redirect(homeUrl);
+  if (token) {
+    const user = await getUserFromToken(token);
+
+    if (!user) {
+      return NextResponse.redirect(new URL("/auth/login", request.url));
+    }
+
+    if (isAdminPath && user.role !== "admin") {
+      return NextResponse.redirect(new URL("/403", request.url));
+    }
+
+    if (isAuthPage) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
   }
 
   return NextResponse.next();

@@ -7,6 +7,7 @@ import {
   FiUsers,
   FiCalendar,
   FiBarChart2,
+  FiGrid,
 } from "react-icons/fi";
 import LeftSidebarLink from "@/app/components/ui/LeftSidebarLink";
 
@@ -56,6 +57,14 @@ const LeftSidebar = ({ user }: LeftSidebarProps) => {
                   icon={icon}
                 />
               ))}
+              {user.role === "admin" && (
+                <LeftSidebarLink
+                  href="/admin/dashboard"
+                  text="Admin"
+                  isActive={"/admin/dashboard" === pathName}
+                  icon={FiGrid}
+                />
+              )}
             </nav>
           </div>
         </div>

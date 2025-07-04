@@ -9,6 +9,7 @@ export type User = {
   email: string;
   profileImageUrl: string;
   coverPhotoUrl: string;
+  role: "user" | "admin";
   achievements: Achievement[];
   leaguesYouFollow: League[];
   clubsYouFollow: Club[];
