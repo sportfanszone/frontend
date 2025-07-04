@@ -20,12 +20,13 @@ import {
 
 export function NavMain({
   items,
+  pathname,
 }: {
+  pathname: string;
   items: {
     title: string;
     url: string;
     icon?: LucideIcon;
-    isActive?: boolean;
     items?: {
       title: string;
       url: string;
@@ -40,7 +41,10 @@ export function NavMain({
           <Collapsible
             key={item.title}
             asChild
-            defaultOpen={item.isActive}
+            defaultOpen={
+              item.url === pathname ||
+              item.items?.some((item) => item.url === pathname)
+            }
             className="group/collapsible"
           >
             <SidebarMenuItem>
@@ -48,7 +52,7 @@ export function NavMain({
                 <Link href={item.url || "#"}>
                   <SidebarMenuButton
                     className={`hover:bg-acent-1/10 ${
-                      item.isActive &&
+                      item.url === pathname &&
                       "bg-acent-1 text-white hover:bg-acent-1 hover:text-white"
                     }`}
                     tooltip={item.title}
@@ -68,7 +72,7 @@ export function NavMain({
                       <SidebarMenuSubItem key={subItem.title}>
                         <SidebarMenuSubButton
                           className={`hover:bg-acent-1/10 ${
-                            item.isActive &&
+                            subItem.url === pathname &&
                             "bg-acent-1 text-white hover:bg-acent-1 hover:text-white"
                           }`}
                           asChild
