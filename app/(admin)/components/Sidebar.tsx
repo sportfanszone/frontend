@@ -28,11 +28,6 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
 } from "@/app/components/ui/sidebar";
 
 import { User } from "@/types";
