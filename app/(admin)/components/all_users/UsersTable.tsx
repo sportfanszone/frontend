@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { Input } from "@/app/components/ui/input";
-
 import {
   Card,
   CardHeader,
@@ -12,6 +11,7 @@ import {
   CardDescription,
   CardContent,
 } from "@/app/components/ui/card";
+import { Badge } from "@/app/components/ui/badge";
 
 type User = any;
 
@@ -38,7 +38,16 @@ const columns: TableColumn<User>[] = [
   },
   { name: "Username", selector: (row) => row.email, sortable: true },
   { name: "Email", selector: (row) => row.email, sortable: true },
-  { name: "Role", selector: (row) => row.role, sortable: true },
+  //   { name: "Role", selector: (row) => row.role, sortable: true },
+  {
+    name: "Role",
+    cell: (row) => (
+      <Badge variant={row.role === "admin" ? "default" : "secondary"}>
+        {row.role}
+      </Badge>
+    ),
+    sortable: true,
+  },
   { name: "Status", selector: (row) => row.status, sortable: true },
 ];
 
