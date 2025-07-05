@@ -38,7 +38,6 @@ const columns: TableColumn<User>[] = [
   },
   { name: "Username", selector: (row) => row.email, sortable: true },
   { name: "Email", selector: (row) => row.email, sortable: true },
-  //   { name: "Role", selector: (row) => row.role, sortable: true },
   {
     name: "Role",
     cell: (row) => (
