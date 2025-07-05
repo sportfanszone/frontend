@@ -61,7 +61,7 @@ export function SectionCards() {
 
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription>Leagues Managed</CardDescription>
+          <CardDescription>Leagues</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
             126
           </CardTitle>
@@ -84,7 +84,7 @@ export function SectionCards() {
 
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription>Registered Clubs</CardDescription>
+          <CardDescription>Clubs</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
             3,794
           </CardTitle>
