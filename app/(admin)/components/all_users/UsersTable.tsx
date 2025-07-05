@@ -5,6 +5,14 @@ import Image from "next/image";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { Input } from "@/app/components/ui/input";
 
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/app/components/ui/card";
+
 type User = any;
 
 const columns: TableColumn<User>[] = [
@@ -64,33 +72,36 @@ export function UsersTable() {
   };
 
   return (
-    <div className="space-y-4">
-      <div>
-        <h1 className="font-bold text-xl mb-6">All Users</h1>
-
+    <Card className="@container/card">
+      <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <CardTitle>Users</CardTitle>
+          <CardDescription>Manage and review user accounts</CardDescription>
+        </div>
         <Input
           placeholder="Search users..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="max-w-sm"
         />
-      </div>
-
-      <div className="border-1 border-gray-300 rounded-2xl overflow-hidden">
-        <DataTable
-          columns={columns}
-          data={data}
-          progressPending={loading}
-          pagination
-          paginationServer
-          paginationTotalRows={totalRows}
-          paginationDefaultPage={currentPage}
-          onChangePage={handlePageChange}
-          onChangeRowsPerPage={handlePerRowsChange}
-          highlightOnHover
-          striped
-        />
-      </div>
-    </div>
+      </CardHeader>
+      <CardContent>
+        <div className="border-1 border-gray-300 rounded-2xl overflow-hidden">
+          <DataTable
+            columns={columns}
+            data={data}
+            progressPending={loading}
+            pagination
+            paginationServer
+            paginationTotalRows={totalRows}
+            paginationDefaultPage={currentPage}
+            onChangePage={handlePageChange}
+            onChangeRowsPerPage={handlePerRowsChange}
+            highlightOnHover
+            striped
+          />
+        </div>
+      </CardContent>
+    </Card>
   );
 }
