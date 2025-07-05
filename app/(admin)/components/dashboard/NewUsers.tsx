@@ -1,30 +1,9 @@
 "use client";
 
-import {
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  useReactTable,
-  VisibilityState,
-} from "@tanstack/react-table";
-
-import { Input } from "@/app/components/ui/input";
-import { Button } from "@/app/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/app/components/ui/dropdown-menu";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/app/components/ui/table";
-
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import DataTable, { TableColumn } from "react-data-table-component";
 import {
   Card,
   CardHeader,
@@ -32,58 +11,73 @@ import {
   CardDescription,
   CardContent,
 } from "@/app/components/ui/card";
+import { Badge } from "@/app/components/ui/badge";
+import { IconCircleCheckFilled } from "@tabler/icons-react";
+import { Button } from "@/app/components/ui/button";
 
-import { useState } from "react";
-import { columns } from "@/app/(admin)/components/dashboard/NewUsersTableColumns";
+type User = any;
 
-export type User = {
-  id: string;
-  name: string;
-  email: string;
-  role: "admin" | "user";
-  status: "active" | "inactive";
-};
-
-export const users: User[] = [
+const columns: TableColumn<User>[] = [
   {
-    id: "1",
-    name: "Chisom Njoku",
-    email: "chisom@example.com",
-    role: "admin",
-    status: "active",
+    name: "Name",
+    cell: (row) => (
+      <div className="flex items-center gap-3">
+        <Image
+          src={row.profileImageUrl || "/images/blankProfile.png"}
+          alt="User avatar"
+          className="w-8 h-8 rounded-full object-cover"
+          width={200}
+          height={200}
+        />
+        <span>
+          {[row.firstName, row.middleName, row.lastName]
+            .filter(Boolean)
+            .join(" ")}
+        </span>
+      </div>
+    ),
+    sortable: true,
+  },
+  { name: "Username", selector: (row) => row.email, sortable: true },
+  { name: "Email", selector: (row) => row.email, sortable: true },
+  {
+    name: "Role",
+    cell: (row) => (
+      <Badge variant={row.role === "admin" ? "default" : "secondary"}>
+        {row.role}
+      </Badge>
+    ),
+    sortable: true,
   },
   {
-    id: "2",
-    name: "Blessing Ojo",
-    email: "blessing@example.com",
-    role: "user",
-    status: "inactive",
-  },
-  {
-    id: "3",
-    name: "Tunde James",
-    email: "tunde@example.com",
-    role: "user",
-    status: "active",
+    name: "Status",
+    cell: (row) => (
+      <Badge variant={row.status === "admin" ? "outline" : "secondary"}>
+        <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
+        {row.status}
+      </Badge>
+    ),
+    sortable: true,
   },
 ];
 
 export function UsersTable() {
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [globalFilter, setGlobalFilter] = useState("");
+  const [data, setData] = useState<User[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const table = useReactTable({
-    data: users,
-    columns,
-    state: {
-      columnVisibility,
-      globalFilter,
-    },
-    onColumnVisibilityChange: setColumnVisibility,
-    onGlobalFilterChange: setGlobalFilter,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-  });
+  const fetchUsers = async () => {
+    setLoading(true);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/admin/all_users?&limit=${5}`
+    );
+    const result = await res.json();
+    setData(result.users);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   return (
     <Card className="@container/card">
@@ -92,79 +86,18 @@ export function UsersTable() {
           <CardTitle>Users</CardTitle>
           <CardDescription>Manage and review user accounts</CardDescription>
         </div>
-        <div className="flex items-center gap-2 w-full md:w-auto">
-          <Input
-            placeholder="Search users..."
-            value={globalFilter ?? ""}
-            onChange={(e) => setGlobalFilter(e.target.value)}
-            className="w-full max-w-sm"
-          />
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">Columns</Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter((col) => col.getCanHide())
-                .map((col) => (
-                  <DropdownMenuCheckboxItem
-                    key={col.id}
-                    checked={col.getIsVisible()}
-                    onCheckedChange={(value) => col.toggleVisibility(!!value)}
-                  >
-                    {col.id}
-                  </DropdownMenuCheckboxItem>
-                ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+        <Button className="cursor-pointer">
+          <Link href="/admin/all_users">View all</Link>
+        </Button>
       </CardHeader>
-
       <CardContent>
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id}>
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    No results found.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+        <div className="border-1 border-gray-300 rounded-xl overflow-hidden">
+          <DataTable
+            columns={columns}
+            data={data}
+            progressPending={loading}
+            highlightOnHover
+          />
         </div>
       </CardContent>
     </Card>
