@@ -12,6 +12,7 @@ import {
   CardContent,
 } from "@/app/components/ui/card";
 import { Badge } from "@/app/components/ui/badge";
+import { IconCircleCheckFilled } from "@tabler/icons-react";
 
 type User = any;
 
@@ -47,7 +48,16 @@ const columns: TableColumn<User>[] = [
     ),
     sortable: true,
   },
-  { name: "Status", selector: (row) => row.status, sortable: true },
+  {
+    name: "Status",
+    cell: (row) => (
+      <Badge variant={row.status === "admin" ? "outline" : "secondary"}>
+        <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
+        {row.status}
+      </Badge>
+    ),
+    sortable: true,
+  },
 ];
 
 export function UsersTable() {
@@ -94,7 +104,7 @@ export function UsersTable() {
         />
       </CardHeader>
       <CardContent>
-        <div className="border-1 border-gray-300 rounded-2xl overflow-hidden">
+        <div className="border-1 border-gray-300 rounded-xl overflow-hidden">
           <DataTable
             columns={columns}
             data={data}
@@ -106,7 +116,7 @@ export function UsersTable() {
             onChangePage={handlePageChange}
             onChangeRowsPerPage={handlePerRowsChange}
             highlightOnHover
-            striped
+            // striped
           />
         </div>
       </CardContent>
