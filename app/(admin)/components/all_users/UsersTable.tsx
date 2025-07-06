@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { Input } from "@/app/components/ui/input";
@@ -13,6 +14,8 @@ import {
 } from "@/app/components/ui/card";
 import { Badge } from "@/app/components/ui/badge";
 import { IconCircleCheckFilled } from "@tabler/icons-react";
+
+import clientFetcher from "@/lib/clientFetcher";
 
 type User = any;
 
@@ -68,12 +71,16 @@ export function UsersTable() {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const router = useRouter();
+
   const fetchUsers = async (page = 1, search = "") => {
     setLoading(true);
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/admin/all_users?page=${page}&limit=${perPage}&search=${search}`
+    const result: any = await clientFetcher(
+      `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/admin/all_users?page=${page}&limit=${perPage}&search=${search}`,
+      "GET"
     );
-    const result = await res.json();
+
+    console.log(result);
     setData(result.users);
     setTotalRows(result.total);
     setLoading(false);
