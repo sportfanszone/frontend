@@ -57,7 +57,7 @@ const LeftSidebar = ({ user }: LeftSidebarProps) => {
                   icon={icon}
                 />
               ))}
-              {user.role === "admin" && (
+              {user?.role === "admin" && (
                 <LeftSidebarLink
                   href="/admin/dashboard"
                   text="Admin"
