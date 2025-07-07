@@ -1,4 +1,4 @@
-import Header from "@/app/(pages)/components/Header";
+import Header from "@/app/components/layout/UserHeader";
 import LeftSidebar from "@/app/(pages)/components/LeftSidebar";
 import { SidebarProvider } from "@/app/(pages)/context/SideBarContext";
 import { getUserFromCookie } from "@/lib/auth";
