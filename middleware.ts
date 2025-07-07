@@ -25,8 +25,12 @@ export async function middleware(request: NextRequest) {
 
   console.log("Middleware triggered for path:", pathname);
 
-  if (!token && (isProtectedPath || isAdminPath)) {
+  if (!token && isProtectedPath) {
     return NextResponse.redirect(new URL("/auth/login", request.url));
+  }
+
+  if (!token && isAdminPath) {
+    return NextResponse.redirect(new URL("/404", request.url));
   }
 
   if (token) {
