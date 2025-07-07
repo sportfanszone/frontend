@@ -2,22 +2,22 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 
 type UserAvatarType = {
-  name: string;
-  image?: string;
+  alt: string;
+  src?: string;
   width?: number;
   height?: number;
   className?: string;
 };
 
 const UserAvatar = ({
-  name,
-  image,
+  alt,
+  src,
   width = 200,
   height = 200,
   className,
 }: UserAvatarType) => {
-  const seed = encodeURIComponent(name);
-  const url = image || `https://api.dicebear.com/8.x/initials/svg?seed=${seed}`;
+  const seed = encodeURIComponent(alt);
+  const url = src || `https://api.dicebear.com/8.x/initials/svg?seed=${seed}`;
 
   return (
     <Image
