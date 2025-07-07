@@ -103,8 +103,8 @@ const Header = ({ user }: HeaderProps) => {
             <DropdownMenuTrigger asChild>
               <div className="w-8 h-8 border-black/40 border-2 rounded-full cursor-pointer overflow-hidden">
                 <UserAvatar
-                  name={`${user.firstName} ${user.middleName} ${user.lastName}`}
-                  image={user.profileImageUrl}
+                  alt={`${user.firstName} ${user.middleName} ${user.lastName}`}
+                  src={user.profileImageUrl}
                   className="w-full h-full object-cover"
                   width={50}
                   height={50}
