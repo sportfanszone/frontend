@@ -1,10 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-
+import { useLogoutStore } from "@/stores/useLogoutStore";
 import { useSidebar } from "@/app/(pages)/context/SideBarContext";
 import { HeaderProps } from "@/types";
-import { useLogout } from "@/hooks/useLogout";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -19,21 +18,11 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/app/components/ui/dropdown-menu";
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogCancel,
-  AlertDialogAction,
-} from "@/app/components/ui/alert-dialog";
+import { Logout } from "@/app/components/ui/Logout";
 import { Badge } from "@/app/components/ui/badge";
 
 const Header = ({ user }: HeaderProps) => {
-  const logout = useLogout();
-  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const { setShowLogoutConfirm } = useLogoutStore();
   const { isBarOpen, toggleSidebar } = useSidebar();
   const [logo, setLogo] = useState("/images/logo.png");
 
@@ -143,24 +132,7 @@ const Header = ({ user }: HeaderProps) => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <AlertDialog
-            open={showLogoutConfirm}
-            onOpenChange={setShowLogoutConfirm}
-          >
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Log out of your account?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  You will be logged out from your current session. You can log
-                  in again at any time using your credentials.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={logout}>Log out</AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+          <Logout />
         </div>
       ) : (
         <div className="hidden md:flex items-center justify-between gap-6 pr-2">
