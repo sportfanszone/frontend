@@ -125,15 +125,15 @@ const Header = ({ user }: HeaderProps) => {
             <DropdownMenuContent className="w-56" align="start">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  <Link href="/user/dashboard">Profile</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href="/user/settings">Settings</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href="/ad">Advert</Link>
-                </DropdownMenuItem>
+                <Link href="/user/dashboard">
+                  <DropdownMenuItem>Profile</DropdownMenuItem>
+                </Link>
+                <Link href="/user/settings">
+                  <DropdownMenuItem>Settings</DropdownMenuItem>
+                </Link>
+                <Link href="/ad">
+                  <DropdownMenuItem>Advert</DropdownMenuItem>
+                </Link>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
 
