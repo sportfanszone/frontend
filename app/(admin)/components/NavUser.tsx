@@ -11,11 +11,6 @@ import {
   Sparkles,
 } from "lucide-react";
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/app/components/ui/avatar";
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
@@ -34,6 +29,7 @@ import {
 import { Logout } from "@/app/components/ui/Logout";
 
 import { User } from "@/types";
+import UserAvatar from "@/app/components/ui/UserAvatar";
 
 export function NavUser({ user }: { user: User }) {
   const { setShowLogoutConfirm } = useLogoutStore();
@@ -49,13 +45,11 @@ export function NavUser({ user }: { user: User }) {
                 size="lg"
                 className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
               >
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage
-                    src={user.profileImageUrl}
-                    alt={user.firstName}
-                  />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-                </Avatar>
+                <UserAvatar
+                  src={user.profileImageUrl}
+                  alt={`${user.firstName} ${user.middleName} ${user.lastName}`}
+                  className="h-8 w-8 rounded-full"
+                />
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user.firstName}</span>
                   <span className="truncate text-xs">{user.email}</span>
@@ -71,13 +65,11 @@ export function NavUser({ user }: { user: User }) {
             >
               <DropdownMenuLabel className="p-0 font-normal">
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                  <Avatar className="h-8 w-8 rounded-lg">
-                    <AvatarImage
-                      src={user.profileImageUrl}
-                      alt={user.firstName}
-                    />
-                    <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-                  </Avatar>
+                  <UserAvatar
+                    src={user.profileImageUrl}
+                    alt={`${user.firstName} ${user.middleName} ${user.lastName}`}
+                    className="h-8 w-8 rounded-full"
+                  />
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-medium">
                       {user.firstName}
