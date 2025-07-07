@@ -8,6 +8,7 @@ import { useLogout } from "@/hooks/useLogout";
 
 import Image from "next/image";
 import Link from "next/link";
+import UserAvatar from "@/app/components/ui/UserAvatar";
 import { FiSearch, FiPlus, FiBell, FiMenu, FiArrowRight } from "react-icons/fi";
 import {
   DropdownMenu,
@@ -112,9 +113,9 @@ const Header = ({ user }: HeaderProps) => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <div className="w-8 h-8 border-black/40 border-2 rounded-full cursor-pointer overflow-hidden">
-                <Image
-                  src={user?.profileImageUrl || "/images/blankProfile.png"}
-                  alt="Profile image"
+                <UserAvatar
+                  name={`${user.firstName} ${user.middleName} ${user.lastName}`}
+                  image={user.profileImageUrl}
                   className="w-full h-full object-cover"
                   width={50}
                   height={50}
