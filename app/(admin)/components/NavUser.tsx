@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { useLogout } from "@/hooks/useLogout";
+import { useLogoutStore } from "@/stores/useLogoutStore";
 
 import {
   BadgeCheck,
@@ -31,23 +30,14 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/app/components/ui/sidebar";
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogCancel,
-  AlertDialogAction,
-} from "@/app/components/ui/alert-dialog";
+
+import { Logout } from "@/app/components/ui/Logout";
 
 import { User } from "@/types";
 
 export function NavUser({ user }: { user: User }) {
+  const { setShowLogoutConfirm } = useLogoutStore();
   const { isMobile } = useSidebar();
-  const logout = useLogout();
-  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   return (
     <>
@@ -127,22 +117,7 @@ export function NavUser({ user }: { user: User }) {
           </DropdownMenu>
         </SidebarMenuItem>
       </SidebarMenu>
-
-      <AlertDialog open={showLogoutConfirm} onOpenChange={setShowLogoutConfirm}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Log out of your account?</AlertDialogTitle>
-            <AlertDialogDescription>
-              You will be logged out from your current session. You can log in
-              again at any time using your credentials.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={logout}>Log out</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <Logout />
     </>
   );
 }
