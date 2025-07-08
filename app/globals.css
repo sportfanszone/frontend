@@ -72,6 +72,12 @@
 .googleButtonContainer {
   @apply flex items-center justify-center gap-4 mx-auto px-4 py-3 sm:py-4 md:py-5 rounded-full border-2 border-black/20 hover:border-gray-500 transition-all duration-200 cursor-pointer  mb-6 sm:mb-7 md:mb-10;
 }
+.addUserFormPasswordGroup {
+  @apply border-gray-300/70 border-1 rounded-lg shadow-xs;
+}
+.addUserFormPasswordGroupError {
+  @apply border-red-500 border-1 rounded-lg shadow-xs;
+}
 /* X End Auth Form X */
 
 :root {
