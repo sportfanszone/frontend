@@ -16,8 +16,8 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
       <div className="flex items-center flex-wrap absolute bottom-0 left-5 sm:left-7 md:left-8 lg:left-10 translate-y-[50%]">
         <div className="h-20 min-h-20 sm:h-28 sm:min-h-28 md:h-30 md:min-h-30 w-20 min-w-20 sm:w-28 sm:min-w-28 md:w-30 md:min-w-30  rounded-full overflow-hidden">
           <UserAvatar
-            name={`${user.firstName} ${user.middleName} ${user.lastName}`}
-            image={user.profileImageUrl}
+            alt={`${user.firstName} ${user.middleName} ${user.lastName}`}
+            src={user.profileImageUrl}
             className="w-full h-full object-cover"
             width={500}
             height={500}
