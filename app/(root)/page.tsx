@@ -1,7 +1,7 @@
-import HeroSection from "./components/HeroSection";
-import LeaguesSection from "./components/LeaguesSection";
-import LatestPostsSection from "./components/LatestPostsSection";
-import TrendingPostsSection from "./components/TrendingPostsSection";
+import HeroSection from "@/app/(root)/components/HeroSection";
+import LeaguesSection from "@/app/(root)/components/LeaguesSection";
+import LatestPostsSection from "@/app/(root)/components/LatestPostsSection";
+import TrendingPostsSection from "@/app/(root)/components/TrendingPostsSection";
 
 export default function Home() {
   return (
