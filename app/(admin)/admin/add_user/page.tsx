@@ -1,4 +1,4 @@
-import AddUserForm from "../../components/add_user/AddUserForm";
+import AddUserForm from "@/app/(admin)/components/add_user/AddUserForm";
 
 export default function Page() {
   return (
