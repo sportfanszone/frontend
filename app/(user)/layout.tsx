@@ -3,7 +3,7 @@ import LeftSidebar from "@/app/(pages)/components/LeftSidebar";
 import { SidebarProvider } from "@/app/(pages)/context/SideBarContext";
 import { getUserFromCookie } from "@/lib/auth";
 import { User } from "@/types";
-import LoginSuccessAlert from "./components/dashboard/LoginSuccessAlert";
+import LoginSuccessAlert from "@/app/(user)/components/dashboard/LoginSuccessAlert";
 
 export default async function Layout({
   children,
