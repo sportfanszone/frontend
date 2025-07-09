@@ -13,7 +13,13 @@ import {
   CardContent,
 } from "@/app/components/ui/card";
 import { Badge } from "@/app/components/ui/badge";
-import { IconCircleCheckFilled } from "@tabler/icons-react";
+import {
+  IconCircleCheckFilled,
+  IconEdit,
+  IconKey,
+  IconForbid2,
+  IconTrash,
+} from "@tabler/icons-react";
 
 import clientFetcher from "@/lib/clientFetcher";
 
@@ -64,6 +70,26 @@ const columns: TableColumn<User>[] = [
         />
         {row.status}
       </Badge>
+    ),
+    sortable: true,
+  },
+  {
+    name: "Action",
+    cell: () => (
+      <div className="flex items-center">
+        <Badge className="bg-green-400 hover:bg-green-500 cursor-pointer size-7 flex items-center justify-center rounded-none rounded-tl-lg rounded-bl-lg">
+          <IconEdit stroke={3} className="text-white  text-4xl" />
+        </Badge>
+        <Badge className="bg-gray-400 hover:bg-gray-500 cursor-pointer size-7 flex items-center justify-center rounded-none">
+          <IconKey stroke={3} className="text-white  text-4xl" />
+        </Badge>
+        <Badge className="bg-yellow-400 hover:bg-yellow-500 cursor-pointer size-7 flex items-center justify-center rounded-none">
+          <IconForbid2 stroke={3} className="text-white  text-4xl" />
+        </Badge>
+        <Badge className="bg-red-500 hover:bg-red-600 cursor-pointer size-7 flex items-center justify-center rounded-none rounded-tr-lg rounded-br-lg">
+          <IconTrash stroke={3} className="text-white  text-4xl" />
+        </Badge>
+      </div>
     ),
     sortable: true,
   },
