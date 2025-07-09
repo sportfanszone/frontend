@@ -54,8 +54,14 @@ const columns: TableColumn<User>[] = [
   {
     name: "Status",
     cell: (row) => (
-      <Badge variant={row.status === "admin" ? "outline" : "secondary"}>
-        <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
+      <Badge variant="secondary">
+        <IconCircleCheckFilled
+          className={`${
+            row.status === "active"
+              ? "fill-green-500 dark:fill-green-400"
+              : "fill-red-500 dark:fill-red-400"
+          }`}
+        />
         {row.status}
       </Badge>
     ),
