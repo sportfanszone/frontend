@@ -46,7 +46,7 @@ const columns: TableColumn<User>[] = [
     ),
     sortable: true,
   },
-  { name: "Username", selector: (row) => row.email, sortable: true },
+  { name: "Username", selector: (row) => row.username, sortable: true },
   { name: "Email", selector: (row) => row.email, sortable: true },
   {
     name: "Role",
