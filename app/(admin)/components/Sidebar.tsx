@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useMemo } from "react";
 import { usePathname } from "next/navigation";
 
 import {
@@ -17,6 +17,7 @@ import {
   Frame,
   PieChart,
   Map,
+  Eye,
 } from "lucide-react";
 
 import { NavMain } from "@/app/(admin)/components/SidebarNav";
@@ -40,35 +41,41 @@ type SidebarProps = {
 export function AdminSidebar({ ...props }: SidebarProps) {
   const pathname = usePathname();
 
-  const data = {
-    user: {
-      name: "shadcn",
-      email: "m@example.com",
-      avatar: "/avatars/shadcn.jpg",
-    },
-    navMain: [
+  const navMain = useMemo(() => {
+    const userSection = {
+      title: "User",
+      url: "#",
+      icon: Users,
+      items: [
+        {
+          title: "All Users",
+          url: "/admin/all_users",
+          icon: Users,
+        },
+        {
+          title: "Add User",
+          url: "/admin/add_user",
+          icon: UserPlus,
+        },
+      ],
+    };
+
+    const isViewingUser = /^\/admin\/view_user\/[^/]+$/.test(pathname);
+    if (isViewingUser) {
+      userSection.items.push({
+        title: "View User",
+        url: pathname,
+        icon: Eye,
+      });
+    }
+
+    const items = [
       {
         title: "Dashboard",
         url: "/admin/dashboard",
         icon: Home,
       },
-      {
-        title: "User",
-        url: "#",
-        icon: Users,
-        items: [
-          {
-            title: "All Users",
-            url: "/admin/all_users",
-            icon: Users,
-          },
-          {
-            title: "Add User",
-            url: "/admin/add_user",
-            icon: UserPlus,
-          },
-        ],
-      },
+      userSection,
       {
         title: "League",
         url: "#",
@@ -130,25 +137,28 @@ export function AdminSidebar({ ...props }: SidebarProps) {
           },
         ],
       },
-    ],
-    others: [
-      {
-        name: "Profile",
-        url: "#",
-        icon: Frame,
-      },
-      {
-        name: "Profile settings",
-        url: "#",
-        icon: PieChart,
-      },
-      {
-        name: "Activity log",
-        url: "#",
-        icon: Map,
-      },
-    ],
-  };
+    ];
+
+    return items;
+  }, [pathname]);
+
+  const others = [
+    {
+      name: "Profile",
+      url: "#",
+      icon: Frame,
+    },
+    {
+      name: "Profile settings",
+      url: "#",
+      icon: PieChart,
+    },
+    {
+      name: "Activity log",
+      url: "#",
+      icon: Map,
+    },
+  ];
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -156,8 +166,8 @@ export function AdminSidebar({ ...props }: SidebarProps) {
         <NavLogo />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} pathname={pathname} />
-        <NavProjects projects={data.others} />
+        <NavMain items={navMain} pathname={pathname} />
+        <NavProjects projects={others} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={props.user} />

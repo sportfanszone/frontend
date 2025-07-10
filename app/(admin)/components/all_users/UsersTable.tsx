@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { Input } from "@/app/components/ui/input";
@@ -29,7 +30,10 @@ const columns: TableColumn<User>[] = [
   {
     name: "Name",
     cell: (row) => (
-      <div className="flex items-center gap-3">
+      <Link
+        href={`/admin/view_user/${row?.id}`}
+        className="flex items-center gap-3"
+      >
         <Image
           src={row.profileImageUrl || "/images/blankProfile.png"}
           alt="User avatar"
@@ -42,7 +46,7 @@ const columns: TableColumn<User>[] = [
             .filter(Boolean)
             .join(" ")}
         </span>
-      </div>
+      </Link>
     ),
     sortable: true,
   },
