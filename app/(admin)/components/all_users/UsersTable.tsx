@@ -71,6 +71,7 @@ const columns: TableColumn<User>[] = [
   },
   {
     name: "Status",
+    selector: (row) => row.status,
     cell: (row) => (
       <Badge variant="secondary">
         <IconCircleCheckFilled
