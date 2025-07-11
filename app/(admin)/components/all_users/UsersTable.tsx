@@ -21,6 +21,11 @@ import {
   IconForbid2,
   IconTrash,
 } from "@tabler/icons-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/app/components/ui/tooltip";
 
 import clientFetcher from "@/lib/clientFetcher";
 
@@ -81,18 +86,38 @@ const columns: TableColumn<User>[] = [
     name: "Action",
     cell: () => (
       <div className="flex items-center">
-        <Badge className="bg-green-400 hover:bg-green-500 cursor-pointer size-7 flex items-center justify-center rounded-none rounded-tl-lg rounded-bl-lg">
-          <IconEdit stroke={3} className="text-white  text-4xl" />
-        </Badge>
-        <Badge className="bg-gray-400 hover:bg-gray-500 cursor-pointer size-7 flex items-center justify-center rounded-none">
-          <IconKey stroke={3} className="text-white  text-4xl" />
-        </Badge>
-        <Badge className="bg-yellow-400 hover:bg-yellow-500 cursor-pointer size-7 flex items-center justify-center rounded-none">
-          <IconForbid2 stroke={3} className="text-white  text-4xl" />
-        </Badge>
-        <Badge className="bg-red-500 hover:bg-red-600 cursor-pointer size-7 flex items-center justify-center rounded-none rounded-tr-lg rounded-br-lg">
-          <IconTrash stroke={3} className="text-white  text-4xl" />
-        </Badge>
+        <Tooltip>
+          <TooltipTrigger>
+            <Badge className="bg-green-400 hover:bg-green-500 cursor-pointer size-7 flex items-center justify-center rounded-none rounded-tl-lg rounded-bl-lg">
+              <IconEdit stroke={3} className="text-white  text-4xl" />
+            </Badge>
+          </TooltipTrigger>
+          <TooltipContent>Edit user</TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger>
+            <Badge className="bg-gray-400 hover:bg-gray-500 cursor-pointer size-7 flex items-center justify-center rounded-none">
+              <IconKey stroke={3} className="text-white  text-4xl" />
+            </Badge>
+          </TooltipTrigger>
+          <TooltipContent>Edit user password</TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger>
+            <Badge className="bg-yellow-400 hover:bg-yellow-500 cursor-pointer size-7 flex items-center justify-center rounded-none">
+              <IconForbid2 stroke={3} className="text-white  text-4xl" />
+            </Badge>
+          </TooltipTrigger>
+          <TooltipContent>Disable user</TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger>
+            <Badge className="bg-red-500 hover:bg-red-600 cursor-pointer size-7 flex items-center justify-center rounded-none rounded-tr-lg rounded-br-lg">
+              <IconTrash stroke={3} className="text-white  text-4xl" />
+            </Badge>
+          </TooltipTrigger>
+          <TooltipContent>Delete user</TooltipContent>
+        </Tooltip>
       </div>
     ),
     sortable: true,
