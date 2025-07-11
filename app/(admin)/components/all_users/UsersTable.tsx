@@ -48,7 +48,7 @@ const columns: TableColumn<User>[] = [
           width={200}
           height={200}
         />
-        <span>
+        <span className="flex-1 w-45 truncate">
           {[row.firstName, row.middleName, row.lastName]
             .filter(Boolean)
             .join(" ")}
@@ -57,8 +57,16 @@ const columns: TableColumn<User>[] = [
     ),
     sortable: true,
   },
-  { name: "Username", selector: (row) => row.username, sortable: true },
-  { name: "Email", selector: (row) => row.email, sortable: true },
+  {
+    name: "Username",
+    selector: (row) => row.username,
+    sortable: true,
+  },
+  {
+    name: "Email",
+    selector: (row) => row.email,
+    sortable: true,
+  },
   {
     name: "Role",
     selector: (row) => row.role,
@@ -68,6 +76,7 @@ const columns: TableColumn<User>[] = [
       </Badge>
     ),
     sortable: true,
+    width: "7em",
   },
   {
     name: "Status",
@@ -85,6 +94,7 @@ const columns: TableColumn<User>[] = [
       </Badge>
     ),
     sortable: true,
+    width: "8em",
   },
   {
     name: "Action",
@@ -125,6 +135,7 @@ const columns: TableColumn<User>[] = [
       </div>
     ),
     sortable: true,
+    width: "11em",
   },
 ];
 
