@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { Input } from "@/app/components/ui/input";
 import {
@@ -26,6 +25,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/app/components/ui/tooltip";
+import UserAvatar from "@/app/components/ui/UserAvatar";
 
 import clientFetcher from "@/lib/clientFetcher";
 
@@ -41,12 +41,10 @@ const columns: TableColumn<User>[] = [
         href={`/admin/view_user/${row?.id}`}
         className="flex items-center gap-3 hover:underline hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
       >
-        <Image
-          src={row.profileImageUrl || "/images/blankProfile.png"}
-          alt="User avatar"
+        <UserAvatar
+          src={row.profileImageUrl}
+          alt={`${(row.firstName, row.middleName, row.lastName)}`}
           className="w-8 h-8 rounded-full object-cover"
-          width={200}
-          height={200}
         />
         <span className="flex-1 w-45 truncate">
           {[row.firstName, row.middleName, row.lastName]
