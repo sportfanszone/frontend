@@ -34,6 +34,8 @@ type User = any;
 const columns: TableColumn<User>[] = [
   {
     name: "Name",
+    selector: (row) =>
+      [row.firstName, row.middleName, row.lastName].filter(Boolean).join(" "),
     cell: (row) => (
       <Link
         href={`/admin/view_user/${row?.id}`}
