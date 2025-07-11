@@ -61,6 +61,7 @@ const columns: TableColumn<User>[] = [
   { name: "Email", selector: (row) => row.email, sortable: true },
   {
     name: "Role",
+    selector: (row) => row.role,
     cell: (row) => (
       <Badge variant={row.role === "admin" ? "default" : "secondary"}>
         {row.role}
