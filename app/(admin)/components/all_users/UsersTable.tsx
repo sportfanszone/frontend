@@ -39,7 +39,7 @@ const columns: TableColumn<User>[] = [
     cell: (row) => (
       <Link
         href={`/admin/view_user/${row?.id}`}
-        className="flex items-center gap-3"
+        className="flex items-center gap-3 hover:underline hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
       >
         <Image
           src={row.profileImageUrl || "/images/blankProfile.png"}
