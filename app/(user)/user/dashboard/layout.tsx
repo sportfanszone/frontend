@@ -16,7 +16,7 @@ export default async function TopicsLayout({
       </div>
 
       {/* Sidebar */}
-      <div className="hidden md:flex min-h-screen w-120 mr-4 mt-4">
+      <div className="hidden min-[908px]:flex min-h-screen w-120 mr-4 mt-4">
         <Suspense fallback={<DashboardSidebarSkeleton />}>
           <DashboardSidebar />
         </Suspense>
