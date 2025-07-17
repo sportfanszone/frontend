@@ -22,10 +22,10 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
           />
 
           <div className="absolute top-[30%] left-25 sm:left-28 md:left-30 max-w-max ml-3 mr-9">
-            <p className="font-bold text-base md:text-xl leading-tight truncate">
+            <p className="font-bold text-base md:text-xl leading-tight truncate mb-2">
               {user?.firstName} {user?.middleName} {user?.lastName}
             </p>
-            <div className="text-black/90 text-xs sm:text-sm flex items-center flex-wrap gap-4">
+            <div className="text-black/90 text-xs sm:text-sm flex items-center flex-wrap gap-x-4 gap-y-2">
               <div>12.2k Followers</div>
               <div>1.2k Following</div>
               <div className="flex  items-center gap-4">
