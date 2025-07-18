@@ -5,7 +5,7 @@ import { ProfileHeaderProps } from "@/types";
 
 const ProfileHeader = ({ user }: ProfileHeaderProps) => {
   return (
-    <div className="relative mb-30">
+    <div className="relative mb-26 md:mb-23">
       <div
         className={`h-30 sm:h-40 md:h-45 rounded-2xl overflow-hidden bg-cover bg-center`}
         style={{ backgroundImage: `url(${user?.coverPhotoUrl})` }}
