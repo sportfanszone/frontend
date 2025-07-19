@@ -86,7 +86,7 @@ const Header = ({ user }: HeaderProps) => {
 
       {/* Nav */}
       {user ? (
-        <div className="text-2xl hidden sm:flex items-center justify-between gap-3">
+        <div className="text-2xl flex items-center justify-between gap-3">
           <button className="text-[0.9em] cursor-pointer relative">
             <FiBell />
             <Badge

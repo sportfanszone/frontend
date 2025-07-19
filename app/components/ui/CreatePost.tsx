@@ -19,8 +19,11 @@ const CreatePost = () => {
     <Dialog>
       <form>
         <DialogTrigger asChild>
-          <div className="text-[0.9em] flex items-center justify-between gap-1 cursor-pointer">
-            <FiPlus /> <span className="text-[0.8em] ">Create</span>
+          <div className="text-[0.9em] flex items-center justify-between  cursor-pointer">
+            <span className="bg-primary sm:bg-transparent text-white sm:text-black rounded-full p-1 flex items-center justify-center ml-2">
+              <FiPlus />{" "}
+            </span>
+            <span className="hidden sm:inline text-[0.8em] ">Create</span>
           </div>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
