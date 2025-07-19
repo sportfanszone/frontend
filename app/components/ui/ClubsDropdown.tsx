@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import {
   DropdownMenu,
@@ -31,7 +32,10 @@ export default function ClubsDropdown() {
         <DropdownMenuLabel>{activeClub}</DropdownMenuLabel>
         <DropdownMenuGroup>
           {clubs.map((club, index) => (
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => setActiveClub(club.name)}
+              key={index}
+            >
               <div className="flex justify-start items-center gap-3">
                 <Image
                   src={club.logo}
