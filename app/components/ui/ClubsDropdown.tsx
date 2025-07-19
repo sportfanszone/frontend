@@ -32,17 +32,15 @@ export default function ClubsDropdown() {
         <DropdownMenuGroup>
           {clubs.map((club, index) => (
             <DropdownMenuItem>
-              <div className="flex flex-col justify-center">
-                <div className="flex justify-start items-center gap-3">
-                  <Image
-                    src={club.logo}
-                    width={200}
-                    height={200}
-                    alt={club.name}
-                    className="h-10 w-10 object-cover rounded-full"
-                  />
-                  <span className="text-sm">{club.name}</span>
-                </div>
+              <div className="flex justify-start items-center gap-3">
+                <Image
+                  src={club.logo}
+                  width={200}
+                  height={200}
+                  alt={club.name}
+                  className="h-10 w-10 object-cover rounded-full"
+                />
+                <span className="text-sm">{club.name}</span>
               </div>
             </DropdownMenuItem>
           ))}
