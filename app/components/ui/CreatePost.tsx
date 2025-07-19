@@ -1,19 +1,13 @@
 import {
   Dialog,
-  DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/app/components/ui/dialog";
 import { FiSearch, FiBell, FiMenu, FiArrowRight, FiPlus } from "react-icons/fi";
 import { Button } from "@/app/components/ui/button";
-import { Label } from "@/app/components/ui/label";
-import { Input } from "@/app/components/ui/input";
 import { Textarea } from "@/app/components/ui/textarea";
-import { cn } from "@/lib/utils";
 import { User } from "@/types";
 import UserAvatar from "@/app/components/ui/UserAvatar";
 import ClubsDropdown from "@/app/components/ui/ClubsDropdown";

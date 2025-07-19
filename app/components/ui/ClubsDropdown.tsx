@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import clientFetcher from "@/lib/clientFetcher";
+import { Club } from "@/types";
 
 import {
   DropdownMenu,
@@ -11,8 +12,6 @@ import {
   DropdownMenuTrigger,
 } from "@/app/components/ui/dropdown-menu";
 import Image from "next/image";
-
-import { Club } from "@/types";
 
 export default function ClubsDropdown() {
   const [activeClub, setActiveClub] = useState("Choose club");
