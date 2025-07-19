@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,30 +7,41 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/app/components/ui/dropdown-menu";
-import UserAvatar from "@/app/components/ui/UserAvatar";
+import Image from "next/image";
 
 export default function ClubsDropdown() {
+  const [activeClub, setActiveClub] = useState("Choose club");
+
+  const clubs = [
+    { id: 1, name: "Chelsea", logo: "/images/chelsea.png" },
+    { id: 2, name: "Arsenal", logo: "/images/arsenalLogo.png" },
+    { id: 3, name: "Liverpool", logo: "/images/liverpool.png" },
+    { id: 4, name: "Manchester City", logo: "/images/manchesterCityLogo.png" },
+    { id: 5, name: "Manchester United", logo: "/images/manchesterUnited.png" },
+  ];
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div className="text-sm font-bold text-primary border-[0.5px] border-primary w-fit rounded-lg hover:bg-primary/20 transition-all cursor-pointer p-2 px-4">
-          Choose club
+          {activeClub}
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="start">
-        <DropdownMenuLabel>Choose club</DropdownMenuLabel>
+        <DropdownMenuLabel>{activeClub}</DropdownMenuLabel>
         <DropdownMenuGroup>
-          {[...Array(5)].map((_, index) => (
+          {clubs.map((club, index) => (
             <DropdownMenuItem>
               <div className="flex flex-col justify-center">
                 <div className="flex justify-start items-center gap-3">
-                  <UserAvatar
+                  <Image
+                    src={club.logo}
                     width={200}
                     height={200}
-                    alt="Avatar"
+                    alt={club.name}
                     className="h-10 w-10 object-cover rounded-full"
                   />
-                  <span className="text-sm">@username</span>
+                  <span className="text-sm">{club.name}</span>
                 </div>
               </div>
             </DropdownMenuItem>
