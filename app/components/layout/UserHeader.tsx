@@ -98,7 +98,7 @@ const Header = ({ user }: HeaderProps) => {
           </button>
 
           {/* Create post dialog */}
-          <CreatePost />
+          <CreatePost user={user} />
 
           {/* User Avatar and Dropdown */}
           <DropdownMenu>
