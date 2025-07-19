@@ -26,10 +26,15 @@ const CreatePost = ({ user }: { user: User }) => {
             <span className="bg-primary sm:bg-transparent text-white sm:text-black rounded-full p-1 flex items-center justify-center ml-2">
               <FiPlus />
             </span>
-            <span className="hidden sm:inline text-[0.8em] ">Create</span>
+            <DialogTitle>
+              <span className="hidden sm:inline text-[0.8em] ">Create</span>
+            </DialogTitle>
           </div>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent
+          aria-description="Post Card"
+          className="sm:max-w-[425px]"
+        >
           <div>
             <div className="flex items-center gap-2 mb-4">
               <div className="w-15 h-15 rounded-full overflow-hidden">

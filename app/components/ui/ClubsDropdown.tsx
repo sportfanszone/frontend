@@ -1,5 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import clientFetcher from "@/lib/clientFetcher";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,16 +12,26 @@ import {
 } from "@/app/components/ui/dropdown-menu";
 import Image from "next/image";
 
+import { Club } from "@/types";
+
 export default function ClubsDropdown() {
   const [activeClub, setActiveClub] = useState("Choose club");
+  const [clubs, setClubs] = useState<Club[]>([]);
 
-  const clubs = [
-    { id: 1, name: "Chelsea", logo: "/images/chelsea.png" },
-    { id: 2, name: "Arsenal", logo: "/images/arsenalLogo.png" },
-    { id: 3, name: "Liverpool", logo: "/images/liverpool.png" },
-    { id: 4, name: "Manchester City", logo: "/images/manchesterCityLogo.png" },
-    { id: 5, name: "Manchester United", logo: "/images/manchesterUnited.png" },
-  ];
+  const getClubs = async () => {
+    const data: { clubs: Club[] } = await clientFetcher(
+      `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/get_clubs`,
+      "GET"
+    );
+
+    setClubs(data?.clubs || []);
+
+    console.log("Clubs:", data);
+  };
+
+  useEffect(() => {
+    getClubs();
+  }, []);
 
   return (
     <DropdownMenu>
@@ -29,7 +41,8 @@ export default function ClubsDropdown() {
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="start">
-        <DropdownMenuLabel>{activeClub}</DropdownMenuLabel>
+        <DropdownMenuLabel>Select club</DropdownMenuLabel>
+
         <DropdownMenuGroup>
           {clubs.map((club, index) => (
             <DropdownMenuItem
