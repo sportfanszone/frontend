@@ -25,8 +25,6 @@ export default function ClubsDropdown() {
     );
 
     setClubs(data?.clubs || []);
-
-    console.log("Clubs:", data);
   };
 
   useEffect(() => {
@@ -44,23 +42,29 @@ export default function ClubsDropdown() {
         <DropdownMenuLabel>Select club</DropdownMenuLabel>
 
         <DropdownMenuGroup>
-          {clubs.map((club, index) => (
-            <DropdownMenuItem
-              onClick={() => setActiveClub(club.name)}
-              key={index}
-            >
-              <div className="flex justify-start items-center gap-3">
-                <Image
-                  src={club.logo}
-                  width={200}
-                  height={200}
-                  alt={club.name}
-                  className="h-10 w-10 object-cover rounded-full"
-                />
-                <span className="text-sm">{club.name}</span>
-              </div>
-            </DropdownMenuItem>
-          ))}
+          {clubs.length > 0 ? (
+            <>
+              {clubs.map((club, index) => (
+                <DropdownMenuItem
+                  onClick={() => setActiveClub(club.name)}
+                  key={index}
+                >
+                  <div className="flex justify-start items-center gap-3">
+                    <Image
+                      src={club.logo}
+                      width={200}
+                      height={200}
+                      alt={club.name}
+                      className="h-10 w-10 object-cover rounded-full"
+                    />
+                    <span className="text-sm">{club.name}</span>
+                  </div>
+                </DropdownMenuItem>
+              ))}
+            </>
+          ) : (
+            <DropdownMenuItem disabled>No clubs available</DropdownMenuItem>
+          )}
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -12,6 +12,7 @@ import { FiSearch, FiBell, FiMenu, FiArrowRight, FiPlus } from "react-icons/fi";
 import { Button } from "@/app/components/ui/button";
 import { Label } from "@/app/components/ui/label";
 import { Input } from "@/app/components/ui/input";
+import { Textarea } from "@/app/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { User } from "@/types";
 import UserAvatar from "@/app/components/ui/UserAvatar";
@@ -48,7 +49,16 @@ const CreatePost = ({ user }: { user: User }) => {
               </div>
               <ClubsDropdown />
             </div>
+
+            <Textarea
+              id="postContent"
+              placeholder="Write your post here..."
+              className="resize-none border-none shadow-none focus:outline-none focus:ring-0 focus-visible:ring-0 p-0"
+              required
+              autoFocus
+            />
           </div>
+
           <DialogFooter>
             <div className="flex items-center justify-between w-full">
               <div className="flex items-center">
