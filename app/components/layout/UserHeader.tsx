@@ -8,7 +8,7 @@ import { HeaderProps } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import UserAvatar from "@/app/components/ui/UserAvatar";
-import { FiSearch, FiPlus, FiBell, FiMenu, FiArrowRight } from "react-icons/fi";
+import { FiSearch, FiBell, FiMenu, FiArrowRight } from "react-icons/fi";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -20,6 +20,7 @@ import {
 } from "@/app/components/ui/dropdown-menu";
 import { Logout } from "@/app/components/ui/Logout";
 import { Badge } from "@/app/components/ui/badge";
+import CreatePost from "@/app/components/ui/CreatePost";
 
 const Header = ({ user }: HeaderProps) => {
   const { setShowLogoutConfirm } = useLogoutStore();
@@ -95,10 +96,11 @@ const Header = ({ user }: HeaderProps) => {
               99+
             </Badge>
           </button>
-          <div className="text-[0.9em] flex items-center justify-between gap-    1 cursor-pointer">
-            <FiPlus /> <span className="text-[0.8em] ">Create</span>
-          </div>
 
+          {/* Create post dialog */}
+          <CreatePost />
+
+          {/* User Avatar and Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <div className="w-8 h-8 border-black/40 border-2 rounded-full cursor-pointer overflow-hidden">
