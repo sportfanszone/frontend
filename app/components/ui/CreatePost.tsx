@@ -28,7 +28,7 @@ const CreatePost = ({ user }: { user: User }) => {
         </DialogTrigger>
         <DialogContent
           aria-description="Post Card"
-          className="w-full h-full sm:h-fit sm:max-w-[425px] rounded-none sm:rounded-lg"
+          className="w-full max-w-full h-full sm:h-fit sm:max-w-[425px] rounded-none sm:rounded-lg"
         >
           <div>
             <div className="flex items-center gap-2 mb-4">
