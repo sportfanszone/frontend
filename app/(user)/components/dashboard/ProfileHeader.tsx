@@ -26,8 +26,8 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
               {user?.firstName} {user?.middleName} {user?.lastName}
             </p>
             <div className="text-black/90 text-xs sm:text-sm flex items-center flex-wrap gap-x-4 gap-y-2">
-              <div>12.2k Followers</div>
-              <div>1.2k Following</div>
+              <div>{user?.Followers?.length} Followers</div>
+              <div>{user?.Following?.length} Following</div>
               <div className="flex  items-center gap-4">
                 <AchievementCards achievements={user.achievements} />{" "}
                 Achievements

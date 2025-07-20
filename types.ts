@@ -14,6 +14,8 @@ export type User = {
   achievements: Achievement[];
   leaguesYouFollow: League[];
   clubsYouFollow: Club[];
+  Followers: User[];
+  Following: User[];
 };
 
 export type Topic = {
