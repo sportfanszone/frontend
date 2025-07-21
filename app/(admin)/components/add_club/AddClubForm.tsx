@@ -222,18 +222,14 @@ export default function Signup() {
               file={form.logo}
               accept={{ "image/*": [] }}
               error={errors.logo}
-              onFileSelect={(file) =>
-                setForm((prev) => ({ ...prev, logo: file }))
-              }
+              onFileSelect={(file) => handleChange("logo", file)}
             />
             <DropzoneUploader
               label="Background Image"
               file={form.backgroundImage}
               accept={{ "image/*": [] }}
               error={errors.backgroundImage}
-              onFileSelect={(file) =>
-                setForm((prev) => ({ ...prev, backgroundImage: file }))
-              }
+              onFileSelect={(file) => handleChange("backgroundImage", file)}
             />
           </div>
 
