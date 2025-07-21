@@ -83,12 +83,12 @@ export function AdminSidebar({ ...props }: SidebarProps) {
         items: [
           {
             title: "All Leagues",
-            url: "#",
+            url: "/admin/all_leagues",
             icon: Trophy,
           },
           {
             title: "Add League",
-            url: "#",
+            url: "/admin/add_league",
             icon: PlusCircle,
           },
         ],

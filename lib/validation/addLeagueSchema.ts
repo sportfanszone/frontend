@@ -1,0 +1,14 @@
+import { z } from "zod";
+
+export const addLeagueSchema = z.object({
+  name: z
+    .string()
+    .min(1, "Name is required")
+    .max(50, "First name must be less than 50 characters"),
+  description: z
+    .string()
+    .min(1, "Description is required")
+    .max(50, "Middle name must be less than 50 characters"),
+  logo: z.instanceof(File),
+  backgroundImage: z.instanceof(File),
+});
