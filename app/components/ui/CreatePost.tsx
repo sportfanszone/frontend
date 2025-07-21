@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { FiArrowRight, FiPlus, FiLink, FiImage, FiX } from "react-icons/fi";
+import { FiArrowRight, FiPlus, FiLink, FiImage } from "react-icons/fi";
 
 import {
   Dialog,
@@ -14,6 +14,7 @@ import { Input } from "@/app/components/ui/input";
 import { Textarea } from "@/app/components/ui/textarea";
 import UserAvatar from "@/app/components/ui/UserAvatar";
 import ClubsDropdown from "@/app/components/ui/ClubsDropdown";
+import PostFiles from "@/app/components/ui/PostFiles";
 
 import { postSchema, PostSchema } from "@/lib/validation/postSchema";
 
@@ -159,38 +160,10 @@ const CreatePost = ({ user }: Props) => {
               <p className="text-red-500 text-sm mt-1">{errors.content}</p>
             )}
 
-            {postData.files.length > 0 && (
-              <div className="mt-3 flex flex-wrap gap-3">
-                {postData.files.map((file, index) => (
-                  <div
-                    key={index}
-                    className="relative w-24 h-24 rounded-md overflow-hidden border"
-                  >
-                    <button
-                      type="button"
-                      className="absolute top-1 right-1 bg-black/50 text-white rounded-full p-1 hover:bg-black transition"
-                      onClick={() => handleRemoveFile(index)}
-                    >
-                      <FiX size={14} />
-                    </button>
-
-                    {file.type.startsWith("image/") ? (
-                      <img
-                        src={URL.createObjectURL(file)}
-                        alt={`Preview ${index + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : file.type.startsWith("video/") ? (
-                      <video
-                        src={URL.createObjectURL(file)}
-                        controls
-                        className="w-full h-full object-cover"
-                      />
-                    ) : null}
-                  </div>
-                ))}
-              </div>
-            )}
+            <PostFiles
+              files={postData.files}
+              handleRemoveFile={handleRemoveFile}
+            />
           </div>
 
           <DialogFooter>
