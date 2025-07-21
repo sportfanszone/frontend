@@ -176,6 +176,7 @@ const CreatePost = ({ user }: Props) => {
                   className="hidden"
                   onChange={handleFileChange}
                   name="file"
+                  multiple
                 />
                 <label htmlFor="media-upload">
                   <div className="p-2 hover:bg-primary/20 rounded-lg transition-all cursor-pointer">
