@@ -13,7 +13,11 @@ import {
 } from "@/app/components/ui/dropdown-menu";
 import Image from "next/image";
 
-export default function ClubsDropdown() {
+export default function ClubsDropdown({
+  handleInputChange,
+}: {
+  handleInputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
   const [activeClub, setActiveClub] = useState("Choose club");
   const [clubs, setClubs] = useState<Club[]>([]);
 
@@ -30,6 +34,17 @@ export default function ClubsDropdown() {
     getClubs();
   }, []);
 
+  const handleClubChange = (clubName: string, clubId: string) => {
+    setActiveClub(clubName);
+    if (handleInputChange) {
+      handleInputChange({
+        target: { name: "clubId", value: clubId },
+      } as React.ChangeEvent<HTMLInputElement>);
+    } else {
+      console.warn("handleInputChange function is not provided");
+    }
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -45,7 +60,7 @@ export default function ClubsDropdown() {
             <>
               {clubs.map((club, index) => (
                 <DropdownMenuItem
-                  onClick={() => setActiveClub(club.name)}
+                  onClick={handleClubChange.bind(null, club.name, club.id)}
                   key={index}
                 >
                   <div className="flex justify-start items-center gap-3">
