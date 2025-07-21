@@ -100,12 +100,12 @@ export function AdminSidebar({ ...props }: SidebarProps) {
         items: [
           {
             title: "All Clubs",
-            url: "#",
+            url: "/admin/all_clubs",
             icon: BookOpen,
           },
           {
             title: "Add Club",
-            url: "#",
+            url: "/admin/add_club",
             icon: PlusCircle,
           },
         ],
