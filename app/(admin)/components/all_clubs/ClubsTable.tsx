@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import moment from "moment";
 import Link from "next/link";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { Input } from "@/app/components/ui/input";
@@ -13,13 +14,7 @@ import {
   CardContent,
 } from "@/app/components/ui/card";
 import { Badge } from "@/app/components/ui/badge";
-import {
-  IconCircleCheckFilled,
-  IconEdit,
-  IconKey,
-  IconForbid2,
-  IconTrash,
-} from "@tabler/icons-react";
+import { IconEdit, IconKey, IconForbid2, IconTrash } from "@tabler/icons-react";
 import {
   Tooltip,
   TooltipContent,
@@ -54,6 +49,10 @@ const columns: TableColumn<User>[] = [
     name: "Description",
     selector: (row) => row.description,
     sortable: true,
+  },
+  {
+    name: "Last Activity",
+    selector: (row) => moment(row.lastAccess).format("MMMM Do YYYY, h:mm:ss a"),
   },
   {
     name: "Action",
