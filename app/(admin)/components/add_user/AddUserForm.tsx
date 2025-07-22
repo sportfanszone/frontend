@@ -6,6 +6,7 @@ import PasswordInputGroup from "@/app/(admin)/components/add_user/PasswordInputG
 import SelectGroup from "@/app/(admin)/components/add_user/SelectGroup";
 import { addUserSchema } from "@/lib/validation/addUserSchema";
 import { Button } from "@/app/components/ui/button";
+import DropzoneUploader from "@/app/(admin)/components/add_club/DropzoneUploader";
 
 import Swal from "sweetalert2";
 
@@ -29,6 +30,8 @@ export default function Signup() {
     password: "",
     passwordConfirm: "",
     termsAndConditions: "",
+    profilePhoto: null as File | null,
+    coverPhoto: null as File | null,
   });
 
   const [errors, setErrors] = useState<
@@ -50,7 +53,10 @@ export default function Signup() {
     return true;
   };
 
-  const handleChange = (key: keyof typeof form, value: string) => {
+  const handleChange = <K extends keyof typeof form>(
+    key: K,
+    value: (typeof form)[K]
+  ) => {
     setForm((prev) => {
       const updatedForm = { ...prev, [key]: value };
       const result = addUserSchema.safeParse(updatedForm);
@@ -91,15 +97,26 @@ export default function Signup() {
     });
 
     try {
+      const formData = new FormData();
+
+      formData.append("firstName", form.firstName);
+      formData.append("middleName", form.middleName);
+      formData.append("lastName", form.lastName);
+      formData.append("username", form.username);
+      formData.append("role", form.role);
+      formData.append("email", form.email);
+      formData.append("password", form.password);
+      formData.append("passwordConfirm", form.passwordConfirm);
+      formData.append("termsAndConditions", form.termsAndConditions);
+      if (form.profilePhoto) formData.append("profilePhoto", form.profilePhoto);
+      if (form.coverPhoto) formData.append("coverPhoto", form.coverPhoto);
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/admin/add_user`,
         {
           method: "POST",
           credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(form),
+          body: formData,
         }
       );
       const data = await res.json();
@@ -187,6 +204,21 @@ export default function Signup() {
                 handleChange={handleChange}
               />
             ))}
+
+            <DropzoneUploader
+              label="Profile Photo"
+              file={form.profilePhoto}
+              accept={{ "image/*": [] }}
+              error={errors.profilePhoto}
+              onFileSelect={(file) => handleChange("profilePhoto", file)}
+            />
+            <DropzoneUploader
+              label="Cover Photo"
+              file={form.coverPhoto}
+              accept={{ "image/*": [] }}
+              error={errors.coverPhoto}
+              onFileSelect={(file) => handleChange("coverPhoto", file)}
+            />
           </div>
 
           <Button className="formButtons mt-2 sm:mt-3 md:mt-4" type="submit">

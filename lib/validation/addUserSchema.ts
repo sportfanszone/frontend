@@ -24,6 +24,8 @@ export const addUserSchema = z
     }),
     password: z.string().min(8, "Password must be at least 8 characters"),
     passwordConfirm: z.string().min(8, "confirm your password"),
+    profilePhoto: z.instanceof(File),
+    coverPhoto: z.instanceof(File),
   })
   .refine((data) => data.password === data.passwordConfirm, {
     message: "Passwords do not match",
