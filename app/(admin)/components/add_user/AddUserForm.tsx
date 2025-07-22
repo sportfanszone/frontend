@@ -145,49 +145,51 @@ export default function Signup() {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit}>
-          {[
-            { id: "firstName", label: "First Name" },
-            { id: "middleName", label: "Middle Name" },
-            { id: "lastName", label: "Last Name" },
-            { id: "username", label: "Username" },
-            { id: "email", label: "Email", type: "email" },
-          ].map(({ id, label, type = "text" }) => (
-            <InputGroup
-              key={id}
-              id={id as keyof typeof form}
-              label={label}
-              type={type}
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 w-full">
+            {[
+              { id: "firstName", label: "First Name" },
+              { id: "middleName", label: "Middle Name" },
+              { id: "lastName", label: "Last Name" },
+              { id: "username", label: "Username" },
+              { id: "email", label: "Email", type: "email" },
+            ].map(({ id, label, type = "text" }) => (
+              <InputGroup
+                key={id}
+                id={id as keyof typeof form}
+                label={label}
+                type={type}
+                errors={errors}
+                form={form}
+                handleChange={handleChange}
+              />
+            ))}
+
+            <SelectGroup
+              id="role"
+              label="Role"
               errors={errors}
               form={form}
               handleChange={handleChange}
+              placeholder="Select a role"
+              options={[
+                { label: "Admin", value: "admin" },
+                { label: "User", value: "user" },
+              ]}
             />
-          ))}
 
-          <SelectGroup
-            id="role"
-            label="Role"
-            errors={errors}
-            form={form}
-            handleChange={handleChange}
-            placeholder="Select a role"
-            options={[
-              { label: "Admin", value: "admin" },
-              { label: "User", value: "user" },
-            ]}
-          />
+            {/* Password */}
+            {["password", "passwordConfirm"].map((id) => (
+              <PasswordInputGroup
+                key={id}
+                id={id as keyof typeof form}
+                errors={errors}
+                form={form}
+                handleChange={handleChange}
+              />
+            ))}
+          </div>
 
-          {/* Password */}
-          {["password", "passwordConfirm"].map((id) => (
-            <PasswordInputGroup
-              key={id}
-              id={id as keyof typeof form}
-              errors={errors}
-              form={form}
-              handleChange={handleChange}
-            />
-          ))}
-
-          <Button className="formButtons mt-2" type="submit">
+          <Button className="formButtons mt-2 sm:mt-3 md:mt-4" type="submit">
             Create account
           </Button>
         </form>

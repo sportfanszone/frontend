@@ -29,7 +29,7 @@ const SelectGroup = <T extends Record<string, any>>({
   handleChange,
 }: SelectGroupProps<T>) => {
   return (
-    <div key={String(id)} className="mb-2 sm:mb-3 md:mb-4">
+    <div key={String(id)}>
       <Label htmlFor={id as string}>{label}</Label>
       <Select
         value={form[id] as string}

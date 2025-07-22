@@ -24,7 +24,7 @@ const PasswordInputGroup = <T extends Record<string, any>>({
   };
 
   return (
-    <div key={String(id)} className="mb-2 sm:mb-3 md:mb-4">
+    <div key={String(id)}>
       <Label className={`${errors[id] ? "" : ""} mb-1`} htmlFor={String(id)}>
         {id === "passwordConfirm" ? "Confirm Password" : "Password"}
       </Label>

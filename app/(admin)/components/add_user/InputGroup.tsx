@@ -19,7 +19,7 @@ const InputGroup = <T extends Record<string, any>>({
   handleChange,
 }: InputGroupProps<T>) => {
   return (
-    <div key={String(id)} className="mb-2 sm:mb-3 md:mb-4">
+    <div key={String(id)}>
       <div>
         <Label
           className={`${errors[id] ? "" : ""} mb-1`}
