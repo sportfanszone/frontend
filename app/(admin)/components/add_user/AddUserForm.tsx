@@ -18,7 +18,7 @@ import {
   CardDescription,
 } from "@/app/components/ui/card";
 
-export default function Signup() {
+export default function AddUserForm() {
   const router = useRouter();
   const [form, setForm] = useState({
     firstName: "",
