@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import InputGroup from "@/app/(admin)/components/add_user/InputGroup";
+import InputGroup from "@/app/components/ui/InputGroup";
 import PasswordInputGroup from "@/app/(admin)/components/add_user/PasswordInputGroup";
 import SelectGroup from "@/app/(admin)/components/add_user/SelectGroup";
 import { addUserSchema } from "@/lib/validation/addUserSchema";
