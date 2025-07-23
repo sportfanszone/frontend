@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import InputGroup from "@/app/(admin)/components/InputGroup";
-import SelectGroup from "@/app/(admin)/components/add_user/SelectGroup";
+import SelectGroup from "@/app/(admin)/components/SelectGroup";
 import { editUserSchema } from "@/lib/validation/editUserSchema";
 import { Button } from "@/app/components/ui/button";
 import DropzoneUploader from "@/app/(admin)/components/DropzoneUploader";

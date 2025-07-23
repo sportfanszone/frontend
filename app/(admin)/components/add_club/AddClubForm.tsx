@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import InputGroup from "@/app/(admin)/components/InputGroup";
-import SelectGroup from "@/app/(admin)/components/add_club/SelectGroup";
+import SelectGroup from "@/app/(admin)/components/SelectGroup";
 import { addClubSchema } from "@/lib/validation/addClubSchema";
 import { Button } from "@/app/components/ui/button";
 import DropzoneUploader from "@/app/(admin)/components/DropzoneUploader";
