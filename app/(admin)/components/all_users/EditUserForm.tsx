@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import InputGroup from "@/app/(admin)/components/add_user/InputGroup";
+import InputGroup from "@/app/components/ui/InputGroup";
 import SelectGroup from "@/app/(admin)/components/add_user/SelectGroup";
 import { editUserSchema } from "@/lib/validation/editUserSchema";
 import { Button } from "@/app/components/ui/button";
