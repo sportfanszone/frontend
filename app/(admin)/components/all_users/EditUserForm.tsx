@@ -4,7 +4,7 @@ import InputGroup from "@/app/(admin)/components/add_user/InputGroup";
 import SelectGroup from "@/app/(admin)/components/add_user/SelectGroup";
 import { editUserSchema } from "@/lib/validation/editUserSchema";
 import { Button } from "@/app/components/ui/button";
-import DropzoneUploader from "@/app/(admin)/components/add_club/DropzoneUploader";
+import DropzoneUploader from "@/app/components/ui/DropzoneUploader";
 import { DialogFooter, DialogClose } from "@/app/components/ui/dialog";
 
 import Swal from "sweetalert2";
