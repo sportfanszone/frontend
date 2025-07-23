@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import InputGroup from "@/app/(admin)/components/add_club/InputGroup";
+import InputGroup from "@/app/components/ui/InputGroup";
 import SelectGroup from "@/app/(admin)/components/add_club/SelectGroup";
 import { addClubSchema } from "@/lib/validation/addClubSchema";
 import { Button } from "@/app/components/ui/button";
