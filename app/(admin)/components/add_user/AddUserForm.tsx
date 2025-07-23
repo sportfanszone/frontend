@@ -6,7 +6,7 @@ import PasswordInputGroup from "@/app/(admin)/components/add_user/PasswordInputG
 import SelectGroup from "@/app/(admin)/components/add_user/SelectGroup";
 import { addUserSchema } from "@/lib/validation/addUserSchema";
 import { Button } from "@/app/components/ui/button";
-import DropzoneUploader from "@/app/components/ui/DropzoneUploader";
+import DropzoneUploader from "@/app/(admin)/components/DropzoneUploader";
 
 import Swal from "sweetalert2";
 
