@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import InputGroup from "@/app/(admin)/components/add_league/InputGroup";
 import { addLeagueSchema } from "@/lib/validation/addLeagueSchema";
 import { Button } from "@/app/components/ui/button";
-import DropzoneUploader from "@/app/(admin)/components/add_league/DropzoneUploader";
+import DropzoneUploader from "@/app/components/ui/DropzoneUploader";
 
 import Swal from "sweetalert2";
 
