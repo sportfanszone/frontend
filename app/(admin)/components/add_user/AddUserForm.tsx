@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import InputGroup from "@/app/(admin)/components/InputGroup";
-import PasswordInputGroup from "@/app/(admin)/components/add_user/PasswordInputGroup";
+import PasswordInputGroup from "@/app/(admin)/components/PasswordInputGroup";
 import SelectGroup from "@/app/(admin)/components/SelectGroup";
 import { addUserSchema } from "@/lib/validation/addUserSchema";
 import { Button } from "@/app/components/ui/button";
