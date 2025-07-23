@@ -10,6 +10,7 @@ interface DropzoneUploaderProps {
   accept?: Accept;
   file?: File | null;
   error?: string;
+  initialUrl?: string;
 }
 
 const DropzoneUploader = ({
@@ -21,6 +22,7 @@ const DropzoneUploader = ({
   },
   file,
   error,
+  initialUrl,
 }: DropzoneUploaderProps) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -48,10 +50,12 @@ const DropzoneUploader = ({
       return () => {
         URL.revokeObjectURL(url);
       };
+    } else if (!file && initialUrl) {
+      setPreviewUrl(initialUrl);
     } else {
       setPreviewUrl(null);
     }
-  }, [file]);
+  }, [file, initialUrl]);
 
   return (
     <div className="flex flex-col gap-1 w-full">
