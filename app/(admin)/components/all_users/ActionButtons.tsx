@@ -16,6 +16,7 @@ import {
 import { Badge } from "@/app/components/ui/badge";
 import { Button } from "@/app/components/ui/button";
 import EditUserForm from "@/app/(admin)/components/all_users/EditUserForm";
+import ResetUserPasswordForm from "@/app/(admin)/components/all_users/ResetUserPasswordForm";
 
 import { User } from "@/types";
 
@@ -99,9 +100,14 @@ const ActionButtons = ({ row, setData }: ActionButtonsProps) => {
             </DialogTitle>
           </DialogHeader>
           <div>
-            {dialogType === "edit" && (
+            {dialogType === "edit" ? (
               <EditUserForm setData={setData} user={selectedUser as User} />
-            )}
+            ) : dialogType === "password" ? (
+              <ResetUserPasswordForm
+                setData={setData}
+                user={selectedUser as User}
+              />
+            ) : null}
           </div>
         </DialogContent>
       </Dialog>
