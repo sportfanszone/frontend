@@ -24,8 +24,11 @@ const UserAvatar = ({ alt, src, className }: UserAvatarType) => {
 
   return (
     <Avatar>
-      <AvatarImage src={src} />
-      <AvatarFallback style={{ backgroundColor: fallbackColor, color: "#000" }}>
+      <AvatarImage className={className} src={src} />
+      <AvatarFallback
+        className={className}
+        style={{ backgroundColor: fallbackColor, color: "#000" }}
+      >
         {alt}
       </AvatarFallback>
     </Avatar>
