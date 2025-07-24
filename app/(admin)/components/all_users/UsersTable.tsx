@@ -44,7 +44,7 @@ export function UsersTable() {
         >
           <UserAvatar
             src={row.profileImageUrl}
-            alt={`${(row.firstName, row.middleName, row.lastName)}`}
+            alt={`${row.firstName?.[0]}${row.lastName?.[0]}`}
             className="w-8 h-8 rounded-full object-cover"
           />
           <span className="flex-1 w-45 truncate">
