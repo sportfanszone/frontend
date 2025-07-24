@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { IconEdit, IconKey, IconForbid2, IconTrash } from "@tabler/icons-react";
+import {
+  IconEdit,
+  IconPinned,
+  IconForbid2,
+  IconTrash,
+} from "@tabler/icons-react";
 import {
   Tooltip,
   TooltipContent,
@@ -38,7 +43,7 @@ const ActionButtons = ({ row, setData }: ActionButtonsProps) => {
             <IconEdit stroke={3} className="text-white text-4xl" />
           </Badge>
         </TooltipTrigger>
-        <TooltipContent>Edit user</TooltipContent>
+        <TooltipContent>Edit league</TooltipContent>
       </Tooltip>
       <Tooltip>
         <TooltipTrigger>
@@ -49,10 +54,10 @@ const ActionButtons = ({ row, setData }: ActionButtonsProps) => {
             }}
             className="bg-gray-400 hover:bg-gray-500 cursor-pointer size-7 flex items-center justify-center rounded-none"
           >
-            <IconKey stroke={3} className="text-white text-4xl" />
+            <IconPinned stroke={3} className="text-white text-4xl" />
           </Badge>
         </TooltipTrigger>
-        <TooltipContent>Edit user password</TooltipContent>
+        <TooltipContent>Pin league</TooltipContent>
       </Tooltip>
       <Tooltip>
         <TooltipTrigger>
