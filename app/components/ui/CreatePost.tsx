@@ -123,11 +123,9 @@ const CreatePost = ({ user }: Props) => {
             <div className="flex items-center gap-2 mb-4">
               <div className="w-15 h-15 rounded-full overflow-hidden">
                 <UserAvatar
-                  alt={`${user.firstName} ${user.middleName} ${user.lastName}`}
+                  alt={`${user.firstName?.[0]}${user.lastName?.[0]}`}
                   src={user.profileImageUrl}
                   className="w-full h-full object-cover"
-                  width={50}
-                  height={50}
                 />
               </div>
               <ClubsDropdown />
