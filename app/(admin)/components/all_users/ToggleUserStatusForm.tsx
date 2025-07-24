@@ -1,6 +1,12 @@
 "use client";
+import { useState } from "react";
 import { Button } from "@/app/components/ui/button";
-import { DialogFooter, DialogClose } from "@/app/components/ui/dialog";
+import {
+  DialogFooter,
+  DialogClose,
+  DialogHeader,
+  DialogTitle,
+} from "@/app/components/ui/dialog";
 import UserAvatar from "@/app/components/ui/UserAvatar";
 
 import Swal from "sweetalert2";
@@ -15,6 +21,9 @@ export default function ResetUserPasswordForm({
   user,
   setData,
 }: ToggleUserStatusFormProps) {
+  const [userStatus, setUserStatus] = useState<string>(
+    user.status === "active" ? "active" : "blocked"
+  );
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -57,6 +66,9 @@ export default function ResetUserPasswordForm({
                 : u
             )
           );
+          setUserStatus((prevData) =>
+            prevData === "active" ? "blocked" : "active"
+          );
         }
       } else {
         if (data.message) {
@@ -78,6 +90,11 @@ export default function ResetUserPasswordForm({
 
   return (
     <form onSubmit={handleSubmit}>
+      <DialogHeader className="mb-4 md:mb-6">
+        <DialogTitle>
+          {userStatus === "active" ? "Disable User" : "Enable User"}
+        </DialogTitle>
+      </DialogHeader>
       <div className="flex items-center gap-2 my-2 mb-4">
         <UserAvatar
           src={user.profileImageUrl}
@@ -94,7 +111,7 @@ export default function ResetUserPasswordForm({
           <Button variant="secondary">Cancel</Button>
         </DialogClose>
         <Button variant="default" type="submit">
-          {user.status === "active" ? "Disable" : "Enable"}
+          {userStatus === "active" ? "Disable User" : "Enable User"}
         </Button>
       </DialogFooter>
     </form>
