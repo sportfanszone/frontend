@@ -37,7 +37,7 @@ const columns: TableColumn<User>[] = [
       >
         <UserAvatar
           src={row.logo}
-          alt={row.name}
+          alt={row.name?.[0]}
           className="w-8 h-8 rounded-full object-cover"
         />
         <span className="flex-1 w-45 truncate">{row.name}</span>
