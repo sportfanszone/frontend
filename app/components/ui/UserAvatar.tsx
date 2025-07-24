@@ -23,10 +23,10 @@ const UserAvatar = ({ alt, src, className }: UserAvatarType) => {
   const fallbackColor = getColorFromString(alt);
 
   return (
-    <Avatar>
-      <AvatarImage className={className} src={src} />
+    <Avatar className={className}>
+      <AvatarImage src={src} />
       <AvatarFallback
-        className={className}
+        className="w-full h-full"
         style={{ backgroundColor: fallbackColor, color: "#000" }}
       >
         {alt}
