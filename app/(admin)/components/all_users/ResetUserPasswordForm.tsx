@@ -4,6 +4,7 @@ import PasswordInputGroup from "@/app/(admin)/components/PasswordInputGroup";
 import { resetUserPasswordSchema } from "@/lib/validation/resetUserPasswordSchema";
 import { Button } from "@/app/components/ui/button";
 import { DialogFooter, DialogClose } from "@/app/components/ui/dialog";
+import UserAvatar from "@/app/components/ui/UserAvatar";
 
 import Swal from "sweetalert2";
 import { User } from "@/types";
@@ -133,6 +134,16 @@ export default function ResetUserPasswordForm({
 
   return (
     <form onSubmit={handleSubmit}>
+      <div className="flex items-center gap-2 my-2 mb-4">
+        <UserAvatar
+          src={user.profileImageUrl}
+          alt={`${user.firstName}${user.middleName}${user.lastName}`}
+          className="w-8 h-8 rounded-full border border-gray-300 shadow-sm"
+        />
+        <p className="text-sm text-black/50 font-medium">
+          {user.firstName} {user.middleName} {user.lastName}
+        </p>
+      </div>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 w-full">
         {["password", "passwordConfirm"].map((id) => (
           <PasswordInputGroup
