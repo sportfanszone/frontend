@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import moment from "moment";
 import Link from "next/link";
 import DataTable, { TableColumn } from "react-data-table-component";
@@ -13,89 +12,12 @@ import {
   CardDescription,
   CardContent,
 } from "@/app/components/ui/card";
-import { Badge } from "@/app/components/ui/badge";
-import { IconEdit, IconKey, IconForbid2, IconTrash } from "@tabler/icons-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/app/components/ui/tooltip";
 import UserAvatar from "@/app/components/ui/UserAvatar";
+import ActionButtons from "@/app/(admin)/components/all_leagues/ActionButtons";
 
 import clientFetcher from "@/lib/clientFetcher";
 
 type User = any;
-
-const columns: TableColumn<User>[] = [
-  {
-    name: "Name",
-    selector: (row) => row.name,
-    cell: (row) => (
-      <Link
-        href={`/admin/view_league/${row?.id}`}
-        className="flex items-center gap-3 hover:underline hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-      >
-        <UserAvatar
-          src={row.logo}
-          alt={row.name?.[0]}
-          className="w-8 h-8 rounded-full object-cover"
-        />
-        <span className="flex-1 w-45 truncate">{row.name}</span>
-      </Link>
-    ),
-    sortable: true,
-  },
-  {
-    name: "Description",
-    selector: (row) => row.description,
-    sortable: true,
-  },
-  {
-    name: "Last Activity",
-    selector: (row) => moment(row.lastAccess).format("MMMM Do YYYY, h:mm:ss a"),
-  },
-  {
-    name: "Action",
-    cell: () => (
-      <div className="flex items-center">
-        <Tooltip>
-          <TooltipTrigger>
-            <Badge className="bg-green-400 hover:bg-green-500 cursor-pointer size-7 flex items-center justify-center rounded-none rounded-tl-lg rounded-bl-lg">
-              <IconEdit stroke={3} className="text-white  text-4xl" />
-            </Badge>
-          </TooltipTrigger>
-          <TooltipContent>Edit user</TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger>
-            <Badge className="bg-gray-400 hover:bg-gray-500 cursor-pointer size-7 flex items-center justify-center rounded-none">
-              <IconKey stroke={3} className="text-white  text-4xl" />
-            </Badge>
-          </TooltipTrigger>
-          <TooltipContent>Edit user password</TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger>
-            <Badge className="bg-yellow-400 hover:bg-yellow-500 cursor-pointer size-7 flex items-center justify-center rounded-none">
-              <IconForbid2 stroke={3} className="text-white  text-4xl" />
-            </Badge>
-          </TooltipTrigger>
-          <TooltipContent>Disable user</TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger>
-            <Badge className="bg-red-500 hover:bg-red-600 cursor-pointer size-7 flex items-center justify-center rounded-none rounded-tr-lg rounded-br-lg">
-              <IconTrash stroke={3} className="text-white  text-4xl" />
-            </Badge>
-          </TooltipTrigger>
-          <TooltipContent>Delete user</TooltipContent>
-        </Tooltip>
-      </div>
-    ),
-    sortable: true,
-    width: "11em",
-  },
-];
 
 export function LeaguesTable() {
   const [data, setData] = useState<User[]>([]);
@@ -105,7 +27,42 @@ export function LeaguesTable() {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const router = useRouter();
+  const columns: TableColumn<User>[] = [
+    {
+      name: "Name",
+      selector: (row) => row.name,
+      cell: (row) => (
+        <Link
+          href={`/admin/view_league/${row?.id}`}
+          className="flex items-center gap-3 hover:underline hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+        >
+          <UserAvatar
+            src={row.logo}
+            alt={row.name?.[0]}
+            className="w-8 h-8 rounded-full object-cover"
+          />
+          <span className="flex-1 w-45 truncate">{row.name}</span>
+        </Link>
+      ),
+      sortable: true,
+    },
+    {
+      name: "Description",
+      selector: (row) => row.description,
+      sortable: true,
+    },
+    {
+      name: "Last Activity",
+      selector: (row) =>
+        moment(row.lastAccess).format("MMMM Do YYYY, h:mm:ss a"),
+    },
+    {
+      name: "Action",
+      cell: (row) => <ActionButtons setData={setData} row={row} />,
+      sortable: true,
+      width: "11em",
+    },
+  ];
 
   const fetchUsers = async (page = 1, search = "") => {
     setLoading(true);
