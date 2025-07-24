@@ -10,6 +10,7 @@ import { Badge } from "@/app/components/ui/badge";
 import EditUserForm from "@/app/(admin)/components/all_users/EditUserForm";
 import ResetUserPasswordForm from "@/app/(admin)/components/all_users/ResetUserPasswordForm";
 import ToggleUserStatusForm from "@/app/(admin)/components/all_users/ToggleUserStatusForm";
+import DeleteUserForm from "@/app/(admin)/components/all_users/DeleteUserForm";
 
 import { User } from "@/types";
 
@@ -97,6 +98,8 @@ const ActionButtons = ({ row, setData }: ActionButtonsProps) => {
                 setData={setData}
                 user={selectedUser as User}
               />
+            ) : dialogType === "delete" ? (
+              <DeleteUserForm setData={setData} user={selectedUser as User} />
             ) : null}
           </div>
         </DialogContent>
