@@ -17,7 +17,7 @@ interface ToggleUserStatusFormProps {
   setData?: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
-export default function ResetUserPasswordForm({
+export default function ToggleUserStatusForm({
   user,
   setData,
 }: ToggleUserStatusFormProps) {
