@@ -87,7 +87,7 @@ export default function DeleteUserForm({ user, setData }: DeleteUserFormProps) {
         <DialogClose asChild>
           <Button variant="secondary">Cancel</Button>
         </DialogClose>
-        <Button variant="default" type="submit">
+        <Button variant="destructive" type="submit">
           Delete User
         </Button>
       </DialogFooter>
