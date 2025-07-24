@@ -10,10 +10,7 @@ const UserCard = () => {
       >
         <div className="flex flex-col items-center justify-center absolute bottom-[-50%] left-10">
           <div className="relative w-32 h-32 mb-4">
-            <UserAvatar
-              alt="User Avatar"
-              className="rounded-full object-cover"
-            />
+            <UserAvatar alt="JD" className="rounded-full object-cover" />
           </div>
           <h2 className="text-xl font-semibold">John Doe</h2>
           <p className="text-gray-500"></p>
