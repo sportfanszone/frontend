@@ -17,6 +17,7 @@ import { Badge } from "@/app/components/ui/badge";
 import { Button } from "@/app/components/ui/button";
 import EditUserForm from "@/app/(admin)/components/all_users/EditUserForm";
 import ResetUserPasswordForm from "@/app/(admin)/components/all_users/ResetUserPasswordForm";
+import ToggleUserStatusForm from "@/app/(admin)/components/all_users/ToggleUserStatusForm";
 
 import { User } from "@/types";
 
@@ -95,7 +96,9 @@ const ActionButtons = ({ row, setData }: ActionButtonsProps) => {
             <DialogTitle>
               {dialogType === "edit" && "Edit User"}
               {dialogType === "password" && "Change Password"}
-              {dialogType === "disable" && "Disable User"}
+              {dialogType === "disable" && selectedUser?.status === "active"
+                ? "Disable User"
+                : "Enable User"}
               {dialogType === "delete" && "Delete User"}
             </DialogTitle>
           </DialogHeader>
@@ -104,6 +107,11 @@ const ActionButtons = ({ row, setData }: ActionButtonsProps) => {
               <EditUserForm setData={setData} user={selectedUser as User} />
             ) : dialogType === "password" ? (
               <ResetUserPasswordForm
+                setData={setData}
+                user={selectedUser as User}
+              />
+            ) : dialogType === "disable" ? (
+              <ToggleUserStatusForm
                 setData={setData}
                 user={selectedUser as User}
               />
