@@ -137,7 +137,7 @@ export default function ResetUserPasswordForm({
       <div className="flex items-center gap-2 my-2 mb-4">
         <UserAvatar
           src={user.profileImageUrl}
-          alt={`${user.firstName}${user.middleName}${user.lastName}`}
+          alt={`${user.firstName?.[0]}${user.lastName?.[0]}`}
           className="w-8 h-8 rounded-full border border-gray-300 shadow-sm"
         />
         <p className="text-sm text-black/50 font-medium">
