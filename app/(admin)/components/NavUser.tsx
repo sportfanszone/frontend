@@ -47,7 +47,7 @@ export function NavUser({ user }: { user: User }) {
               >
                 <UserAvatar
                   src={user.profileImageUrl}
-                  alt={`${user.firstName} ${user.middleName} ${user.lastName}`}
+                  alt={`${user.firstName?.[0]}${user.lastName?.[0]}`}
                   className="h-8 w-8 rounded-full"
                 />
                 <div className="grid flex-1 text-left text-sm leading-tight">
@@ -67,7 +67,7 @@ export function NavUser({ user }: { user: User }) {
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                   <UserAvatar
                     src={user.profileImageUrl}
-                    alt={`${user.firstName} ${user.middleName} ${user.lastName}`}
+                    alt={`${user.firstName?.[0]}${user.lastName?.[0]}`}
                     className="h-8 w-8 rounded-full"
                   />
                   <div className="grid flex-1 text-left text-sm leading-tight">
