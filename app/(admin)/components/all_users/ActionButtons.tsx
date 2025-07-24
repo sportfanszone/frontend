@@ -92,16 +92,6 @@ const ActionButtons = ({ row, setData }: ActionButtonsProps) => {
 
       <Dialog open={!!dialogType} onOpenChange={() => setDialogType(null)}>
         <DialogContent className="max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>
-              {dialogType === "edit" && "Edit User"}
-              {dialogType === "password" && "Change Password"}
-              {dialogType === "disable" && selectedUser?.status === "active"
-                ? "Disable User"
-                : "Enable User"}
-              {dialogType === "delete" && "Delete User"}
-            </DialogTitle>
-          </DialogHeader>
           <div>
             {dialogType === "edit" ? (
               <EditUserForm setData={setData} user={selectedUser as User} />

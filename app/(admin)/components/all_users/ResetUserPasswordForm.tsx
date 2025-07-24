@@ -3,8 +3,13 @@ import { useState } from "react";
 import PasswordInputGroup from "@/app/(admin)/components/PasswordInputGroup";
 import { resetUserPasswordSchema } from "@/lib/validation/resetUserPasswordSchema";
 import { Button } from "@/app/components/ui/button";
-import { DialogFooter, DialogClose } from "@/app/components/ui/dialog";
 import UserAvatar from "@/app/components/ui/UserAvatar";
+import {
+  DialogFooter,
+  DialogClose,
+  DialogHeader,
+  DialogTitle,
+} from "@/app/components/ui/dialog";
 
 import Swal from "sweetalert2";
 import { User } from "@/types";
@@ -134,6 +139,9 @@ export default function ResetUserPasswordForm({
 
   return (
     <form onSubmit={handleSubmit}>
+      <DialogHeader className="mb-4 md:mb-6">
+        <DialogTitle>Reset User Password</DialogTitle>
+      </DialogHeader>
       <div className="flex items-center gap-2 my-2 mb-4">
         <UserAvatar
           src={user.profileImageUrl}

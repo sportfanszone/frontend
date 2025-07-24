@@ -5,7 +5,12 @@ import SelectGroup from "@/app/(admin)/components/SelectGroup";
 import { editUserSchema } from "@/lib/validation/editUserSchema";
 import { Button } from "@/app/components/ui/button";
 import DropzoneUploader from "@/app/(admin)/components/DropzoneUploader";
-import { DialogFooter, DialogClose } from "@/app/components/ui/dialog";
+import {
+  DialogFooter,
+  DialogClose,
+  DialogHeader,
+  DialogTitle,
+} from "@/app/components/ui/dialog";
 
 import Swal from "sweetalert2";
 import { User } from "@/types";
@@ -167,6 +172,9 @@ export default function EditUserForm({ user, setData }: EditUserFormProps) {
 
   return (
     <form onSubmit={handleSubmit}>
+      <DialogHeader className="mb-4 md:mb-6">
+        <DialogTitle>Edit User</DialogTitle>
+      </DialogHeader>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 w-full">
         {[
           { id: "firstName", label: "First Name" },
