@@ -1,32 +1,34 @@
-import { cn } from "@/lib/utils";
-import Image from "next/image";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/app/components/ui/avatar";
 
 type UserAvatarType = {
   alt: string;
   src?: string;
-  width?: number;
-  height?: number;
   className?: string;
 };
 
-const UserAvatar = ({
-  alt,
-  src,
-  width = 200,
-  height = 200,
-  className,
-}: UserAvatarType) => {
-  const seed = encodeURIComponent(alt);
-  const url = src || `https://api.dicebear.com/8.x/initials/svg?seed=${seed}`;
+function getColorFromString(str: string) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const hue = hash % 360;
+  return `hsl(${hue}, 70%, 80%)`;
+}
+
+const UserAvatar = ({ alt, src, className }: UserAvatarType) => {
+  const fallbackColor = getColorFromString(alt);
 
   return (
-    <Image
-      src={url}
-      alt="Profile Photo"
-      width={width}
-      height={height}
-      className={cn("object-cover", className)}
-    />
+    <Avatar>
+      <AvatarImage src={src} />
+      <AvatarFallback style={{ backgroundColor: fallbackColor, color: "#000" }}>
+        {alt}
+      </AvatarFallback>
+    </Avatar>
   );
 };
 export default UserAvatar;
