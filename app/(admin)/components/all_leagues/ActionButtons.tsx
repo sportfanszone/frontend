@@ -9,6 +9,7 @@ import { Dialog, DialogContent } from "@/app/components/ui/dialog";
 import { Badge } from "@/app/components/ui/badge";
 import EditLeagueForm from "@/app/(admin)/components/all_leagues/EditLeagueForm";
 import TogglePinnedLeagueForm from "@/app/(admin)/components/all_leagues/TogglePinnedLeagueForm";
+import DeleteLeagueForm from "@/app/(admin)/components/all_leagues/DeleteLeagueForm";
 import ResetUserPasswordForm from "@/app/(admin)/components/all_users/ResetUserPasswordForm";
 import ToggleUserStatusForm from "@/app/(admin)/components/all_users/ToggleUserStatusForm";
 import DeleteUserForm from "@/app/(admin)/components/all_users/DeleteUserForm";
@@ -84,8 +85,10 @@ const ActionButtons = ({ row, setData }: ActionButtonsProps) => {
                 setData={setData}
               />
             ) : dialogType === "delete" ? (
-              // <DeleteUserForm setData={setData} user={selectedLeague as User} />
-              <></>
+              <DeleteLeagueForm
+                league={selectedLeague as League}
+                setData={setData}
+              />
             ) : null}
           </div>
         </DialogContent>
