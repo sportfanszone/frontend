@@ -1,10 +1,5 @@
 import { useState } from "react";
-import {
-  IconEdit,
-  IconPinned,
-  IconForbid2,
-  IconTrash,
-} from "@tabler/icons-react";
+import { IconEdit, IconPinned, IconTrash } from "@tabler/icons-react";
 import {
   Tooltip,
   TooltipContent,
