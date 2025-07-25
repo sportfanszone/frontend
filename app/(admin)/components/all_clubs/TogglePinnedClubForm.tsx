@@ -10,19 +10,19 @@ import {
 import UserAvatar from "@/app/components/ui/UserAvatar";
 
 import Swal from "sweetalert2";
-import { League } from "@/types";
+import { Club } from "@/types";
 
-interface ToggleLeagueStatusFormProps {
-  league: League;
+interface ToggleClubStatusFormProps {
+  club: Club;
   setData?: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
-export default function ToggleLeagueStatusForm({
-  league,
+export default function ToggleClubStatusForm({
+  club,
   setData,
-}: ToggleLeagueStatusFormProps) {
-  const [leagueStatus, setLeagueStatus] = useState<boolean>(
-    league.pinned ? true : false
+}: ToggleClubStatusFormProps) {
+  const [clubStatus, setClubStatus] = useState<boolean>(
+    club.pinned ? true : false
   );
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +41,7 @@ export default function ToggleLeagueStatusForm({
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/admin/toggle_pinned_league/${league.id}`,
+        `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/admin/toggle_pinned_club/${club.id}`,
         {
           method: "POST",
           credentials: "include",
@@ -52,13 +52,15 @@ export default function ToggleLeagueStatusForm({
       if (res.ok || data.status === "success") {
         Toast.fire({
           icon: "success",
-          title: data.message || "Password reset successfully!",
+          title:
+            data.message ||
+            `Club ${clubStatus ? "Unpinned" : "Pinned"} successfully!`,
         });
 
         if (setData) {
           setData((prevData) =>
             prevData.map((u) =>
-              u.id === league.id
+              u.id === club.id
                 ? {
                     ...u,
                     pinned: u.pinned === true ? false : true,
@@ -66,7 +68,7 @@ export default function ToggleLeagueStatusForm({
                 : u
             )
           );
-          setLeagueStatus((prevData) => (prevData === true ? false : true));
+          setClubStatus((prevData) => (prevData === true ? false : true));
         }
       } else {
         if (data.message) {
@@ -80,8 +82,8 @@ export default function ToggleLeagueStatusForm({
       Toast.fire({
         icon: "error",
         title: `Error ${
-          league.pinned === true ? "Disabl" : "Enabl"
-        }ing league. Please try again.`,
+          club.pinned === true ? "Disabl" : "Enabl"
+        }ing club. Please try again.`,
       });
     }
   };
@@ -90,16 +92,16 @@ export default function ToggleLeagueStatusForm({
     <form onSubmit={handleSubmit}>
       <DialogHeader className="mb-4 md:mb-6">
         <DialogTitle>
-          {leagueStatus === true ? "Disable League" : "Enable League"}
+          {clubStatus === true ? "Disable Club" : "Enable Club"}
         </DialogTitle>
       </DialogHeader>
       <div className="flex items-center gap-2 my-2 mb-4">
         <UserAvatar
-          src={league.logo}
-          alt={`${league.name?.[0]}`}
+          src={club.logo}
+          alt={`${club.name?.[0]}`}
           className="w-8 h-8 rounded-full border border-gray-300 shadow-sm"
         />
-        <p className="text-sm text-black/50 font-medium">{league.name}</p>
+        <p className="text-sm text-black/50 font-medium">{club.name}</p>
       </div>
 
       <DialogFooter className="mt-2 sm:mt-3 md:mt-4">
@@ -107,7 +109,7 @@ export default function ToggleLeagueStatusForm({
           <Button variant="secondary">Cancel</Button>
         </DialogClose>
         <Button variant="default" type="submit">
-          {leagueStatus ? "Unpin League" : "Pin League"}
+          {clubStatus ? "Unpin Club" : "Pin Club"}
         </Button>
       </DialogFooter>
     </form>

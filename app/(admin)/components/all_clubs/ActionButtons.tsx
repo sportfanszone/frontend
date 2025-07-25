@@ -74,11 +74,10 @@ const ActionButtons = ({ row, setData }: ActionButtonsProps) => {
             {dialogType === "edit" ? (
               <EditClubForm setData={setData} club={selectedClub as Club} />
             ) : dialogType === "pin" ? (
-              // <TogglePinnedClubForm
-              //   club={selectedClub as Club}
-              //   setData={setData}
-              // />
-              <></>
+              <TogglePinnedClubForm
+                club={selectedClub as Club}
+                setData={setData}
+              />
             ) : dialogType === "delete" ? (
               // <DeleteClubForm
               //   club={selectedClub as Club}
