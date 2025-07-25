@@ -31,7 +31,7 @@ const LeaguesSection = async () => {
               <LeagueCard
                 leagueName={league.name}
                 clubCount={league.clubCount}
-                lastActivity={league.lastActivity}
+                lastActivity={league.lastAccess}
                 description={league.description}
                 logo={league.logo}
                 backgroundImage={league.backgroundImage}

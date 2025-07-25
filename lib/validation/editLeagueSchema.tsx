@@ -8,7 +8,7 @@ export const editLeagueSchema = z.object({
   description: z
     .string()
     .min(1, "Description is required")
-    .max(50, "Description must be less than 50 characters"),
+    .max(500, "Description must be less than 500 characters"),
   logo: z.union([z.instanceof(File), z.string(), z.null()]).optional(),
   backgroundImage: z
     .union([z.instanceof(File), z.string(), z.null()])

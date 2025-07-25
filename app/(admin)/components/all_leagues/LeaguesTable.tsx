@@ -52,6 +52,7 @@ export function LeaguesTable() {
       name: "Description",
       selector: (row) => row.description,
       sortable: true,
+      width: "15em",
     },
     {
       name: "Last Activity",

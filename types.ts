@@ -43,7 +43,7 @@ export type Club = {
   id: string;
   name: string;
   topicCount: number;
-  lastActivity: string;
+  lastAccess: string;
   description: string;
   logo: string;
   backgroundImage: string;
@@ -56,7 +56,7 @@ export type League = {
   logo: string;
   description: string;
   clubCount: number;
-  lastActivity: string;
+  lastAccess: string;
   createdAt: string;
   memberCount: number;
   backgroundImage: string;

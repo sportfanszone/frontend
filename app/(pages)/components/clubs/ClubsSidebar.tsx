@@ -32,7 +32,7 @@ const ClubsSidebar = async () => {
                 <span className="text-gray-500 text-sm mb-1">
                   LAST ACTIVITY
                 </span>
-                <span className="font-bold text-lg">{league.lastActivity}</span>
+                <span className="font-bold text-lg">{league.lastAccess}</span>
               </div>
             </div>
             <div className="text-gray-500 text-sm flex items-center gap-2 text-md font-semibold mb-3">
