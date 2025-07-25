@@ -6,6 +6,7 @@ import SelectGroup from "@/app/(admin)/components/SelectGroup";
 import { addClubSchema } from "@/lib/validation/addClubSchema";
 import { Button } from "@/app/components/ui/button";
 import DropzoneUploader from "@/app/(admin)/components/DropzoneUploader";
+import TextareaGroup from "@/app/(admin)/components/TextareaGroup";
 
 import { League } from "@/types";
 import clientFetcher from "@/lib/clientFetcher";
@@ -190,31 +191,22 @@ export default function Signup() {
               }))}
             />
 
-            {[
-              { id: "name", label: "Club Name" },
-              { id: "description", label: "Description" },
-            ].map(
-              ({
-                id,
-                label,
-                type = "text",
-              }: {
-                id: string;
-                label: string;
-                type?: string;
-              }) => (
-                <InputGroup
-                  key={id}
-                  id={id as keyof typeof form}
-                  label={label}
-                  type={type}
-                  errors={errors}
-                  form={form}
-                  handleChange={handleChange}
-                />
-              )
-            )}
+            <InputGroup
+              id={"name" as keyof typeof form}
+              label="Name"
+              errors={errors}
+              form={form}
+              handleChange={handleChange}
+            />
           </div>
+
+          <TextareaGroup
+            id={"description" as keyof typeof form}
+            label="Description"
+            form={form}
+            errors={errors}
+            handleChange={handleChange}
+          />
 
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 w-full">
             <DropzoneUploader
