@@ -9,17 +9,14 @@ import {
 import UserAvatar from "@/app/components/ui/UserAvatar";
 
 import Swal from "sweetalert2";
-import { League } from "@/types";
+import { Club } from "@/types";
 
-interface DeleteLeagueFormProps {
-  league: League;
+interface DeleteClubFormProps {
+  club: Club;
   setData?: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
-export default function DeleteLeagueForm({
-  league,
-  setData,
-}: DeleteLeagueFormProps) {
+export default function DeleteClubForm({ club, setData }: DeleteClubFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -37,7 +34,7 @@ export default function DeleteLeagueForm({
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/admin/delete_league/${league.id}`,
+        `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/admin/delete_club/${club.id}`,
         {
           method: "POST",
           credentials: "include",
@@ -48,11 +45,11 @@ export default function DeleteLeagueForm({
       if (res.ok || data.status === "success") {
         Toast.fire({
           icon: "success",
-          title: data.message || "League deleted successfully!",
+          title: data.message || "Club deleted successfully!",
         });
 
         if (setData) {
-          setData((prevData) => prevData.filter((u) => u.id !== league.id));
+          setData((prevData) => prevData.filter((u) => u.id !== club.id));
         }
       } else {
         if (data.message) {
@@ -65,7 +62,7 @@ export default function DeleteLeagueForm({
     } catch (err) {
       Toast.fire({
         icon: "error",
-        title: "Error deleting league. Please try again.",
+        title: "Error deleting club. Please try again.",
       });
     }
   };
@@ -73,15 +70,15 @@ export default function DeleteLeagueForm({
   return (
     <form onSubmit={handleSubmit}>
       <DialogHeader className="mb-4 md:mb-6">
-        <DialogTitle>Delete League</DialogTitle>
+        <DialogTitle>Delete Club</DialogTitle>
       </DialogHeader>
       <div className="flex items-center gap-2 my-2 mb-4">
         <UserAvatar
-          src={league.logo}
-          alt={`${league.name?.[0]}`}
+          src={club.logo}
+          alt={`${club.name?.[0]}`}
           className="w-8 h-8 rounded-full border border-gray-300 shadow-sm"
         />
-        <p className="text-sm text-black/50 font-medium">{league.name}</p>
+        <p className="text-sm text-black/50 font-medium">{club.name}</p>
       </div>
 
       <DialogFooter className="mt-2 sm:mt-3 md:mt-4">
@@ -89,7 +86,7 @@ export default function DeleteLeagueForm({
           <Button variant="secondary">Cancel</Button>
         </DialogClose>
         <Button variant="destructive" type="submit">
-          Delete League
+          Delete Club
         </Button>
       </DialogFooter>
     </form>

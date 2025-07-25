@@ -79,11 +79,7 @@ const ActionButtons = ({ row, setData }: ActionButtonsProps) => {
                 setData={setData}
               />
             ) : dialogType === "delete" ? (
-              // <DeleteClubForm
-              //   club={selectedClub as Club}
-              //   setData={setData}
-              // />
-              <></>
+              <DeleteClubForm club={selectedClub as Club} setData={setData} />
             ) : null}
           </div>
         </DialogContent>
