@@ -47,6 +47,7 @@ export type Club = {
   description: string;
   logo: string;
   backgroundImage: string;
+  pinned: boolean;
 };
 
 export type League = {
