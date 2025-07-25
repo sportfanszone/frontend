@@ -8,7 +8,7 @@ export const addClubSchema = z.object({
   description: z
     .string()
     .min(1, "Description is required")
-    .max(50, "Middle name must be less than 50 characters"),
+    .max(500, "Middle name must be less than 500 characters"),
   logo: z.instanceof(File),
   backgroundImage: z.instanceof(File),
   league: z
