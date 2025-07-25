@@ -107,7 +107,7 @@ export default function ToggleLeagueStatusForm({
           <Button variant="secondary">Cancel</Button>
         </DialogClose>
         <Button variant="default" type="submit">
-          {leagueStatus === true ? "Disable League" : "Enable League"}
+          {leagueStatus ? "Unpin League" : "Pin League"}
         </Button>
       </DialogFooter>
     </form>
