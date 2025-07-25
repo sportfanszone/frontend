@@ -13,11 +13,12 @@ import {
 import { Dialog, DialogContent } from "@/app/components/ui/dialog";
 import { Badge } from "@/app/components/ui/badge";
 import EditLeagueForm from "@/app/(admin)/components/all_leagues/EditLeagueForm";
+import TogglePinnedLeagueForm from "@/app/(admin)/components/all_leagues/TogglePinnedLeagueForm";
 import ResetUserPasswordForm from "@/app/(admin)/components/all_users/ResetUserPasswordForm";
 import ToggleUserStatusForm from "@/app/(admin)/components/all_users/ToggleUserStatusForm";
 import DeleteUserForm from "@/app/(admin)/components/all_users/DeleteUserForm";
 
-import { League, User } from "@/types";
+import { League } from "@/types";
 
 interface ActionButtonsProps {
   row: any;
@@ -27,7 +28,7 @@ interface ActionButtonsProps {
 const ActionButtons = ({ row, setData }: ActionButtonsProps) => {
   const [selectedLeague, setSelectedLeague] = useState<League | null>(null);
   const [dialogType, setDialogType] = useState<
-    "edit" | "password" | "disable" | "delete" | null
+    "edit" | "pin" | "disable" | "delete" | null
   >(null);
   return (
     <div className="flex items-center">
@@ -50,7 +51,7 @@ const ActionButtons = ({ row, setData }: ActionButtonsProps) => {
           <Badge
             onClick={() => {
               setSelectedLeague(row);
-              setDialogType("password");
+              setDialogType("pin");
             }}
             className="bg-gray-400 hover:bg-gray-500 cursor-pointer size-7 flex items-center justify-center rounded-none"
           >
@@ -64,20 +65,6 @@ const ActionButtons = ({ row, setData }: ActionButtonsProps) => {
           <Badge
             onClick={() => {
               setSelectedLeague(row);
-              setDialogType("disable");
-            }}
-            className="bg-yellow-400 hover:bg-yellow-500 cursor-pointer size-7 flex items-center justify-center rounded-none"
-          >
-            <IconForbid2 stroke={3} className="text-white text-4xl" />
-          </Badge>
-        </TooltipTrigger>
-        <TooltipContent>Disable user</TooltipContent>
-      </Tooltip>
-      <Tooltip>
-        <TooltipTrigger>
-          <Badge
-            onClick={() => {
-              setSelectedLeague(row);
               setDialogType("delete");
             }}
             className="bg-red-500 hover:bg-red-600 cursor-pointer size-7 flex items-center justify-center rounded-none rounded-tr-lg rounded-br-lg"
@@ -85,7 +72,7 @@ const ActionButtons = ({ row, setData }: ActionButtonsProps) => {
             <IconTrash stroke={3} className="text-white text-4xl" />
           </Badge>
         </TooltipTrigger>
-        <TooltipContent>Delete user</TooltipContent>
+        <TooltipContent>Delete league</TooltipContent>
       </Tooltip>
 
       <Dialog open={!!dialogType} onOpenChange={() => setDialogType(null)}>
@@ -96,18 +83,11 @@ const ActionButtons = ({ row, setData }: ActionButtonsProps) => {
                 setData={setData}
                 league={selectedLeague as League}
               />
-            ) : dialogType === "password" ? (
-              // <ResetUserPasswordForm
-              //   setData={setData}
-              //   user={selectedLeague as User}
-              // />
-              <></>
-            ) : dialogType === "disable" ? (
-              // <ToggleUserStatusForm
-              //   setData={setData}
-              //   user={selectedLeague as User}
-              // />
-              <></>
+            ) : dialogType === "pin" ? (
+              <TogglePinnedLeagueForm
+                league={selectedLeague as League}
+                setData={setData}
+              />
             ) : dialogType === "delete" ? (
               // <DeleteUserForm setData={setData} user={selectedLeague as User} />
               <></>

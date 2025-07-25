@@ -59,6 +59,7 @@ export type League = {
   createdAt: string;
   memberCount: number;
   backgroundImage: string;
+  pinned: boolean;
 };
 
 export type LeagueData = {

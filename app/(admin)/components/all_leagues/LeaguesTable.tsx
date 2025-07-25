@@ -14,6 +14,8 @@ import {
 } from "@/app/components/ui/card";
 import UserAvatar from "@/app/components/ui/UserAvatar";
 import ActionButtons from "@/app/(admin)/components/all_leagues/ActionButtons";
+import { Badge } from "@/app/components/ui/badge";
+import { IconPinned } from "@tabler/icons-react";
 
 import clientFetcher from "@/lib/clientFetcher";
 
@@ -55,6 +57,23 @@ export function LeaguesTable() {
       name: "Last Activity",
       selector: (row) =>
         moment(row.lastAccess).format("MMMM Do YYYY, h:mm:ss a"),
+    },
+    {
+      name: "Pinned",
+      selector: (row) => row.pinned,
+      cell: (row) => (
+        <Badge variant="secondary">
+          <IconPinned
+            className={`${
+              row.pinned
+                ? "fill-green-500 dark:fill-green-400"
+                : "fill-red-500 dark:fill-red-400"
+            }`}
+          />
+          {row.pinned ? "Pinned" : "Unpinned"}
+        </Badge>
+      ),
+      sortable: true,
     },
     {
       name: "Action",
