@@ -5,6 +5,7 @@ import InputGroup from "@/app/(admin)/components/InputGroup";
 import { addLeagueSchema } from "@/lib/validation/addLeagueSchema";
 import { Button } from "@/app/components/ui/button";
 import DropzoneUploader from "@/app/(admin)/components/DropzoneUploader";
+import TextareaGroup from "@/app/(admin)/components/TextareaGroup";
 
 import Swal from "sweetalert2";
 
@@ -149,31 +150,22 @@ export default function Signup() {
       <CardContent>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {[
-              { id: "name", label: "League Name" },
-              { id: "description", label: "Description" },
-            ].map(
-              ({
-                id,
-                label,
-                type = "text",
-              }: {
-                id: string;
-                label: string;
-                type?: string;
-              }) => (
-                <InputGroup
-                  key={id}
-                  id={id as keyof typeof form}
-                  label={label}
-                  type={type}
-                  errors={errors}
-                  form={form}
-                  handleChange={handleChange}
-                />
-              )
-            )}
+            <InputGroup
+              id={"name" as keyof typeof form}
+              label="Name"
+              errors={errors}
+              form={form}
+              handleChange={handleChange}
+            />
           </div>
+
+          <TextareaGroup
+            id={"description" as keyof typeof form}
+            label="Description"
+            form={form}
+            errors={errors}
+            handleChange={handleChange}
+          />
 
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 w-full">
             <DropzoneUploader
