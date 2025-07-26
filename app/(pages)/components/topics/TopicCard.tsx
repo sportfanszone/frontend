@@ -11,8 +11,6 @@ import {
   FiBookmark,
   FiEyeOff,
   FiFlag,
-  FiChevronDown,
-  FiChevronUp,
   FiMessageCircle,
   FiThumbsUp,
 } from "react-icons/fi";
@@ -25,7 +23,6 @@ const TopicCard = ({
     createdAt,
     likes,
     comments,
-    upVotes,
     user: { firstName, middleName, lastName, profileImageUrl },
   },
 }: TopicCardProp) => {
@@ -48,15 +45,12 @@ const TopicCard = ({
           <h5 className="font-bold text-md md:text-lg line-clamp-2 mb-2">
             {title}
           </h5>
-          <div className="flex justify-between items-center gap-5 md:mb-4 max-w-40">
+          <div className="flex items-center gap-5 md:mb-4 max-w-40">
             <div className="flex justify-between items-center gap-1">
               <FiThumbsUp /> <b>{likes}</b>
             </div>
             <div className="flex justify-between items-center gap-1">
               <FiMessageCircle /> <b>{comments}</b>
-            </div>
-            <div className="flex justify-between items-center gap-2">
-              <FiChevronUp /> <b>{upVotes}</b> <FiChevronDown />
             </div>
           </div>
 
