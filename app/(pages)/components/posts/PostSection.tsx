@@ -1,5 +1,5 @@
 import Image from "next/image";
-import BackButton from "@/app/(pages)/components/BackButton";
+import BackButton from "@/app/components/ui/BackButton";
 
 import { FiMessageCircle, FiThumbsUp, FiShare2 } from "react-icons/fi";
 
