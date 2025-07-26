@@ -47,7 +47,7 @@ export type Club = {
   description: string;
   logo: string;
   backgroundImage: string;
-  pinned: boolean;
+  pinned?: boolean;
 };
 
 export type League = {
@@ -60,7 +60,7 @@ export type League = {
   createdAt: string;
   memberCount: number;
   backgroundImage: string;
-  pinned: boolean;
+  pinned?: boolean;
 };
 
 export type LeagueData = {

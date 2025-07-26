@@ -79,7 +79,7 @@ export default function LeagueSection() {
                 id={club.id}
                 name={club.name}
                 topicCount={club.topicCount}
-                lastActivity={club.lastActivity}
+                lastActivity={club.lastAccess}
                 description={club.description}
                 logo={club.logo}
                 backgroundImage={club.backgroundImage}

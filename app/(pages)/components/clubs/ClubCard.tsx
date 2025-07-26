@@ -1,11 +1,12 @@
 import Image from "next/image";
 import * as motion from "motion/react-client";
 import { Club } from "@/types";
+import formatDate from "@/lib/formatDate";
 
 const ClubCard = ({
   name,
   topicCount,
-  lastActivity,
+  lastAccess,
   description,
   logo,
   backgroundImage,
@@ -25,7 +26,7 @@ const ClubCard = ({
         </div>
         <div className="flex flex-col justify-center mb-4">
           <span className="text-gray-500 text-sm mb-1">LAST ACTIVITY</span>
-          <span className="font-bold text-lg">{lastActivity}</span>
+          <span className="font-bold text-lg">{formatDate(lastAccess)}</span>
         </div>
       </div>
       <div className="flex flex-col justify-center">

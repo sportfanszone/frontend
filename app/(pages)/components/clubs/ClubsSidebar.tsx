@@ -2,10 +2,19 @@ import Image from "next/image";
 import { FiCalendar, FiUsers } from "react-icons/fi";
 import getClubsData from "@/lib/getClubsData";
 import { ClubPageData } from "@/types";
+import formatDate from "@/lib/formatDate";
 
-const ClubsSidebar = async () => {
+import moment from "moment";
+
+interface ClubsSidebarProps {
+  leagueId: string;
+}
+
+const ClubsSidebar = async ({ leagueId }: ClubsSidebarProps) => {
   try {
-    const { league, user, relatedLeagues }: ClubPageData = await getClubsData();
+    const { league, relatedLeagues }: ClubPageData = await getClubsData(
+      leagueId as string
+    );
 
     return (
       <div className="w-full h-fit">
@@ -32,37 +41,16 @@ const ClubsSidebar = async () => {
                 <span className="text-gray-500 text-sm mb-1">
                   LAST ACTIVITY
                 </span>
-                <span className="font-bold text-lg">{league.lastAccess}</span>
+                <span className="font-bold text-lg">
+                  {formatDate(league.lastAccess)}
+                </span>
               </div>
             </div>
             <div className="text-gray-500 text-sm flex items-center gap-2 text-md font-semibold mb-3">
               <FiCalendar className="inline-block text-gray-700" />
               <span className="text-gray-700 hover:text-black">
-                Created {league.createdAt}
+                Created {moment(league.createdAt).format("MMMM, YYYY")}
               </span>
-            </div>
-            <div className="text-gray-500 text-sm flex items-center gap-2 text-md font-semibold">
-              <FiUsers className="inline-block text-gray-700" />
-              <span className="text-gray-700 hover:text-black">
-                Members {league.memberCount}
-              </span>
-            </div>
-          </div>
-        )}
-
-        {/* User */}
-        {user && (
-          <div className="bg-white border-2 border-gray-200 rounded-xl flex flex-col justify-center mb-4 p-6">
-            <span className="text-gray-500 text-sm mb-1">USER PROFILE</span>
-            <div className="flex justify-start items-center gap-3">
-              <Image
-                src={user.profileImageUrl}
-                width={200}
-                height={200}
-                alt="League logo"
-                className="h-10 w-10 object-cover rounded-full"
-              />
-              <span className="text-sm">@{user.username}</span>
             </div>
           </div>
         )}
@@ -91,7 +79,6 @@ const ClubsSidebar = async () => {
       </div>
     );
   } catch (error) {
-    console.error("Error fetching clubs data:", error);
     return <p>An error occurred while loading clubs data</p>;
   }
 };
