@@ -5,6 +5,7 @@ import getClubsData from "@/lib/getClubsData";
 import { ClubPageData } from "@/types";
 import ClubsSidebar from "@/app/(pages)/components/clubs/ClubsSidebar";
 import ClubSidebarSkeleton from "@/app/(pages)/components/clubs/ClubSidebarSkeleton";
+import BackButton from "@/app/components/ui/BackButton";
 
 export default async function Clubs({
   searchParams,
@@ -30,9 +31,12 @@ export default async function Clubs({
         <div className="min-h-screen w-[100%] px-4 py-10">
           <main className="font-medium max-w-400 mx-auto">
             <section className=" max-w-300 mx-auto">
-              <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl text-center mb-10">
-                Clubs
-              </h2>
+              <div className="flex gap-3">
+                <BackButton />
+                <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl mb-10">
+                  Clubs
+                </h2>
+              </div>
 
               <div className="flex justify-center items-center flex-wrap gap-8">
                 {clubs.map((club, index) => (
