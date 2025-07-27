@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import { FiArrowRight, FiPlus, FiLink, FiImage } from "react-icons/fi";
+import InputGroup from "@/app/(admin)/components/InputGroup";
+import TextareaGroup from "@/app/(admin)/components/TextareaGroup";
 
 import {
   Dialog,
@@ -17,6 +19,7 @@ import ClubsDropdown from "@/app/components/ui/ClubsDropdown";
 import PostFiles from "@/app/components/ui/PostFiles";
 
 import { postSchema, PostSchema } from "@/lib/validation/postSchema";
+import Swal from "sweetalert2";
 
 type Props = {
   user: {
@@ -39,6 +42,21 @@ const CreatePost = ({ user }: Props) => {
   const [errors, setErrors] = useState<
     Partial<Record<keyof PostSchema, string>>
   >({});
+
+  const validatePostData = () => {
+    const result = postSchema.safeParse(postData);
+    if (!result.success) {
+      const fieldErrors: typeof errors = {};
+      result.error.issues.forEach((issue) => {
+        const key = issue.path[0] as keyof typeof postData;
+        fieldErrors[key] = issue.message; // ✅ Populate the NEW object
+      });
+      setErrors(fieldErrors); // ✅ Correctly trigger state update
+      return false;
+    }
+    setErrors({});
+    return true;
+  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -74,6 +92,31 @@ const CreatePost = ({ user }: Props) => {
     });
   };
 
+  const handleChange = <K extends keyof typeof postData>(
+    key: K,
+    value: (typeof postData)[K]
+  ) => {
+    setPostData((prev) => {
+      const updatedForm = { ...prev, [key]: value };
+      const result = postSchema.safeParse(updatedForm);
+      if (!result.success) {
+        const fieldError = result.error.issues.find(
+          (issue) => issue.path[0] === key
+        );
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [key]: fieldError?.message || "",
+        }));
+      } else {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [key]: "",
+        }));
+      }
+      return updatedForm;
+    });
+  };
+
   const handleRemoveFile = (index: number) => {
     setPostData((prev) => {
       const updatedFiles = [...prev.files];
@@ -82,87 +125,151 @@ const CreatePost = ({ user }: Props) => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    console.log(postData);
     e.preventDefault();
 
-    const result = postSchema.safeParse(postData);
+    console.log(validatePostData());
+    console.log(errors);
+    if (!validatePostData()) return;
 
-    if (!result.success) {
-      const fieldErrors: typeof errors = {};
-      result.error.issues.forEach((issue) => {
-        const key = issue.path[0] as keyof PostSchema;
-        fieldErrors[key] = issue.message;
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "bottom-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      },
+    });
+
+    try {
+      const formData = new FormData();
+      formData.append("title", postData.title);
+      formData.append("content", postData.content);
+      formData.append("link", postData.link);
+      formData.append("clubId", postData.clubId);
+      postData.files.forEach((file) => {
+        formData.append("files", file);
       });
-      setErrors(fieldErrors);
-      return;
-    }
 
-    setErrors({});
-    console.log("✅ Valid post data:", result.data);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/user/create_post`,
+        {
+          method: "POST",
+          credentials: "include",
+          body: formData,
+        }
+      );
+
+      const data = await res.json();
+
+      if (res.ok || data.status === "success") {
+        Toast.fire({
+          icon: "success",
+          title: "Post created successfully!",
+        });
+      } else {
+        if (data.message) {
+          Toast.fire({
+            icon: "error",
+            title: data.message,
+          });
+        }
+        if (data?.errors?.length > 0) {
+          console.log("Field errors:", data.errors);
+          const fieldErrors: Partial<typeof errors> = {};
+          data.errors.forEach(
+            (error: { field: keyof typeof postData; message: string }) => {
+              fieldErrors[error.field] = error.message;
+            }
+          );
+          setErrors((prevErrors) => ({ ...prevErrors, ...fieldErrors }));
+        }
+        Toast.fire({
+          icon: "error",
+          title: "Failed to post",
+        });
+      }
+    } catch (err: { message?: string } | any) {
+      console.error("Error adding post:", err);
+      Toast.fire({
+        icon: "error",
+        title: err?.message,
+      });
+    }
   };
 
   return (
     <Dialog>
-      <form onSubmit={handleSubmit}>
-        <DialogTrigger asChild>
-          <div className="text-[0.9em] flex items-center justify-between cursor-pointer">
-            <span className="bg-primary sm:bg-transparent text-white sm:text-black rounded-full p-1 flex items-center justify-center ml-2">
-              <FiPlus />
-            </span>
-            <DialogTitle>
-              <span className="hidden sm:inline text-[0.8em]">Create Post</span>
-            </DialogTitle>
-          </div>
-        </DialogTrigger>
+      <DialogTrigger asChild>
+        <div className="text-[0.9em] flex items-center justify-between cursor-pointer">
+          <span className="bg-primary sm:bg-transparent text-white sm:text-black rounded-full p-1 flex items-center justify-center ml-2">
+            <FiPlus />
+          </span>
+          <DialogTitle>
+            <span className="hidden sm:inline text-[0.8em]">Create Post</span>
+          </DialogTitle>
+        </div>
+      </DialogTrigger>
 
-        <DialogContent
-          aria-description="Post Card"
-          className="w-full max-w-full h-full sm:h-fit sm:max-w-[425px] rounded-none sm:rounded-lg"
-        >
-          <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-15 h-15 rounded-full overflow-hidden">
-                <UserAvatar
-                  alt={`${user.firstName?.[0]}${user.lastName?.[0]}`}
-                  src={user.profileImageUrl}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <ClubsDropdown />
+      <DialogContent
+        aria-description="Post Card"
+        className="w-full max-w-full h-full sm:max-h-[90vh] sm:h-fit sm:max-w-[425px] rounded-none sm:rounded-lg overflow-y-auto"
+      >
+        <form onSubmit={handleSubmit}>
+          <div className="flex items-center gap-2 mb-4">
+            <div className="w-15 h-15 rounded-full overflow-hidden">
+              <UserAvatar
+                alt={`${user.firstName?.[0]}${user.lastName?.[0]}`}
+                src={user.profileImageUrl}
+                className="w-full h-full object-cover"
+              />
             </div>
-
-            <Input
-              id="postTitle"
-              placeholder="Post Title"
-              className="mb-1"
-              required
-              name="title"
-              value={postData.title}
-              onChange={handleInputChange}
-            />
-            {errors.title && (
-              <p className="text-red-500 text-sm mb-2">{errors.title}</p>
-            )}
-
-            <Textarea
-              id="postContent"
-              placeholder="Write your post here..."
-              className="resize-none border-none shadow-none focus:outline-none focus:ring-0 focus-visible:ring-0 p-0"
-              required
-              autoFocus
-              name="content"
-              value={postData.content}
-              onChange={handleInputChange}
-            />
-            {errors.content && (
-              <p className="text-red-500 text-sm mt-1">{errors.content}</p>
-            )}
-
-            <PostFiles
-              files={postData.files}
-              handleRemoveFile={handleRemoveFile}
-            />
+            <div>
+              <ClubsDropdown
+                value={postData.clubId}
+                handleChange={(value) => handleChange("clubId", value)}
+              />
+              {errors.clubId && (
+                <p className="text-red-500 text-sm mt-1">{errors.clubId}</p>
+              )}
+            </div>
           </div>
+
+          <Input
+            id="postTitle"
+            placeholder="Post Title"
+            className="mb-1"
+            // required
+            name="title"
+            value={postData.title}
+            onChange={handleInputChange}
+          />
+          {errors.title && (
+            <p className="text-red-500 text-sm mb-2">{errors.title}</p>
+          )}
+
+          <Textarea
+            id="postContent"
+            placeholder="Write your post here..."
+            className="resize-none border-none shadow-none focus:outline-none focus:ring-0 focus-visible:ring-0 p-0"
+            // required
+            autoFocus
+            name="content"
+            value={postData.content}
+            onChange={handleInputChange}
+          />
+          {errors.content && (
+            <p className="text-red-500 text-sm mt-1">{errors.content}</p>
+          )}
+
+          <PostFiles
+            files={postData.files}
+            handleRemoveFile={handleRemoveFile}
+          />
 
           <DialogFooter>
             <div className="flex items-center justify-between w-full">
@@ -181,16 +288,21 @@ const CreatePost = ({ user }: Props) => {
                     <FiImage />
                   </div>
                 </label>
-                <div className="flex items-center border-gray-200 border-1 rounded-lg transition-all cursor-pointer mr-3">
-                  <FiLink className="ml-3" />
-                  <Input
-                    className="border-none outline-none shadow-none focus:outline-none focus:ring-0 focus-visible:ring-0"
-                    type="text"
-                    placeholder="Your link (optional)"
-                    name="link"
-                    value={postData.link}
-                    onChange={handleInputChange}
-                  />
+                <div>
+                  <div className="flex items-center border-gray-200 border-1 rounded-lg transition-all cursor-pointer mr-3">
+                    <FiLink className="ml-3" />
+                    <Input
+                      className="border-none outline-none shadow-none focus:outline-none focus:ring-0 focus-visible:ring-0"
+                      type="text"
+                      placeholder="Your link (optional)"
+                      name="link"
+                      value={postData.link}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  {errors.link && (
+                    <p className="text-red-500 text-sm mt-1">{errors.link}</p>
+                  )}
                 </div>
               </div>
 
@@ -203,8 +315,8 @@ const CreatePost = ({ user }: Props) => {
               </Button>
             </div>
           </DialogFooter>
-        </DialogContent>
-      </form>
+        </form>
+      </DialogContent>
     </Dialog>
   );
 };

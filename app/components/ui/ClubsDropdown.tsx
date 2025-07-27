@@ -14,9 +14,11 @@ import {
 import Image from "next/image";
 
 export default function ClubsDropdown({
-  handleInputChange,
+  value,
+  handleChange,
 }: {
-  handleInputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string;
+  handleChange?: (value: string) => void;
 }) {
   const [activeClub, setActiveClub] = useState("Choose club");
   const [clubs, setClubs] = useState<Club[]>([]);
@@ -36,13 +38,7 @@ export default function ClubsDropdown({
 
   const handleClubChange = (clubName: string, clubId: string) => {
     setActiveClub(clubName);
-    if (handleInputChange) {
-      handleInputChange({
-        target: { name: "clubId", value: clubId },
-      } as React.ChangeEvent<HTMLInputElement>);
-    } else {
-      console.warn("handleInputChange function is not provided");
-    }
+    handleChange?.(clubId);
   };
 
   return (
@@ -54,28 +50,25 @@ export default function ClubsDropdown({
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="start">
         <DropdownMenuLabel>Select club</DropdownMenuLabel>
-
         <DropdownMenuGroup>
           {clubs.length > 0 ? (
-            <>
-              {clubs.map((club, index) => (
-                <DropdownMenuItem
-                  onClick={handleClubChange.bind(null, club.name, club.id)}
-                  key={index}
-                >
-                  <div className="flex justify-start items-center gap-3">
-                    <Image
-                      src={club.logo}
-                      width={200}
-                      height={200}
-                      alt={club.name}
-                      className="h-10 w-10 object-cover rounded-full"
-                    />
-                    <span className="text-sm">{club.name}</span>
-                  </div>
-                </DropdownMenuItem>
-              ))}
-            </>
+            clubs.map((club, index) => (
+              <DropdownMenuItem
+                onClick={() => handleClubChange(club.name, club.id.toString())}
+                key={index}
+              >
+                <div className="flex justify-start items-center gap-3">
+                  <Image
+                    src={club.logo}
+                    width={200}
+                    height={200}
+                    alt={club.name}
+                    className="h-10 w-10 object-cover rounded-full"
+                  />
+                  <span className="text-sm">{club.name}</span>
+                </div>
+              </DropdownMenuItem>
+            ))
           ) : (
             <DropdownMenuItem disabled>No clubs available</DropdownMenuItem>
           )}
