@@ -16,6 +16,7 @@ import {
 } from "react-icons/fi";
 import { TopicCardProp } from "@/types";
 import UserAvatar from "@/app/components/ui/UserAvatar";
+import formatDate from "@/lib/formatDate";
 
 const TopicCard = ({
   topic: {
@@ -75,7 +76,7 @@ const TopicCard = ({
                 {firstName} {middleName} {lastName}
               </span>
               <span className="text-xs md:text-sm text-gray-500">
-                {createdAt}
+                {formatDate(createdAt)}
               </span>
             </div>
           </Link>
