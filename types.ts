@@ -107,3 +107,14 @@ export type Achievement = {
 export type AchievementCardProps = {
   achievements: Achievement[];
 };
+
+export type Post = {
+  id: string;
+  createdAt: string;
+  content: string;
+  images: string[];
+  likes: number;
+  shares: number;
+  commentCount: number;
+  user: User;
+};

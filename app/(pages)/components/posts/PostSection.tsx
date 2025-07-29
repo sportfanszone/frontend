@@ -1,10 +1,18 @@
 "use client";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import { useState } from "react";
 import BackButton from "@/app/components/ui/BackButton";
 import UserAvatar from "@/app/components/ui/UserAvatar";
-
-import { FiMessageCircle, FiThumbsUp, FiShare2 } from "react-icons/fi";
+import {
+  FiMessageCircle,
+  FiThumbsUp,
+  FiShare2,
+  FiChevronLeft,
+  FiChevronRight,
+  FiX,
+} from "react-icons/fi";
+import { Post } from "@/types";
 
 const CreateComment = dynamic(
   () => import("@/app/components/ui/CreateComment"),
@@ -13,68 +21,156 @@ const CreateComment = dynamic(
 
 type PostSectionProps = {
   showBackbutton?: boolean;
+  post: Post;
 };
 
-const PostSection = ({ showBackbutton = true }: PostSectionProps) => {
+const PostSection = ({ post, showBackbutton = true }: PostSectionProps) => {
+  const { user } = post;
+  const maxImagesToShow = 4;
+  const imageCount = post.images.length;
+  const showMoreCount =
+    imageCount > maxImagesToShow ? imageCount - maxImagesToShow : 0;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const openModal = (index: number) => {
+    setCurrentImageIndex(index);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const goToPreviousImage = () => {
+    setCurrentImageIndex((prev) => (prev === 0 ? imageCount - 1 : prev - 1));
+  };
+
+  const goToNextImage = () => {
+    setCurrentImageIndex((prev) => (prev === imageCount - 1 ? 0 : prev + 1));
+  };
+
+  const getGridClasses = () => {
+    if (imageCount === 1) return "grid-cols-1 auto-rows-[minmax(0,1fr)]";
+    if (imageCount === 2) return "grid-cols-2 auto-rows-[minmax(0,1fr)]";
+    if (imageCount === 3) return "grid-cols-2 auto-rows-[minmax(0,1fr)]";
+    return "grid-cols-2 grid-rows-2 auto-rows-[minmax(0,1fr)]";
+  };
+
+  const getImageStyles = (index: number) => {
+    if (imageCount === 3 && index === 0) {
+      return "row-span-2";
+    }
+    return "";
+  };
+
   return (
-    <section className="max-w-180 2xl:max-w-200 mx-auto p-4 pt-0">
+    <section className="max-w-3xl mx-auto p-4 pt-0">
       {/* Profile */}
-      <div className="flex items-center justify-start gap-3 mb-1">
+      <div className="flex items-center justify-start gap-3 mb-4">
         {showBackbutton && <BackButton />}
         <div className="flex items-center gap-3">
-          <UserAvatar src="" alt="JN" className="size-10" />
+          <UserAvatar
+            src={post.user.profileImageUrl}
+            alt={`${user.firstName?.[0] ?? ""}${user.lastName?.[0] ?? ""}`}
+            className="size-10"
+          />
         </div>
         <div>
           <div className="flex items-center gap-2">
-            <span className="font-bold">@username</span>
-            <span className="w-1 h-1 rounded-full bg-black/40 inline-block"></span>
-            <span className="text-black/40">4 days ago</span>
+            <span className="font-bold">@{user.username}</span>
+            <span className="w-1 h-1 rounded-full bg-gray-500"></span>
+            <span className="text-gray-500">
+              {new Date(post.createdAt).toLocaleDateString()}
+            </span>
           </div>
-          <div className="">John Doe Nnn</div>
+          <div className="text-gray-700">
+            {user.firstName} {user.middleName} {user.lastName}
+          </div>
         </div>
       </div>
 
       {/* Post */}
-      <h2 className="font-semibold text-2xl sm:text-3xl md:text-3xl mb-2">
-        Lorem, ipsum dolor.
-      </h2>
-      <div className="relative max-h-80 w-full rounded-3xl overflow-hidden mb-5">
-        {/* Blurred Background Layer */}
+      <h2 className="font-semibold text-xl sm:text-2xl mb-4">{post.content}</h2>
+      {post.images && post.images.length > 0 && (
         <div
-          className="absolute inset-0 bg-cover bg-center blur-2xl scale-110"
-          style={{ backgroundImage: "url('/images/postImage1.jpg')" }}
-        />
+          className={`grid ${getGridClasses()} gap-x-1 gap-y-1 max-h-[400px] w-full overflow-hidden mb-5`}
+        >
+          {post.images.slice(0, maxImagesToShow).map((image, index) => (
+            <div
+              key={index}
+              className={`relative h-full overflow-hidden cursor-pointer ${getImageStyles(
+                index
+              )}`}
+              onClick={() => openModal(index)}
+            >
+              <Image
+                src={image}
+                width={400}
+                height={400}
+                className="w-full h-full object-cover rounded-lg border border-gray-300"
+                alt={`Post Image ${index + 1}`}
+              />
+              {index === maxImagesToShow - 1 && showMoreCount > 0 && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-lg">
+                  <span className="text-white text-3xl font-bold">
+                    +{showMoreCount}
+                  </span>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
 
-        {/* Foreground Image */}
-        <Image
-          src="/images/postImage1.jpg"
-          width={800}
-          height={600}
-          className="relative w-full h-full md:h-80 object-contain rounded-3xl border border-black/40"
-          alt="Post Image"
-        />
-      </div>
-      <div className="flex items-center gap-2">
-        <div className="flex justify-between items-center gap-1 bg-black/10 px-2.5 py-1 rounded-full cursor-pointer">
-          <FiThumbsUp /> <b>10</b>
+      {/* Image Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+          <div className="relative max-w-4xl w-full h-[80vh] flex items-center justify-center">
+            <button
+              className="absolute top-4 right-4 text-white text-3xl"
+              onClick={closeModal}
+            >
+              <FiX />
+            </button>
+            <button
+              className="absolute left-4 text-white text-3xl"
+              onClick={goToPreviousImage}
+            >
+              <FiChevronLeft />
+            </button>
+            <button
+              className="absolute right-4 text-white text-3xl"
+              onClick={goToNextImage}
+            >
+              <FiChevronRight />
+            </button>
+            <Image
+              src={post.images[currentImageIndex]}
+              width={800}
+              height={800}
+              className="w-full h-full object-contain"
+              alt={`Post Image ${currentImageIndex + 1}`}
+            />
+          </div>
+        </div>
+      )}
+
+      <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1 bg-gray-100 px-3 py-1.5 rounded-full cursor-pointer hover:bg-gray-200">
+          <FiThumbsUp className="text-lg" /> <b>{post.likes}</b>
         </div>
         <CreateComment
-          replyTo={{
-            firstName: "John",
-            middleName: "Nna",
-            lastName: "Doe",
-            username: "johndoenna",
-            profileImageUrl: "",
-          }}
-          replyToContent="Lorem, ipsum dolor."
-          postId="4d245939-4e99-43c7-8125-c95e202c5652"
+          replyTo={user}
+          replyToContent={post.content}
+          postId={post.id}
         >
-          <div className="flex justify-between items-center gap-1 bg-black/10 px-2.5 py-1 rounded-full cursor-pointer">
-            <FiMessageCircle /> <b>9</b>
+          <div className="flex items-center gap-1 bg-gray-100 px-3 py-1.5 rounded-full cursor-pointer hover:bg-gray-200">
+            <FiMessageCircle className="text-lg" /> <b>{post.commentCount}</b>
           </div>
         </CreateComment>
-        <div className="flex justify-between items-center gap-1 bg-black/10 px-2.5 py-1 rounded-full cursor-pointer">
-          <FiShare2 /> <b>1</b>
+        <div className="flex items-center gap-1 bg-gray-100 px-3 py-1.5 rounded-full cursor-pointer hover:bg-gray-200">
+          <FiShare2 className="text-lg" /> <b>{post.shares}</b>
         </div>
       </div>
     </section>

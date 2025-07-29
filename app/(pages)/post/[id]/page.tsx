@@ -1,6 +1,8 @@
 import PostSection from "@/app/(pages)/components/posts/PostSection";
 import Comment from "@/app/(pages)/components/posts/CommentSection";
 
+import getPostData from "@/lib/getPostData";
+
 const comments = [
   {
     id: "c1f71f57-0e42-4d86-a443-2e11e6c6d1cb",
@@ -168,10 +170,23 @@ const comments = [
     ],
   },
 ];
-export default function PostsPage() {
+
+import { Post } from "@/types";
+
+export default async function PostsPage({
+  params,
+}: {
+  params: {
+    id: string;
+  };
+}) {
+  const postId = params?.id as string;
+
+  const { post }: { post: Post } = await getPostData(postId);
+
   return (
     <main className="font-medium max-w-400 mx-auto">
-      <PostSection />
+      <PostSection post={post} />
       {comments.map((comment) => (
         <Comment key={comment.id} comment={comment} />
       ))}

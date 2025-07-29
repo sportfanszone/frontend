@@ -69,13 +69,7 @@ const Comment: FC<Props> = ({ comment, level = 0 }) => {
               <FiThumbsUp /> <b className="text-gray-700">10</b>
             </div>
             <CreateComment
-              replyTo={{
-                firstName: comment.user?.firstName,
-                middleName: comment.user?.middleName,
-                lastName: comment.user?.lastName,
-                username: comment.user?.username,
-                profileImageUrl: comment.user?.profileImageUrl,
-              }}
+              replyTo={comment.user}
               replyToContent={comment?.content as string}
               parentCommentId={comment.id}
             >
