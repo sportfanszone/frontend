@@ -1,7 +1,15 @@
+"use client";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import BackButton from "@/app/components/ui/BackButton";
+import UserAvatar from "@/app/components/ui/UserAvatar";
 
 import { FiMessageCircle, FiThumbsUp, FiShare2 } from "react-icons/fi";
+
+const CreateComment = dynamic(
+  () => import("@/app/components/ui/CreateComment"),
+  { ssr: false }
+);
 
 type PostSectionProps = {
   showBackbutton?: boolean;
@@ -13,13 +21,9 @@ const PostSection = ({ showBackbutton = true }: PostSectionProps) => {
       {/* Profile */}
       <div className="flex items-center justify-start gap-3 mb-1">
         {showBackbutton && <BackButton />}
-        <Image
-          src="/images/blankProfile.png"
-          width={100}
-          height={100}
-          className="rounded-full w-10 h-10 object-cover"
-          alt="User Profile"
-        />
+        <div className="flex items-center gap-3">
+          <UserAvatar src="" alt="JN" className="size-10" />
+        </div>
         <div>
           <div className="flex items-center gap-2">
             <span className="font-bold">@username</span>
@@ -54,9 +58,21 @@ const PostSection = ({ showBackbutton = true }: PostSectionProps) => {
         <div className="flex justify-between items-center gap-1 bg-black/10 px-2.5 py-1 rounded-full cursor-pointer">
           <FiThumbsUp /> <b>10</b>
         </div>
-        <div className="flex justify-between items-center gap-1 bg-black/10 px-2.5 py-1 rounded-full cursor-pointer">
-          <FiMessageCircle /> <b>9</b>
-        </div>
+        <CreateComment
+          replyTo={{
+            firstName: "John",
+            middleName: "Nna",
+            lastName: "Doe",
+            username: "johndoenna",
+            profileImageUrl: "",
+          }}
+          replyToContent="Lorem, ipsum dolor."
+          postId="4d245939-4e99-43c7-8125-c95e202c5652"
+        >
+          <div className="flex justify-between items-center gap-1 bg-black/10 px-2.5 py-1 rounded-full cursor-pointer">
+            <FiMessageCircle /> <b>9</b>
+          </div>
+        </CreateComment>
         <div className="flex justify-between items-center gap-1 bg-black/10 px-2.5 py-1 rounded-full cursor-pointer">
           <FiShare2 /> <b>1</b>
         </div>
