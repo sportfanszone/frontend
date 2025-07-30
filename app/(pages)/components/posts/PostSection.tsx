@@ -12,6 +12,8 @@ import {
   FiChevronRight,
   FiX,
 } from "react-icons/fi";
+
+import moment from "moment";
 import { Post } from "@/types";
 
 const CreateComment = dynamic(
@@ -81,7 +83,7 @@ const PostSection = ({ post, showBackbutton = true }: PostSectionProps) => {
             <span className="font-bold">@{user.username}</span>
             <span className="w-1 h-1 rounded-full bg-gray-500"></span>
             <span className="text-gray-500">
-              {new Date(post.createdAt).toLocaleDateString()}
+              {moment(post.createdAt).format("MMMM, YYYY")}
             </span>
           </div>
           <div className="text-gray-700">
