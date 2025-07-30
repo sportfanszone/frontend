@@ -6,7 +6,6 @@ import getPostsData from "@/lib/getPostsData";
 
 const PostsSection = async () => {
   const { posts }: { posts: Post[] } = (await getPostsData())?.posts;
-  console.log(posts);
 
   return (
     <section className="p-10 font-medium max-w-300 mx-auto @container">
