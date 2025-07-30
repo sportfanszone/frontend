@@ -53,6 +53,11 @@ const Comment: FC<Props> = ({ comment, level = 0 }) => {
             className="text-sm font-semibold text-blac cursor-pointer hover:text-blue-700 transition-all"
           >
             @{comment.user.username}
+          </Link>
+          <Link
+            href={`/user/@${comment.replyTo?.username}`}
+            className="text-sm font-semibold text-blac cursor-pointer hover:text-blue-700 transition-all"
+          >
             {comment.replyTo && (
               <span className="text-black/40">
                 {" "}
