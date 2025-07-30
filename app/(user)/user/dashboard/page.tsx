@@ -10,7 +10,7 @@ export default async function UserDashboard() {
   return (
     <>
       <ProfileHeader user={user as User} />
-      <PostsSection />
+      <PostsSection userId={user?.id as string} />
     </>
   );
 }
