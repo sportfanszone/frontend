@@ -22,8 +22,12 @@ import UserAvatar from "@/app/components/ui/UserAvatar";
 import formatDate from "@/lib/formatDate";
 
 import Like from "@/app/components/ui/Like";
+import CreateComment from "@/app/components/ui/CreateComment";
 
 const TopicCard = ({ topic }: TopicCardProp) => {
+  const [commentCount, setCommentCount] = useState<number>(
+    topic?.commentCount || 0
+  );
   const [likes, setLikes] = useState<number>(topic?.likes || 0);
   const [likedByUser, setLikedByUser] = useState<boolean>(
     topic?.likedByUser || false
@@ -57,9 +61,6 @@ const TopicCard = ({ topic }: TopicCardProp) => {
             </h5>
           </Link>
           <div className="flex items-center gap-5 mb-2 md:mb-4 max-w-40">
-            {/* <div className="flex justify-between items-center gap-1">
-              <FiThumbsUp /> <b>{topic.likes}</b>
-            </div> */}
             <Like
               postId={topic.id}
               initialLiked={topic.likedByUser}
@@ -69,9 +70,16 @@ const TopicCard = ({ topic }: TopicCardProp) => {
                 setLikes(likeCount);
               }}
             />
-            <div className="flex justify-between items-center gap-1">
-              <FiMessageCircle /> <b>{topic.commentCount}</b>
-            </div>
+            <CreateComment
+              replyTo={topic.user}
+              replyToContent={topic.content}
+              postId={topic.id}
+              onSuccess={() => setCommentCount((prev) => prev + 1)}
+            >
+              <div className="flex items-center gap-1 px-3 py-1.5 rounded-full cursor-pointer hover:bg-gray-200">
+                <FiMessageCircle className="text-lg" /> <b>{commentCount}</b>
+              </div>
+            </CreateComment>
           </div>
 
           <Link
