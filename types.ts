@@ -118,6 +118,7 @@ export type Post = {
   commentCount: number;
   user: User;
   createdAt: string;
+  likedByUser: boolean;
 };
 
 export type BaseComment = {
@@ -130,6 +131,7 @@ export type BaseComment = {
   content?: string;
   imageUrl?: string;
   audioUrl?: string;
+  likedByUser: boolean;
 };
 
 export type Comment = BaseComment & {

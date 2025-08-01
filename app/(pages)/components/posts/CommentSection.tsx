@@ -3,13 +3,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { FC } from "react";
 import Link from "next/link";
-import {
-  FiMessageCircle,
-  FiThumbsUp,
-  FiShare2,
-  FiPlay,
-  FiPause,
-} from "react-icons/fi";
+import { FiMessageCircle, FiShare2, FiPlay, FiPause } from "react-icons/fi";
 import UserAvatar from "@/app/components/ui/UserAvatar";
 import WaveSurfer from "wavesurfer.js";
 
@@ -17,6 +11,8 @@ const CreateComment = dynamic(
   () => import("@/app/components/ui/CreateComment"),
   { ssr: false }
 );
+
+const Like = dynamic(() => import("@/app/components/ui/Like"), { ssr: false });
 
 import { CommentType } from "@/types";
 
@@ -28,6 +24,10 @@ interface Props {
 const Comment: FC<Props> = ({ comment, level = 0 }) => {
   const [replyCount, setReplyCount] = useState<number>(
     comment?.replyCount || 0
+  );
+  const [likes, setLikes] = useState<number>(comment?.likes || 0);
+  const [likedByUser, setLikedByUser] = useState<boolean>(
+    comment?.likedByUser || false
   );
   const [isPlaying, setIsPlaying] = useState(false);
   const [isAudioLoading, setIsAudioLoading] = useState(false);
@@ -213,7 +213,6 @@ const Comment: FC<Props> = ({ comment, level = 0 }) => {
                         ? "opacity-50 cursor-not-allowed"
                         : ""
                     }`}
-                    // disabled={isAudioLoading || audioError}
                   >
                     {isPlaying ? <FiPause /> : <FiPlay />}
                   </button>
@@ -233,9 +232,15 @@ const Comment: FC<Props> = ({ comment, level = 0 }) => {
             </div>
           )}
           <div className="flex items-center gap-4 mt-2">
-            <div className="text-sm flex justify-between items-center gap-1 cursor-pointer">
-              <FiThumbsUp /> <b className="text-gray-700">{comment.likes}</b>
-            </div>
+            <Like
+              commentId={comment.id}
+              initialLiked={comment.likedByUser}
+              initialLikeCount={comment.likes}
+              onSuccess={(liked, likeCount) => {
+                setLikedByUser(liked);
+                setLikes(likeCount);
+              }}
+            />
             <CreateComment
               replyTo={comment.user}
               replyToContent={comment.content || ""}

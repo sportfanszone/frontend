@@ -12,7 +12,6 @@ import {
   FiChevronRight,
   FiX,
 } from "react-icons/fi";
-
 import moment from "moment";
 import { Post } from "@/types";
 
@@ -20,6 +19,8 @@ const CreateComment = dynamic(
   () => import("@/app/components/ui/CreateComment"),
   { ssr: false }
 );
+
+const Like = dynamic(() => import("@/app/components/ui/Like"), { ssr: false });
 
 type PostSectionProps = {
   showBackbutton?: boolean;
@@ -29,6 +30,10 @@ type PostSectionProps = {
 const PostSection = ({ post, showBackbutton = true }: PostSectionProps) => {
   const [commentCount, setCommentCount] = useState<number>(
     post?.commentCount || 0
+  );
+  const [likes, setLikes] = useState<number>(post?.likes || 0);
+  const [likedByUser, setLikedByUser] = useState<boolean>(
+    post?.likedByUser || false
   );
 
   const { user } = post;
@@ -164,9 +169,15 @@ const PostSection = ({ post, showBackbutton = true }: PostSectionProps) => {
       )}
 
       <div className="flex items-center gap-3">
-        <div className="flex items-center gap-1 bg-gray-100 px-3 py-1.5 rounded-full cursor-pointer hover:bg-gray-200">
-          <FiThumbsUp className="text-lg" /> <b>{post.likes}</b>
-        </div>
+        <Like
+          postId={post.id}
+          initialLiked={post.likedByUser}
+          initialLikeCount={post.likes}
+          onSuccess={(liked, likeCount) => {
+            setLikedByUser(liked);
+            setLikes(likeCount);
+          }}
+        />
         <CreateComment
           replyTo={user}
           replyToContent={post.content}
