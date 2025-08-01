@@ -31,6 +31,7 @@ type Props = {
     profileImageUrl: string;
   };
   replyToContent: string;
+  onSuccess?: () => void;
 };
 
 const CreateComment = ({
@@ -39,6 +40,7 @@ const CreateComment = ({
   parentCommentId,
   replyTo,
   replyToContent,
+  onSuccess,
 }: Props) => {
   const user = {
     firstName: "John",
@@ -307,6 +309,7 @@ const CreateComment = ({
             ParentCommentId: parentCommentId,
           });
           resetAudioState();
+          if (onSuccess) onSuccess();
         } else {
           Toast.fire({
             icon: "error",
