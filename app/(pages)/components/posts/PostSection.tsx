@@ -1,7 +1,7 @@
 "use client";
+import { useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useState } from "react";
 import BackButton from "@/app/components/ui/BackButton";
 import UserAvatar from "@/app/components/ui/UserAvatar";
 import {
@@ -27,6 +27,10 @@ type PostSectionProps = {
 };
 
 const PostSection = ({ post, showBackbutton = true }: PostSectionProps) => {
+  const [commentCount, setCommentCount] = useState<number>(
+    post?.commentCount || 0
+  );
+
   const { user } = post;
   const maxImagesToShow = 4;
   const imageCount = post.images.length;
@@ -93,7 +97,8 @@ const PostSection = ({ post, showBackbutton = true }: PostSectionProps) => {
       </div>
 
       {/* Post */}
-      <h2 className="font-semibold text-xl sm:text-2xl mb-4">{post.content}</h2>
+      <h2 className="font-semibold text-xl sm:text-2xl">{post.title}</h2>
+      <p className="text-gray-700 mb-4">{post.content}</p>
       {post.images && post.images.length > 0 && (
         <div
           className={`grid ${getGridClasses()} gap-x-1 gap-y-1 max-h-[400px] w-full overflow-hidden mb-5`}
@@ -166,9 +171,10 @@ const PostSection = ({ post, showBackbutton = true }: PostSectionProps) => {
           replyTo={user}
           replyToContent={post.content}
           postId={post.id}
+          onSuccess={() => setCommentCount((prev) => prev + 1)}
         >
           <div className="flex items-center gap-1 bg-gray-100 px-3 py-1.5 rounded-full cursor-pointer hover:bg-gray-200">
-            <FiMessageCircle className="text-lg" /> <b>{post.commentCount}</b>
+            <FiMessageCircle className="text-lg" /> <b>{commentCount}</b>
           </div>
         </CreateComment>
         <div className="flex items-center gap-1 bg-gray-100 px-3 py-1.5 rounded-full cursor-pointer hover:bg-gray-200">
