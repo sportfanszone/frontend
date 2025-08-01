@@ -110,11 +110,30 @@ export type AchievementCardProps = {
 
 export type Post = {
   id: string;
-  createdAt: string;
+  title: string;
   content: string;
   images: string[];
   likes: number;
   shares: number;
   commentCount: number;
   user: User;
+  createdAt: string;
 };
+
+export type BaseComment = {
+  id: string;
+  replyCount: number;
+  likes: number;
+  shares: number;
+  user: User;
+  replyTo: User;
+  content?: string;
+  imageUrl?: string;
+  audioUrl?: string;
+};
+
+export type Comment = BaseComment & {
+  replies?: BaseComment[];
+};
+
+export type CommentType = Comment;
