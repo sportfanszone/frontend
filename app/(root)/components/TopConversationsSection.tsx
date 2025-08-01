@@ -81,7 +81,7 @@ const posts = [
   },
 ];
 
-const LatestPosts = () => {
+const TopConversations = () => {
   return (
     <section className="font-medium bg-gray-800">
       <div className="w-full p-10 mx-auto max-w-300">
@@ -99,4 +99,4 @@ const LatestPosts = () => {
   );
 };
 
-export default LatestPosts;
+export default TopConversations;
