@@ -1,10 +1,10 @@
 import { Suspense } from "react";
 import TopicCard from "@/app/(pages)/components/topics/TopicCard";
 import getTopicsData from "@/lib/getTopicsData";
-import { TopicPageData } from "@/types";
 import BackButton from "@/app/components/ui/BackButton";
 import TopicsSidebar from "@/app/(pages)/components/topics/TopicsSidebar";
 import TopicsSidebarSkeleton from "@/app/(pages)/components/topics/TopicsSidebarSkeleton";
+import { TopicPageData } from "@/types";
 
 export default async function TopicsPage({
   searchParams,
@@ -51,7 +51,7 @@ export default async function TopicsPage({
         {/* Sidebar */}
         <div className="hidden md:flex min-h-screen w-120 mr-4 mt-4">
           <Suspense fallback={<TopicsSidebarSkeleton />}>
-            <TopicsSidebar />
+            <TopicsSidebar clubId={clubId} />
           </Suspense>
         </div>
       </>

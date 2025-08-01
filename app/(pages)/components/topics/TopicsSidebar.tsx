@@ -2,9 +2,9 @@ import ContributorCard from "@/app/(pages)/components/ContributorCard";
 import getTopicsData from "@/lib/getTopicsData";
 import { TopicPageData } from "@/types";
 
-const TopicsSidebar = async () => {
+const TopicsSidebar = async ({ clubId }: { clubId: string }) => {
   try {
-    const { topContributors }: TopicPageData = await getTopicsData();
+    const { topContributors }: TopicPageData = await getTopicsData(clubId);
 
     if (!topContributors || topContributors.length === 0) {
       return <p>Failed to load sidebar</p>;

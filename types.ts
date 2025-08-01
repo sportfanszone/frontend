@@ -18,15 +18,7 @@ export type User = {
   Following: User[];
 };
 
-export type Topic = {
-  id: string;
-  title: string;
-  createdAt: string;
-  likes: number;
-  comments: number;
-  upVotes: number;
-  user: User;
-};
+export type Topic = Post;
 
 export type TopicCardProp = {
   topic: Topic;
