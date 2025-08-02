@@ -49,7 +49,7 @@
 
 /* Auth Form */
 .formGroup {
-  @apply border-2 border-black/20 rounded-full relative bg-black/3;
+  @apply border-2 border-black/20 rounded-full relative bg-gray-100;
 }
 .formGroupError {
   @apply border-2 border-red-800/50 rounded-full relative bg-red-500/7;
@@ -70,7 +70,7 @@
   @apply text-base sm:text-lg md:text-xl font-bold p-2 mr-2 cursor-pointer;
 }
 .googleButtonContainer {
-  @apply flex items-center justify-center gap-4 mx-auto px-4 py-3 sm:py-4 md:py-5 rounded-full border-2 border-black/20 hover:border-gray-500 transition-all duration-200 cursor-pointer  mb-6 sm:mb-7 md:mb-10;
+  @apply flex items-center justify-center gap-4 mx-auto px-4 py-3 sm:py-4 md:py-5 rounded-full border-2 border-black/20 bg-white hover:border-gray-500 transition-all duration-200 cursor-pointer  mb-6 sm:mb-7 md:mb-10;
 }
 .addUserFormPasswordGroup {
   @apply border-gray-300/70 border-1 rounded-lg shadow-xs;
