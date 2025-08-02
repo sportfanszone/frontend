@@ -131,3 +131,9 @@ export type Comment = BaseComment & {
 };
 
 export type CommentType = Comment;
+
+export type TopConversationsData = {
+  posts: Post[];
+};
+
+export type PostCardProps = Post;
