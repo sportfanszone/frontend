@@ -1,11 +1,19 @@
+"use client";
+import { useState } from "react";
 import Image from "next/image";
 import { FiShare2, FiMessageCircle, FiThumbsUp } from "react-icons/fi";
 import UserAvatar from "@/app/components/ui/UserAvatar";
+import Like from "@/app/components/ui/Like";
 
 import { PostCardProps } from "@/types";
 import formatDate from "@/lib/formatDate";
 
 const PostCard = (post: PostCardProps) => {
+  const [likes, setLikes] = useState<number>(post?.likes || 0);
+  const [likedByUser, setLikedByUser] = useState<boolean>(
+    post?.likedByUser || false
+  );
+
   return (
     <div className="bg-white flex items-center justify-between gap-4 max-h-10em max-w-130 shadow-card hover:shadow-card-active hover:scale-102 rounded-3xl p-6 cursor-pointer transition-all duration-150 ease-in-out">
       {post.images?.length > 0 ? (
@@ -46,9 +54,15 @@ const PostCard = (post: PostCardProps) => {
         <p className="text-sm mb-2 md:mb-4 line-clamp-2">{post.content}</p>
         <div className="flex justify-between items-center text-sm md:text-base">
           <div className="flex justify-between items-center gap-5">
-            <div className="flex justify-between items-center gap-1">
-              <FiThumbsUp /> <b>{post.likes}</b>
-            </div>
+            <Like
+              postId={post.id}
+              initialLiked={post.likedByUser}
+              initialLikeCount={post.likes}
+              onSuccess={(liked, likeCount) => {
+                setLikedByUser(liked);
+                setLikes(likeCount);
+              }}
+            />
             <div className="flex justify-between items-center gap-1">
               <FiMessageCircle /> <b>{post.commentCount}</b>
             </div>
