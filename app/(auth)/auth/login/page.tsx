@@ -154,7 +154,10 @@ export default function Login() {
   };
 
   return (
-    <main className="p-7 font-medium max-w-400 mx-auto min-h-screen pt-21 sm:pt-27 md:pt-35">
+    <main
+      className="p-7 font-medium max-w-400 mx-auto min-h-screen pt-21 sm:pt-27 md:pt-35 bg-no-repeat bg-cover"
+      style={{ backgroundImage: "url(/images/animated-world-map.gif)" }}
+    >
       <div className="text-center max-w-xs sm:max-w-sm md:max-w-md mx-auto">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-7 md:mb-10">
           Welcome Back
@@ -223,36 +226,6 @@ export default function Login() {
             Sign Up Now
           </Link>
         </div>
-      </div>
-      <div className="absolute bottom-0 left-0 w-full h-screen -z-100">
-        <WorldMap
-          dots={[
-            {
-              start: { lat: 64.2008, lng: -149.4937 },
-              end: { lat: 34.0522, lng: -118.2437 },
-            },
-            {
-              start: { lat: 64.2008, lng: -149.4937 },
-              end: { lat: -15.7975, lng: -47.8919 },
-            },
-            {
-              start: { lat: -15.7975, lng: -47.8919 },
-              end: { lat: 38.7223, lng: -9.1393 },
-            },
-            {
-              start: { lat: 51.5074, lng: -0.1278 },
-              end: { lat: 28.6139, lng: 77.209 },
-            },
-            {
-              start: { lat: 28.6139, lng: 77.209 },
-              end: { lat: 43.1332, lng: 131.9113 },
-            },
-            {
-              start: { lat: 28.6139, lng: 77.209 },
-              end: { lat: -1.2921, lng: 36.8219 },
-            },
-          ]}
-        />
       </div>
     </main>
   );
