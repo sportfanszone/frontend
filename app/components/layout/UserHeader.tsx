@@ -74,7 +74,7 @@ const Header = ({ user }: HeaderProps) => {
       </div>
 
       {/* Searchbar */}
-      <Searchbar />
+      <Searchbar className="w-fit max-w-130 m-auto flex-1" />
 
       {/* Nav */}
       {user ? (

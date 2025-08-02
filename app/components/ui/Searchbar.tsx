@@ -1,34 +1,78 @@
-import { useState, useCallback } from "react";
-import { FiSearch } from "react-icons/fi";
-import { useRouter } from "next/navigation";
-import debounce from "lodash.debounce";
+"use client";
 
-const Searchbar = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+import { useState, useCallback, useEffect } from "react";
+import { FiSearch } from "react-icons/fi";
+import { useRouter, useSearchParams } from "next/navigation";
+import debounce from "lodash.debounce";
+import { cn } from "@/lib/utils";
+import { tv, VariantProps } from "tailwind-variants";
+
+// Define the variants
+const searchbarVariants = tv({
+  base: "rounded-full flex justify-center items-center py-0 px-1",
+  variants: {
+    size: {
+      default: "w-fit max-w-130",
+      full: "w-full",
+      sm: "max-w-sm",
+    },
+    align: {
+      center: "mx-auto",
+      left: "ml-0",
+      right: "mr-0",
+    },
+    color: {
+      default: "border-black/40 text-black",
+      primary: "border-primary text-primary",
+      secondary: "border-secondary text-secondary",
+      accent: "border-accent text-accent",
+    },
+  },
+  defaultVariants: {
+    size: "default",
+    align: "center",
+    color: "default",
+  },
+});
+
+interface SearchbarProps extends VariantProps<typeof searchbarVariants> {
+  className?: string;
+}
+
+const Searchbar = ({ className, size, align, color }: SearchbarProps) => {
+  const searchParams = useSearchParams();
+  const initialQuery = searchParams.get("q")
+    ? decodeURIComponent(searchParams.get("q")!)
+    : "";
+  const [searchQuery, setSearchQuery] = useState(initialQuery);
   const router = useRouter();
 
-  // Debounced function to handle search navigation
+  // Update searchQuery when URL query changes (e.g., browser back/forward)
+  useEffect(() => {
+    const query = searchParams.get("q")
+      ? decodeURIComponent(searchParams.get("q")!)
+      : "";
+    setSearchQuery(query);
+  }, [searchParams]);
+
   const debouncedSearch = useCallback(
     debounce((query: string) => {
       const url = `/topics?${query ? `q=${encodeURIComponent(query)}` : ""}`;
-      // Use router.push for client-side navigation, fallback to window.location.href
       if (router) {
         router.push(url);
       } else {
         window.location.href = url;
       }
-    }, 300), // 300ms debounce delay
+    }, 300),
     [router]
   );
 
-  // Handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setSearchQuery(query);
     debouncedSearch(query.trim());
   };
 
-  // Handle form submission for immediate search
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const url = `/topics?${
@@ -41,13 +85,25 @@ const Searchbar = () => {
     }
   };
 
+  // Map button background classes to the color variant
+  const buttonColorClasses: Record<string, string> = {
+    default: "bg-black/40 text-white",
+    primary: "bg-primary text-white",
+    secondary: "bg-secondary text-white",
+    accent: "bg-accent text-white",
+  };
+
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white border-black/40 border-2 text-black rounded-full w-fit max-w-130 m-auto flex-1 flex justify-center items-center mx-auto py-[0px] px-1"
+      className={cn(
+        "border-2 bg-white",
+        searchbarVariants({ size, align, color }),
+        className
+      )}
     >
       <input
-        className="py-1.5 px-2 w-[100%] outline-none"
+        className="py-1.5 px-2 w-full outline-none"
         type="text"
         placeholder="Search your interest"
         value={searchQuery}
@@ -55,7 +111,10 @@ const Searchbar = () => {
       />
       <button
         type="submit"
-        className="bg-black/40 text-white rounded-full cursor-pointer p-2 hover:opacity-90 transition"
+        className={cn(
+          "rounded-full cursor-pointer p-2 hover:opacity-90 transition",
+          buttonColorClasses[color || "default"]
+        )}
       >
         <FiSearch className="w-3.5 h-3.5" />
       </button>

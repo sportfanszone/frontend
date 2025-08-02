@@ -1,4 +1,4 @@
-import { FiSearch } from "react-icons/fi";
+import Searchbar from "@/app/components/ui/Searchbar";
 
 const HeroSection = () => {
   return (
@@ -11,16 +11,10 @@ const HeroSection = () => {
         <p className="mb-6 max-w-100 sm:max-w-full mx-auto text-sm md:text-lg font-light">
           Browse top listings, discover hidden gems, and move in with confidence
         </p>
-        <div className="bg-white text-black rounded-full w-fit m-auto flex justify-center items-center mx-auto">
-          <input
-            className="py-3.5 px-4 sm:w-100 md:w-160 outline-none"
-            type="text"
-            placeholder="Search your interest"
-          />
-          <button className="bg-[tomato] text-white p-2.5 mr-1 rounded-full cursor-pointer">
-            <FiSearch className="size-5.5" />
-          </button>
-        </div>
+        <Searchbar
+          color="primary"
+          className="bg-white text-black rounded-full w-full m-auto flex justify-center items-center mx-auto"
+        />
       </div>
     </section>
   );
