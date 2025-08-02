@@ -2,12 +2,13 @@ export const dynamic = "force-dynamic";
 import LeagueCard from "@/app/(root)/components/LeagueCard";
 import Link from "next/link";
 import getLeaguesData from "@/lib/getLeaguesData";
-import { League } from "@/types";
-import { FiChevronRight } from "react-icons/fi";
+import BackButton from "@/app/components/ui/BackButton";
 
-const LeaguesSection = async () => {
+import { League } from "@/types";
+
+export default async function LeaguesSection() {
   try {
-    const leagues: League[] = (await getLeaguesData(true))?.leagues;
+    const leagues: League[] = (await getLeaguesData(false))?.leagues;
 
     if (!leagues || leagues.length === 0) {
       return (
@@ -22,11 +23,14 @@ const LeaguesSection = async () => {
 
     return (
       <section className="p-10 font-medium max-w-300 mx-auto">
-        <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl text-center mb-10">
-          Leagues
-        </h2>
+        <div className="flex gap-3">
+          <BackButton />
+          <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl mb-10">
+            Leagues{" "}
+          </h2>
+        </div>
 
-        <div className="flex justify-center items-center flex-wrap gap-8 mb-4">
+        <div className="flex justify-center items-center flex-wrap gap-8">
           {leagues.map((league, index) => (
             <Link href={`/clubs?league=${league.id}`} key={index}>
               <LeagueCard
@@ -40,12 +44,6 @@ const LeaguesSection = async () => {
             </Link>
           ))}
         </div>
-        <Link
-          href="/leagues"
-          className="flex items-center text-center justify-center hover:text-blue-700 hover:underline transition-all"
-        >
-          <span>See more</span> <FiChevronRight />
-        </Link>
       </section>
     );
   } catch (error) {
@@ -59,6 +57,4 @@ const LeaguesSection = async () => {
       </section>
     );
   }
-};
-
-export default LeaguesSection;
+}
