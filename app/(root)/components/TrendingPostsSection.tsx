@@ -1,87 +1,14 @@
 import PostCard from "@/app/(root)/components/PostCard";
 
-const posts = [
-  {
-    user: {
-      username: "@username",
-      profileImage: "/images/blankProfile.png",
-    },
-    title: "Tottenham vs Arsenal",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit non deserunt magni alias.",
-    likes: 10,
-    comments: 5,
-    upVotes: 20,
-    createdAt: "2 hours ago",
-  },
-  {
-    user: {
-      username: "@username",
-      profileImage: "/images/blankProfile.png",
-    },
-    title: "Tottenham vs Arsenal",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit non deserunt magni alias.",
-    likes: 10,
-    comments: 5,
-    upVotes: 20,
-    createdAt: "2 hours ago",
-  },
-  {
-    user: {
-      username: "@username",
-      profileImage: "/images/blankProfile.png",
-    },
-    title: "Tottenham vs Arsenal",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit non deserunt magni alias.",
-    likes: 10,
-    comments: 5,
-    upVotes: 20,
-    createdAt: "2 hours ago",
-  },
-  {
-    user: {
-      username: "@username",
-      profileImage: "/images/blankProfile.png",
-    },
-    title: "Tottenham vs Arsenal",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit non deserunt magni alias.",
-    likes: 10,
-    comments: 5,
-    upVotes: 20,
-    createdAt: "2 hours ago",
-  },
-  {
-    user: {
-      username: "@username",
-      profileImage: "/images/blankProfile.png",
-    },
-    title: "Tottenham vs Arsenal",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit non deserunt magni alias.",
-    likes: 10,
-    comments: 5,
-    upVotes: 20,
-    createdAt: "2 hours ago",
-  },
-  {
-    user: {
-      username: "@username",
-      profileImage: "/images/blankProfile.png",
-    },
-    title: "Tottenham vs Arsenal",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit non deserunt magni alias.",
-    likes: 10,
-    comments: 5,
-    upVotes: 20,
-    createdAt: "2 hours ago",
-  },
-];
+import getTrendingPostsData from "@/lib/getTrendingPostsData";
+import { Post } from "@/types";
 
-const LatestPosts = () => {
+const TrendingPosts = async () => {
+  let posts: Post[] = [];
+
+  const data = await getTrendingPostsData();
+  posts = data?.posts || [];
+
   return (
     <section className="p-10 font-medium max-w-300 mx-auto @container">
       <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl text-center mb-10">
@@ -97,4 +24,4 @@ const LatestPosts = () => {
   );
 };
 
-export default LatestPosts;
+export default TrendingPosts;
