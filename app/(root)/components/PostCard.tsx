@@ -1,14 +1,23 @@
 "use client";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import Image from "next/image";
 import { FiShare2, FiMessageCircle, FiThumbsUp } from "react-icons/fi";
 import UserAvatar from "@/app/components/ui/UserAvatar";
-import Like from "@/app/components/ui/Like";
+
+const Like = dynamic(() => import("@/app/components/ui/Like"), { ssr: false });
+const CreateComment = dynamic(
+  () => import("@/app/components/ui/CreateComment"),
+  { ssr: false }
+);
 
 import { PostCardProps } from "@/types";
 import formatDate from "@/lib/formatDate";
 
 const PostCard = (post: PostCardProps) => {
+  const [commentCount, setCommentCount] = useState<number>(
+    post?.commentCount || 0
+  );
   const [likes, setLikes] = useState<number>(post?.likes || 0);
   const [likedByUser, setLikedByUser] = useState<boolean>(
     post?.likedByUser || false
@@ -63,9 +72,17 @@ const PostCard = (post: PostCardProps) => {
                 setLikes(likeCount);
               }}
             />
-            <div className="flex justify-between items-center gap-1">
-              <FiMessageCircle /> <b>{post.commentCount}</b>
-            </div>
+            <CreateComment
+              replyTo={post.user}
+              replyToContent={post.content}
+              postId={post.id}
+              onSuccess={() => setCommentCount((prev) => prev + 1)}
+            >
+              <div className="flex justify-between items-center gap-1">
+                <FiMessageCircle className="text-lg" /> <b>{commentCount}</b>
+              </div>
+            </CreateComment>
+
             <div className="flex justify-between items-center gap-1">
               <FiShare2 />
             </div>
