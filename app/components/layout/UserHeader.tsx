@@ -8,7 +8,7 @@ import { HeaderProps } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import UserAvatar from "@/app/components/ui/UserAvatar";
-import { FiSearch, FiBell, FiMenu, FiArrowRight } from "react-icons/fi";
+import { FiBell, FiMenu, FiArrowRight } from "react-icons/fi";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -21,6 +21,7 @@ import {
 import { Logout } from "@/app/components/ui/Logout";
 import { Badge } from "@/app/components/ui/badge";
 import CreatePost from "@/app/components/ui/CreatePost";
+import Searchbar from "@/app/components/ui/Searchbar";
 
 const Header = ({ user }: HeaderProps) => {
   const { setShowLogoutConfirm } = useLogoutStore();
@@ -73,16 +74,7 @@ const Header = ({ user }: HeaderProps) => {
       </div>
 
       {/* Searchbar */}
-      <div className="bg-white border-black/40 border-2 text-black rounded-full w-fit max-w-130 m-auto flex-1 flex justify-center items-center mx-auto py-[0px] px-1">
-        <input
-          className="py-1.5 px-2 w-[100%] outline-none"
-          type="text"
-          placeholder="Search your interest"
-        />
-        <button className="bg-black/40 text-white rounded-full cursor-pointer p-2 hover:opacity-90 transition">
-          <FiSearch className="w-3.5 h-3.5" />
-        </button>
-      </div>
+      <Searchbar />
 
       {/* Nav */}
       {user ? (

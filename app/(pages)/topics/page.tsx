@@ -14,8 +14,9 @@ export default async function TopicsPage({
   try {
     const params = await searchParams;
     const clubId = params?.club as string;
+    const query = params?.q as string;
 
-    const { topics }: TopicPageData = await getTopicsData(clubId);
+    const { topics }: TopicPageData = await getTopicsData(clubId, query);
 
     if (!topics || topics.length === 0) {
       return (
