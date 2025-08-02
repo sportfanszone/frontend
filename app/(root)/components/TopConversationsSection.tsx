@@ -1,13 +1,29 @@
 import PostCard from "@/app/(root)/components/PostCard";
-
 import getTopConversationsData from "@/lib/getTopConversationsData";
 import { Post } from "@/types";
 
 const TopConversations = async () => {
   let posts: Post[] = [];
 
-  const data = await getTopConversationsData();
-  posts = data?.posts || [];
+  try {
+    const data = await getTopConversationsData();
+    posts = data?.posts || [];
+  } catch (error) {
+    console.error("Failed to fetch top conversations:", error);
+    return (
+      <section className="font-medium bg-gray-800 text-center py-20 text-red-500">
+        Failed to load top conversations. Please try again later.
+      </section>
+    );
+  }
+
+  if (posts.length === 0) {
+    return (
+      <section className="font-medium bg-gray-800 text-center py-20 text-white">
+        No conversations available at the moment.
+      </section>
+    );
+  }
 
   return (
     <section className="font-medium bg-gray-800">
