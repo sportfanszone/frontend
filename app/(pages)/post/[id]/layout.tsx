@@ -18,18 +18,27 @@ export default async function TopicsLayout({
 }: {
   children: ReactElement<{ data: PageData }>;
 }) {
-  const data = await getData();
-  const childrenWithProps = React.cloneElement(children, { data });
+  try {
+    const data = await getData();
+    const childrenWithProps = React.cloneElement(children, { data });
 
-  return (
-    <>
-      <div className="min-h-screen w-[100%] px-4 py-10">
-        {childrenWithProps}
+    return (
+      <>
+        <div className="min-h-screen w-full px-4 py-10">
+          {childrenWithProps}
+        </div>
+        {/* Sidebar */}
+        <div className="hidden md:flex min-h-screen w-120 mr-4 mt-4">
+          <TopicsSidebar clubId="" />
+        </div>
+      </>
+    );
+  } catch (error) {
+    console.error("Failed to load topic layout data:", error);
+    return (
+      <div className="min-h-screen w-full px-4 py-10 text-center text-red-600">
+        An error occurred while loading this page.
       </div>
-      {/* Sidebar */}
-      <div className="hidden md:flex min-h-screen w-120 mr-4 mt-4">
-        <TopicsSidebar />
-      </div>
-    </>
-  );
+    );
+  }
 }
