@@ -25,6 +25,11 @@ export default function Signup() {
     Partial<Record<keyof typeof form, string>>
   >({});
 
+  const handleGoogleAuth = async () => {
+    sessionStorage.setItem("showLoginSuccessAlert", "true");
+    window.location.href = `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/auth/google`;
+  };
+
   const validateForm = () => {
     const result = signupSchema.safeParse(form);
     if (!result.success) {
@@ -132,7 +137,7 @@ export default function Signup() {
         </h1>
 
         {/* Google button */}
-        <div className="googleButtonContainer">
+        <div onClick={handleGoogleAuth} className="googleButtonContainer">
           <Image
             className="width-6 h-6 sm:w-6 sm:h-6 md:w-7.5 md:h-7.5"
             src="/svgs/google-icon-logo.svg"
@@ -141,7 +146,7 @@ export default function Signup() {
             height={25}
           />
           <span className="text-sm sm:text-md md:text-lg font-bold">
-            Continue with Google
+            Login with Google
           </span>
         </div>
 
