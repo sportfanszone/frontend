@@ -5,7 +5,27 @@ import { Post } from "@/types";
 import getPostsData from "@/lib/getPostsData";
 
 const PostsSection = async () => {
-  const { posts }: { posts: Post[] } = (await getPostsData())?.posts;
+  let posts: Post[] = [];
+
+  try {
+    const data = await getPostsData();
+    posts = data?.posts?.posts || [];
+  } catch (error) {
+    console.error("Failed to fetch posts:", error);
+    return (
+      <section className="p-10 text-center text-red-600">
+        Failed to load posts.
+      </section>
+    );
+  }
+
+  if (posts.length === 0) {
+    return (
+      <section className="p-10 text-center text-gray-500">
+        No posts available.
+      </section>
+    );
+  }
 
   return (
     <section className="p-10 font-medium max-w-300 mx-auto @container">
