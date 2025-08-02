@@ -109,10 +109,10 @@ const Header = ({ user }: HeaderProps) => {
                 <Link href="/user/dashboard">
                   <DropdownMenuItem>Profile</DropdownMenuItem>
                 </Link>
-                <Link href="/user/settings">
+                <Link href="#">
                   <DropdownMenuItem>Settings</DropdownMenuItem>
                 </Link>
-                <Link href="/ad">
+                <Link href="#">
                   <DropdownMenuItem>Advert</DropdownMenuItem>
                 </Link>
               </DropdownMenuGroup>
