@@ -1,12 +1,11 @@
 import ContributorCard from "@/app/(pages)/components/ContributorCard";
-import getTopicsData from "@/lib/getTopicsData";
-import { TopicPageData } from "@/types";
+import getTopContributorsData from "@/lib/getTopContributorsData";
 
-const TopicsSidebar = async ({ clubId }: { clubId: string }) => {
+const PostSidebar = async () => {
   try {
-    const { topContributors }: TopicPageData = await getTopicsData(clubId);
+    const { contributors } = await getTopContributorsData();
 
-    if (!topContributors || topContributors.length === 0) {
+    if (!contributors || contributors.length === 0) {
       return <p>Failed to load sidebar</p>;
     }
 
@@ -16,11 +15,19 @@ const TopicsSidebar = async ({ clubId }: { clubId: string }) => {
           <span className="text-gray-500 text-sm inline-block mb-4">
             Top Contributors
           </span>
-          <div className="flex items-center justify-center-safe flex-wrap gap-4">
-            {topContributors.map((contributor, id) => (
-              <ContributorCard key={id} {...contributor} />
-            ))}
-          </div>
+          {contributors.length > 0 ? (
+            <div
+              className={`flex items-center flex-wrap gap-4 ${
+                contributors?.length > 2 ? "justify-center-safe" : null
+              }`}
+            >
+              {contributors.map((contributor, id) => (
+                <ContributorCard key={id} {...contributor} />
+              ))}
+            </div>
+          ) : (
+            <p>No contributors to show</p>
+          )}
         </div>
       </div>
     );
@@ -30,4 +37,4 @@ const TopicsSidebar = async ({ clubId }: { clubId: string }) => {
   }
 };
 
-export default TopicsSidebar;
+export default PostSidebar;
