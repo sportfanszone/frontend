@@ -49,7 +49,7 @@ const PostCard = (post: PostCardProps) => {
             alt={`${post.user?.firstName?.[0]}${post.user?.lastName?.[0]}`}
             className="h-7 md:h-10 w-7 md:w-10 object-cover rounded-full"
           />
-          <div className="flex flex-col justify-start items-center gap-0.5">
+          <div className="flex flex-col justify-start gap-0.5">
             <span className="text-xs md:text-sm font-bold ">
               {post.user?.username}
             </span>
