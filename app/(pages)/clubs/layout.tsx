@@ -9,7 +9,6 @@ export default function ClubsLayout({
   return (
     <>
       {/* Main */}
-
       <Suspense fallback={<ClubsPageSkeleton />}>{children}</Suspense>
     </>
   );
