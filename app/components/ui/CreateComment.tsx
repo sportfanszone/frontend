@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
+import { useDropzone } from "react-dropzone";
 import { FiArrowRight, FiMic, FiImage, FiX } from "react-icons/fi";
 import { FaPlay, FaPause } from "react-icons/fa6";
 import {
@@ -63,11 +64,33 @@ const CreateComment = ({
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [recordingTime, setRecordingTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const waveformRef = useRef<HTMLDivElement | null>(null);
   const wavesurferRef = useRef<WaveSurfer | null>(null);
-  const dropRef = useRef<HTMLDivElement | null>(null);
+
+  // Handle file drop
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    const file = acceptedFiles[0]; // Only take the first file
+    if (file && file.type.startsWith("image/")) {
+      setPostData((prev) => ({ ...prev, image: file }));
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid file type",
+        text: "Please drop an image file",
+      });
+    }
+  }, []);
+
+  // Configure react-dropzone
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      "image/*": [],
+    },
+    multiple: false, // Only allow one image
+    noClick: true, // Prevent file explorer on click
+  });
 
   const { startRecording, stopRecording, mediaBlobUrl, clearBlobUrl } =
     useReactMediaRecorder({
@@ -162,8 +185,6 @@ const CreateComment = ({
 
   const validatePostData = useCallback(() => {
     const result = commentSchema.safeParse(postData);
-    console.log(postData);
-    console.log(result);
     if (!result.success) {
       const fieldErrors: typeof errors = {};
       result.error.issues.forEach((issue) => {
@@ -171,7 +192,6 @@ const CreateComment = ({
         fieldErrors[key] = issue.message;
       });
       setErrors(fieldErrors);
-      console.log(errors);
       return false;
     }
     setErrors({});
@@ -205,44 +225,6 @@ const CreateComment = ({
     setPostData((prev) => ({ ...prev, audio: undefined }));
   }, [resetAudioState]);
 
-  const handleDragEnter = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(true);
-  }, []);
-
-  const handleDragLeave = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
-  }, []);
-
-  const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(true);
-  }, []);
-
-  const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
-
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-      const file = files[0];
-      if (file.type.startsWith("image/")) {
-        setPostData((prev) => ({ ...prev, image: file }));
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Invalid file type",
-          text: "Please drop an image file",
-        });
-      }
-    }
-  }, []);
-
   const formatTime = useCallback((seconds: number) => {
     const m = Math.floor(seconds / 60);
     const s = seconds % 60;
@@ -273,7 +255,6 @@ const CreateComment = ({
         return;
       }
 
-      console.log(validatePostData());
       if (!validatePostData()) return;
 
       try {
@@ -358,12 +339,26 @@ const CreateComment = ({
     <Dialog onOpenChange={handleDialogChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
 
-      <DialogContent className="w-full max-w-full h-full sm:max-h-[90vh] sm:h-fit sm:max-w-[425px] rounded-none sm:rounded-lg overflow-y-auto">
+      <DialogContent
+        className={`w-full max-w-full h-full sm:max-h-[90vh] sm:h-fit sm:max-w-[425px] rounded-none sm:rounded-lg overflow-y-auto ${
+          isDragActive
+            ? "bg-blue-100 border-2 border-dashed border-blue-500"
+            : ""
+        }`}
+        {...getRootProps()}
+      >
         <VisuallyHidden>
           <DialogTitle>Create Comment</DialogTitle>
         </VisuallyHidden>
 
         <form onSubmit={handleSubmit}>
+          <input {...getInputProps()} />
+          {isDragActive && (
+            <div className="absolute inset-0 flex items-center justify-center bg-blue-100/80">
+              <p className="text-blue-500 font-semibold">Drop image here</p>
+            </div>
+          )}
+
           <div className="mb-9">
             <div className="flex items-start gap-3">
               <UserAvatar
@@ -392,16 +387,7 @@ const CreateComment = ({
             </div>
           </div>
 
-          <div
-            ref={dropRef}
-            onDragEnter={handleDragEnter}
-            onDragLeave={handleDragLeave}
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
-            className={`flex items-start gap-3 rounded-lg ${
-              isDragging ? "bg-blue-100 border-2 border-blue-500" : "bg-white"
-            }`}
-          >
+          <div className="flex items-start gap-3">
             {!isRecording && (
               <div className="flex items-center gap-3 mb-4">
                 <UserAvatar
@@ -437,11 +423,6 @@ const CreateComment = ({
                     >
                       <FiX />
                     </button>
-                  </div>
-                )}
-                {isDragging && (
-                  <div className="text-center text-blue-500 mt-2">
-                    Drop image here
                   </div>
                 )}
               </div>
