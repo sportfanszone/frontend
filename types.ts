@@ -108,6 +108,7 @@ export type Post = {
   likes: number;
   shares: number;
   commentCount: number;
+  link: string;
   user: User;
   createdAt: string;
   likedByUser: boolean;

@@ -1,12 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import YouTube from "react-youtube";
 import BackButton from "@/app/components/ui/BackButton";
 import UserAvatar from "@/app/components/ui/UserAvatar";
 import {
   FiMessageCircle,
-  FiThumbsUp,
   FiShare2,
   FiChevronLeft,
   FiChevronRight,
@@ -14,6 +14,7 @@ import {
 } from "react-icons/fi";
 import moment from "moment";
 import { Post } from "@/types";
+import { isValidYouTubeUrl } from "@/lib/utils";
 
 const CreateComment = dynamic(
   () => import("@/app/components/ui/CreateComment"),
@@ -43,6 +44,20 @@ const PostSection = ({ post, showBackbutton = true }: PostSectionProps) => {
     imageCount > maxImagesToShow ? imageCount - maxImagesToShow : 0;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // Extract YouTube video ID from link
+  const getYouTubeVideoId = (url: string): string | null => {
+    const youtubeRegex =
+      /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const match = url.match(youtubeRegex);
+    return match ? match[1] : null;
+  };
+
+  const videoId =
+    post.link && isValidYouTubeUrl(post.link)
+      ? getYouTubeVideoId(post.link)
+      : null;
 
   const openModal = (index: number) => {
     setCurrentImageIndex(index);
@@ -61,6 +76,18 @@ const PostSection = ({ post, showBackbutton = true }: PostSectionProps) => {
     setCurrentImageIndex((prev) => (prev === imageCount - 1 ? 0 : prev + 1));
   };
 
+  const scrollLeft = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: -200, behavior: "smooth" });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: 200, behavior: "smooth" });
+    }
+  };
+
   const getGridClasses = () => {
     if (imageCount === 1) return "grid-cols-1 auto-rows-[minmax(0,1fr)]";
     if (imageCount === 2) return "grid-cols-2 auto-rows-[minmax(0,1fr)]";
@@ -77,6 +104,16 @@ const PostSection = ({ post, showBackbutton = true }: PostSectionProps) => {
 
   return (
     <section className="max-w-3xl mx-auto p-4 pt-0">
+      <style jsx>{`
+        .hide-scrollbar {
+          -ms-overflow-style: none; /* IE and Edge */
+          scrollbar-width: none; /* Firefox */
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none; /* Chrome, Safari, Opera */
+        }
+      `}</style>
+
       {/* Profile */}
       <div className="flex items-center justify-start gap-3 mb-4">
         {showBackbutton && <BackButton />}
@@ -104,34 +141,97 @@ const PostSection = ({ post, showBackbutton = true }: PostSectionProps) => {
       {/* Post */}
       <h2 className="font-semibold text-xl sm:text-2xl">{post.title}</h2>
       <p className="text-gray-700 mb-4">{post.content}</p>
+
+      {/* YouTube Video Player */}
+      {videoId && (
+        <div className="mb-5">
+          <YouTube
+            videoId={videoId}
+            opts={{
+              width: "100%",
+              height: "400",
+              playerVars: {
+                autoplay: 0,
+              },
+            }}
+            className="w-full max-w-full rounded-lg overflow-hidden"
+          />
+        </div>
+      )}
+
+      {/* Images */}
       {post.images && post.images.length > 0 && (
-        <div
-          className={`grid ${getGridClasses()} gap-x-1 gap-y-1 max-h-[400px] w-full overflow-hidden mb-5`}
-        >
-          {post.images.slice(0, maxImagesToShow).map((image, index) => (
-            <div
-              key={index}
-              className={`relative h-full overflow-hidden cursor-pointer ${getImageStyles(
-                index
-              )}`}
-              onClick={() => openModal(index)}
-            >
-              <Image
-                src={image}
-                width={400}
-                height={400}
-                className="w-full h-full object-cover rounded-lg border border-gray-300"
-                alt={`Post Image ${index + 1}`}
-              />
-              {index === maxImagesToShow - 1 && showMoreCount > 0 && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-lg">
-                  <span className="text-white text-3xl font-bold">
-                    +{showMoreCount}
-                  </span>
-                </div>
+        <div className="mb-5">
+          {videoId ? (
+            <div className="relative flex items-center">
+              {imageCount > 2 && (
+                <button
+                  className="absolute left-0 z-10 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"
+                  onClick={scrollLeft}
+                >
+                  <FiChevronLeft size={24} />
+                </button>
+              )}
+              <div
+                ref={scrollContainerRef}
+                className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar"
+                style={{ scrollBehavior: "smooth" }}
+              >
+                {post.images.map((image, index) => (
+                  <div
+                    key={index}
+                    className="flex-shrink-0 snap-start w-32 h-32 mx-1 cursor-pointer"
+                    onClick={() => openModal(index)}
+                  >
+                    <Image
+                      src={image}
+                      width={128}
+                      height={128}
+                      className="w-full h-full object-cover rounded-lg border border-gray-300"
+                      alt={`Post Image ${index + 1}`}
+                    />
+                  </div>
+                ))}
+              </div>
+              {imageCount > 2 && (
+                <button
+                  className="absolute right-0 z-10 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"
+                  onClick={scrollRight}
+                >
+                  <FiChevronRight size={24} />
+                </button>
               )}
             </div>
-          ))}
+          ) : (
+            <div
+              className={`grid ${getGridClasses()} gap-x-1 gap-y-1 max-h-[400px] w-full overflow-hidden`}
+            >
+              {post.images.slice(0, maxImagesToShow).map((image, index) => (
+                <div
+                  key={index}
+                  className={`relative h-full overflow-hidden cursor-pointer ${getImageStyles(
+                    index
+                  )}`}
+                  onClick={() => openModal(index)}
+                >
+                  <Image
+                    src={image}
+                    width={400}
+                    height={400}
+                    className="w-full h-full object-cover rounded-lg border border-gray-300"
+                    alt={`Post Image ${index + 1}`}
+                  />
+                  {index === maxImagesToShow - 1 && showMoreCount > 0 && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-lg">
+                      <span className="text-white text-3xl font-bold">
+                        +{showMoreCount}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
