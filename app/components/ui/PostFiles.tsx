@@ -1,16 +1,19 @@
 import { FiX } from "react-icons/fi";
+import { cn } from "@/lib/utils";
 
 const PostFiles = ({
   files,
   handleRemoveFile,
+  className,
 }: {
   files: File[];
   handleRemoveFile: (index: number) => void;
+  className?: string;
 }) => {
   return (
     <>
       {files.length > 0 && (
-        <div className="mt-3 flex flex-wrap gap-3">
+        <div className={cn("mt-3 flex flex-wrap gap-3 mb-4", className)}>
           {files.map((file, index) => (
             <div
               key={index}

@@ -1,8 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useDropzone } from "react-dropzone";
 import { FiArrowRight, FiPlus, FiLink, FiImage } from "react-icons/fi";
-import InputGroup from "@/app/(admin)/components/InputGroup";
-import TextareaGroup from "@/app/(admin)/components/TextareaGroup";
+import { getYouTubeThumbnail, isValidYouTubeUrl } from "@/lib/utils";
 
 import {
   Dialog,
@@ -38,10 +38,49 @@ const CreatePost = ({ user }: Props) => {
     clubId: "",
     files: [] as File[],
   });
-
+  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
   const [errors, setErrors] = useState<
     Partial<Record<keyof PostSchema, string>>
   >({});
+
+  // Handle file drop
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    setPostData((prev) => {
+      const updatedFiles = [...prev.files, ...acceptedFiles];
+      return { ...prev, files: updatedFiles };
+    });
+  }, []);
+
+  // Configure react-dropzone
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      "image/*": [],
+      "video/*": [],
+    },
+    multiple: true,
+    noClick: true, // Prevent click from opening file explorer
+  });
+
+  // Update thumbnail when link changes
+  useEffect(() => {
+    if (postData.link) {
+      if (isValidYouTubeUrl(postData.link)) {
+        const thumbnail = getYouTubeThumbnail(postData.link);
+        setThumbnailUrl(thumbnail);
+        setErrors((prev) => ({ ...prev, link: "" }));
+      } else {
+        setThumbnailUrl(null);
+        setErrors((prev) => ({
+          ...prev,
+          link: "Please enter a valid YouTube URL",
+        }));
+      }
+    } else {
+      setThumbnailUrl(null);
+      setErrors((prev) => ({ ...prev, link: "" }));
+    }
+  }, [postData.link]);
 
   const validatePostData = () => {
     const result = postSchema.safeParse(postData);
@@ -49,11 +88,21 @@ const CreatePost = ({ user }: Props) => {
       const fieldErrors: typeof errors = {};
       result.error.issues.forEach((issue) => {
         const key = issue.path[0] as keyof typeof postData;
-        fieldErrors[key] = issue.message; // ✅ Populate the NEW object
+        fieldErrors[key] = issue.message;
       });
-      setErrors(fieldErrors); // ✅ Correctly trigger state update
+      setErrors(fieldErrors);
       return false;
     }
+
+    // Additional validation for YouTube link
+    if (postData.link && !isValidYouTubeUrl(postData.link)) {
+      setErrors((prev) => ({
+        ...prev,
+        link: "Please enter a valid YouTube URL",
+      }));
+      return false;
+    }
+
     setErrors({});
     return true;
   };
@@ -72,6 +121,11 @@ const CreatePost = ({ user }: Props) => {
         setErrors((prevErrors) => ({
           ...prevErrors,
           [name]: fieldError?.message || "",
+        }));
+      } else if (name === "link" && value && !isValidYouTubeUrl(value)) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          link: "Please enter a valid YouTube URL",
         }));
       } else {
         setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
@@ -126,12 +180,26 @@ const CreatePost = ({ user }: Props) => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log(postData);
     e.preventDefault();
 
-    console.log(validatePostData());
-    console.log(errors);
-    if (!validatePostData()) return;
+    if (!validatePostData()) {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "bottom-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
+      Toast.fire({
+        icon: "error",
+        title: "Invalid YouTube URL",
+      });
+      return;
+    }
 
     const Toast = Swal.mixin({
       toast: true,
@@ -179,7 +247,6 @@ const CreatePost = ({ user }: Props) => {
           });
         }
         if (data?.errors?.length > 0) {
-          console.log("Field errors:", data.errors);
           const fieldErrors: Partial<typeof errors> = {};
           data.errors.forEach(
             (error: { field: keyof typeof postData; message: string }) => {
@@ -217,9 +284,20 @@ const CreatePost = ({ user }: Props) => {
 
       <DialogContent
         aria-description="Post Card"
-        className="w-full max-w-full h-full sm:max-h-[90vh] sm:h-fit sm:max-w-[425px] rounded-none sm:rounded-lg overflow-y-auto"
+        className={`w-full max-w-full h-full sm:max-h-[90vh] sm:h-fit sm:max-w-[425px] rounded-none sm:rounded-lg overflow-y-auto ${
+          isDragActive
+            ? "bg-gray-100 border-2 border-dashed border-primary"
+            : ""
+        }`}
+        {...getRootProps()}
       >
         <form onSubmit={handleSubmit}>
+          <input {...getInputProps()} />
+          {isDragActive && (
+            <div className="absolute inset-0 flex items-center justify-center bg-gray-100/80">
+              <p className="text-primary font-semibold">Drop your files here</p>
+            </div>
+          )}
           <div className="flex items-center gap-2 mb-4">
             <div className="w-15 h-15 rounded-full overflow-hidden">
               <UserAvatar
@@ -243,7 +321,6 @@ const CreatePost = ({ user }: Props) => {
             id="postTitle"
             placeholder="Post Title"
             className="mb-1"
-            // required
             name="title"
             value={postData.title}
             onChange={handleInputChange}
@@ -256,7 +333,6 @@ const CreatePost = ({ user }: Props) => {
             id="postContent"
             placeholder="Write your post here..."
             className="resize-none border-none shadow-none focus:outline-none focus:ring-0 focus-visible:ring-0 p-0"
-            // required
             autoFocus
             name="content"
             value={postData.content}
@@ -270,6 +346,31 @@ const CreatePost = ({ user }: Props) => {
             files={postData.files}
             handleRemoveFile={handleRemoveFile}
           />
+
+          {thumbnailUrl && (
+            <div className="mb-3">
+              <img
+                src={thumbnailUrl}
+                alt="YouTube video thumbnail"
+                className="w-full max-w-[300px] h-auto rounded-lg"
+              />
+            </div>
+          )}
+
+          <div className="flex items-center border-gray-200 border-1 rounded-lg transition-all cursor-pointer mb-3">
+            <FiLink className="ml-3" />
+            <Input
+              className="border-none outline-none shadow-none focus:outline-none focus:ring-0 focus-visible:ring-0"
+              type="text"
+              placeholder="YouTube link (optional)"
+              name="link"
+              value={postData.link}
+              onChange={handleInputChange}
+            />
+          </div>
+          {errors.link && (
+            <p className="text-red-500 text-sm mt-1 mb-2">{errors.link}</p>
+          )}
 
           <DialogFooter>
             <div className="flex items-center justify-between w-full">
@@ -288,22 +389,6 @@ const CreatePost = ({ user }: Props) => {
                     <FiImage />
                   </div>
                 </label>
-                <div>
-                  <div className="flex items-center border-gray-200 border-1 rounded-lg transition-all cursor-pointer mr-3">
-                    <FiLink className="ml-3" />
-                    <Input
-                      className="border-none outline-none shadow-none focus:outline-none focus:ring-0 focus-visible:ring-0"
-                      type="text"
-                      placeholder="Your link (optional)"
-                      name="link"
-                      value={postData.link}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  {errors.link && (
-                    <p className="text-red-500 text-sm mt-1">{errors.link}</p>
-                  )}
-                </div>
               </div>
 
               <Button
