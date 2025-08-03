@@ -246,13 +246,13 @@ const PostSection = ({ post, showBackbutton = true }: PostSectionProps) => {
               <FiX />
             </button>
             <button
-              className="absolute left-4 text-white text-3xl"
+              className="absolute left-4 text-white text-3xl bg-black/50 text-white rounded-full hover:bg-black/70 cursor-pointer p-2"
               onClick={goToPreviousImage}
             >
               <FiChevronLeft />
             </button>
             <button
-              className="absolute right-4 text-white text-3xl"
+              className="absolute right-4 text-white text-3xl bg-black/50 text-white rounded-full hover:bg-black/70 cursor-pointer p-2"
               onClick={goToNextImage}
             >
               <FiChevronRight />
