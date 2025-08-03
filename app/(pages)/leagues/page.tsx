@@ -1,14 +1,13 @@
-export const dynamic = "force-dynamic";
-import LeagueCard from "@/app/(root)/components/LeagueCard";
-import Link from "next/link";
+import { Suspense } from "react";
+import LeaguesSection from "@/app/(pages)/components/leagues/LeaguesSection";
+import LeaguesSidebar from "@/app/(pages)/components/leagues/LeaguesSidebar";
+import LeaguesSidebarSkeleton from "@/app/(pages)/components/leagues/LeaguesSidebarSkeleton";
+
 import getLeaguesData from "@/lib/getLeaguesData";
-import BackButton from "@/app/components/ui/BackButton";
 
-import { League } from "@/types";
-
-export default async function LeaguesSection() {
+export default async function LeaguesPage() {
   try {
-    const leagues: League[] = (await getLeaguesData(false))?.leagues;
+    const { leagues, clubs } = await getLeaguesData(true);
 
     if (!leagues || leagues.length === 0) {
       return (
@@ -22,39 +21,23 @@ export default async function LeaguesSection() {
     }
 
     return (
-      <section className="p-10 font-medium max-w-300 mx-auto">
-        <div className="flex gap-3">
-          <BackButton />
-          <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl mb-10">
-            Leagues{" "}
-          </h2>
+      <>
+        {/* Main */}
+        <div className="min-h-screen w-[100%] px-4 py-10">
+          <main className="font-medium max-w-400 mx-auto">
+            <LeaguesSection leagues={leagues} />
+          </main>
         </div>
 
-        <div className="flex justify-center items-center flex-wrap gap-8">
-          {leagues.map((league, index) => (
-            <Link href={`/clubs?league=${league.id}`} key={index}>
-              <LeagueCard
-                leagueName={league.name}
-                clubCount={league.clubCount}
-                lastActivity={league.lastAccess}
-                description={league.description}
-                logo={league.logo}
-                backgroundImage={league.backgroundImage}
-              />
-            </Link>
-          ))}
+        {/* Sidebar */}
+        <div className="hidden md:flex min-h-screen w-120 mr-4 mt-4">
+          <Suspense fallback={<LeaguesSidebarSkeleton />}>
+            <LeaguesSidebar clubs={clubs} />
+          </Suspense>
         </div>
-      </section>
+      </>
     );
   } catch (error) {
-    console.error("Error fetching leagues:", error);
-    return (
-      <section className="p-10 font-medium max-w-300 mx-auto">
-        <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl text-center mb-10">
-          Error Fetching Leagues
-        </h2>
-        <p className="text-center">Please try again later.</p>
-      </section>
-    );
+    return <p>An error occured while loading clubs</p>;
   }
 }
