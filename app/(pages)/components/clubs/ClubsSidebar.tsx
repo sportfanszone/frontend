@@ -58,18 +58,27 @@ const ClubsSidebar = async ({ leagueId }: ClubsSidebarProps) => {
         {relatedLeagues && (
           <div className="bg-white border-2 border-gray-200 rounded-xl flex flex-col justify-center p-6">
             <span className="text-gray-500 text-sm mb-3">RELATED</span>
-            {relatedLeagues.map((related) => (
-              <div key={related.id} className="flex items-center gap-3 mb-2">
-                <Image
-                  src={related.logo}
-                  width={200}
-                  height={200}
-                  alt="Related league logo"
-                  className="h-10 w-10 object-cover rounded-full"
-                />
-                <span className="text-sm">{related.name}</span>
-              </div>
-            ))}
+            {relatedLeagues?.length > 0 ? (
+              <>
+                {relatedLeagues.map((related) => (
+                  <div
+                    key={related.id}
+                    className="flex items-center gap-3 mb-2"
+                  >
+                    <Image
+                      src={related.logo}
+                      width={200}
+                      height={200}
+                      alt="Related league logo"
+                      className="h-10 w-10 object-cover rounded-full"
+                    />
+                    <span className="text-sm">{related.name}</span>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <p>There are no related leagues</p>
+            )}
           </div>
         )}
       </div>
