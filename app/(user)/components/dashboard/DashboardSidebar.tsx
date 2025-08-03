@@ -10,34 +10,34 @@ const DashboardSidebar = async () => {
       clubsYouFollow,
     }: DashboardPageData = await getDashboardData();
 
-    if (!profileViews || profileViews.length === 0) {
-      return <p>Failed to load sidebar</p>;
-    }
-
     return (
       <div className="w-full h-fit">
         <div className="p-6 mb-4 bg-white border-2 border-gray-200 rounded-xl">
           <span className="text-gray-500 text-sm inline-block mb-4">
             Profile views
           </span>
-          <div>
-            {profileViews.map(
-              ({ id, firstName, middleName, lastName, profileImageUrl }) => (
-                <div key={id} className="flex items-center w-ful gap-3 mb-4">
-                  <Image
-                    src={profileImageUrl}
-                    width={200}
-                    height={200}
-                    alt="League logo"
-                    className="h-10 w-10 object-cover rounded-full"
-                  />
-                  <span className="text-sm">
-                    {firstName} {middleName} {lastName}
-                  </span>
-                </div>
-              )
-            )}
-          </div>
+          {profileViews.length > 0 ? (
+            <div>
+              {profileViews.map(
+                ({ id, firstName, middleName, lastName, profileImageUrl }) => (
+                  <div key={id} className="flex items-center w-ful gap-3 mb-4">
+                    <Image
+                      src={profileImageUrl}
+                      width={200}
+                      height={200}
+                      alt="League logo"
+                      className="h-10 w-10 object-cover rounded-full"
+                    />
+                    <span className="text-sm">
+                      {firstName} {middleName} {lastName}
+                    </span>
+                  </div>
+                )
+              )}
+            </div>
+          ) : (
+            <div>No profile views found</div>
+          )}
         </div>
 
         <div className="p-6 mb-4 bg-white border-2 border-gray-200 rounded-xl">
