@@ -1,5 +1,5 @@
-import TopicsSidebar from "@/app/(pages)/components/topics/TopicsSidebar";
 import React, { ReactElement } from "react";
+import PostSidebar from "@/app/(pages)/components/post/PostSidebar";
 
 type PageData = {
   posts: number;
@@ -29,7 +29,7 @@ export default async function TopicsLayout({
         </div>
         {/* Sidebar */}
         <div className="hidden md:flex min-h-screen w-120 mr-4 mt-4">
-          <TopicsSidebar clubId="" />
+          <PostSidebar />
         </div>
       </>
     );
