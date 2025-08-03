@@ -1,6 +1,5 @@
 import ContributorCard from "@/app/(pages)/components/ContributorCard";
 import getTopContributorsData from "@/lib/getTopContributorsData";
-import { TopicPageData } from "@/types";
 
 const PostSidebar = async () => {
   try {
