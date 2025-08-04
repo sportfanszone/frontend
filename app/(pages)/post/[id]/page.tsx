@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import PostSection from "@/app/(pages)/components/posts/PostSection";
 import CommentSection from "@/app/(pages)/components/posts/CommentSection";
 

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { LeaguesTable } from "@/app/(admin)/components/all_leagues//LeaguesTable";
 
 export default function Page() {

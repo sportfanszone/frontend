@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { UsersTable } from "@/app/(admin)/components/all_users/UsersTable";
 
 export default function Page() {

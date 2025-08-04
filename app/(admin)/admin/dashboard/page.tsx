@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { SectionCards } from "@/app/(admin)/components/dashboard/SectionCards";
 import { VisitorsChart } from "@/app/(admin)/components/dashboard/VisitorsChart";
 import { UsersTable } from "@/app/(admin)/components/dashboard/NewUsers";

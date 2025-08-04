@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import UserCard from "@/app/(admin)/components/view_user/UserCard";
 
 export default function Page() {

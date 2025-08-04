@@ -8,8 +8,6 @@ export default function TopicsLayout({
 }) {
   return (
     <>
-      {/* Main */}
-
       <Suspense fallback={<TopicsPageSkeleton />}>{children}</Suspense>
     </>
   );

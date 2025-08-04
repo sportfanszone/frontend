@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Suspense } from "react";
 import TopicCard from "@/app/(pages)/components/topics/TopicCard";
 import getTopicsData from "@/lib/getTopicsData";
@@ -52,7 +54,7 @@ export default async function TopicsPage({
         {/* Sidebar */}
         <div className="hidden md:flex min-h-screen w-120 mr-4 mt-4">
           <Suspense fallback={<TopicsSidebarSkeleton />}>
-            <TopicsSidebar clubId={clubId} />
+            <TopicsSidebar />
           </Suspense>
         </div>
       </>

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { ClubsTable } from "@/app/(admin)/components/all_clubs/ClubsTable";
 
 export default function Page() {

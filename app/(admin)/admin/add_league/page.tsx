@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import AddLeagueForm from "@/app/(admin)/components/add_league/AddLeagueForm";
 
 export default function Page() {

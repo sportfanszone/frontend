@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Suspense } from "react";
 import ClubCard from "@/app/(pages)/components/clubs/ClubCard";
 import Link from "next/link";

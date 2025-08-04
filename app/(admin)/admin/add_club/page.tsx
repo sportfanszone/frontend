@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import AddClubForm from "@/app/(admin)/components/add_club/AddClubForm";
 
 export default function Page() {

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getUserFromCookie } from "@/lib/auth";
 import { User } from "@/types";
 

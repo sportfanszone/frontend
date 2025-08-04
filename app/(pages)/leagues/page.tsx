@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Suspense } from "react";
 import LeaguesSection from "@/app/(pages)/components/leagues/LeaguesSection";
 import LeaguesSidebar from "@/app/(pages)/components/leagues/LeaguesSidebar";
