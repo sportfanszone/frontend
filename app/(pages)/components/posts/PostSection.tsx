@@ -32,16 +32,10 @@ const PostSection = ({ post, showBackbutton = true }: PostSectionProps) => {
   const [commentCount, setCommentCount] = useState<number>(
     post?.commentCount || 0
   );
-  const [likes, setLikes] = useState<number>(post?.likes || 0);
+  const [likes, setLikes] = useState<number>(post?.likes || 0); // eslint-disable-line @typescript-eslint/no-unused-vars
   const [likedByUser, setLikedByUser] = useState<boolean>(
     post?.likedByUser || false
-  );
-
-  const { user } = post;
-  const maxImagesToShow = 4;
-  const imageCount = post.images.length;
-  const showMoreCount =
-    imageCount > maxImagesToShow ? imageCount - maxImagesToShow : 0;
+  ); // eslint-disable-line @typescript-eslint/no-unused-vars
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -102,6 +96,11 @@ const PostSection = ({ post, showBackbutton = true }: PostSectionProps) => {
     return "";
   };
 
+  const imageCount = post.images.length;
+  const maxImagesToShow = 4;
+  const showMoreCount =
+    imageCount > maxImagesToShow ? imageCount - maxImagesToShow : 0;
+
   return (
     <section className="max-w-3xl mx-auto p-4 pt-0">
       <style jsx>{`
@@ -117,25 +116,32 @@ const PostSection = ({ post, showBackbutton = true }: PostSectionProps) => {
       {/* Profile */}
       <div className="flex items-center justify-start gap-3 mb-4">
         {showBackbutton && <BackButton />}
-        <div className="flex items-center gap-3">
-          <UserAvatar
-            src={post.user.profileImageUrl}
-            alt={`${user.firstName?.[0] ?? ""}${user.lastName?.[0] ?? ""}`}
-            className="size-10"
-          />
-        </div>
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="font-bold">@{user.username}</span>
-            <span className="w-1 h-1 rounded-full bg-gray-500"></span>
-            <span className="text-gray-500">
-              {moment(post.createdAt).format("MMMM, YYYY")}
-            </span>
+        {post.user ? (
+          <div className="flex items-center gap-3">
+            <UserAvatar
+              src={post.user.profileImageUrl ?? ""}
+              alt={`${post.user.firstName?.[0] ?? ""}${
+                post.user.lastName?.[0] ?? ""
+              }`}
+              className="size-10"
+            />
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold">@{post.user.username}</span>
+                <span className="w-1 h-1 rounded-full bg-gray-500"></span>
+                <span className="text-gray-500">
+                  {moment(post.createdAt).format("MMMM, YYYY")}
+                </span>
+              </div>
+              <div className="text-gray-700">
+                {post.user.firstName ?? ""} {post.user.middleName ?? ""}{" "}
+                {post.user.lastName ?? ""}
+              </div>
+            </div>
           </div>
-          <div className="text-gray-700">
-            {user.firstName} {user.middleName} {user.lastName}
-          </div>
-        </div>
+        ) : (
+          <div className="text-gray-500">User information not available</div>
+        )}
       </div>
 
       {/* Post */}
@@ -246,13 +252,13 @@ const PostSection = ({ post, showBackbutton = true }: PostSectionProps) => {
               <FiX />
             </button>
             <button
-              className="absolute left-4 text-white text-3xl bg-black/50 text-white rounded-full hover:bg-black/70 cursor-pointer p-2"
+              className="absolute left-4 text-white text-3xl bg-black/50 rounded-full hover:bg-black/70 cursor-pointer p-2"
               onClick={goToPreviousImage}
             >
               <FiChevronLeft />
             </button>
             <button
-              className="absolute right-4 text-white text-3xl bg-black/50 text-white rounded-full hover:bg-black/70 cursor-pointer p-2"
+              className="absolute right-4 text-white text-3xl bg-black/50 rounded-full hover:bg-black/70 cursor-pointer p-2"
               onClick={goToNextImage}
             >
               <FiChevronRight />
@@ -279,7 +285,7 @@ const PostSection = ({ post, showBackbutton = true }: PostSectionProps) => {
           }}
         />
         <CreateComment
-          replyTo={user}
+          replyTo={post.user}
           replyToContent={post.content}
           postId={post.id}
           onSuccess={() => setCommentCount((prev) => prev + 1)}

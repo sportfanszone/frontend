@@ -1,13 +1,17 @@
-type InputGroupProps<T extends Record<string, any>> = {
+"use client";
+
+import { ReactNode } from "react";
+
+type InputGroupProps<T extends Record<string, string | boolean>> = {
   id: keyof T;
-  label: string;
+  label: string | ReactNode;
   type?: string;
   errors: Partial<Record<keyof T, string>>;
   form: T;
   handleChange: <K extends keyof T>(key: K, value: T[K]) => void;
 };
 
-const InputGroup = <T extends Record<string, any>>({
+const InputGroup = <T extends Record<string, string | boolean>>({
   id,
   errors,
   label,
@@ -28,9 +32,18 @@ const InputGroup = <T extends Record<string, any>>({
           className="formInput"
           id={id as string}
           type={type}
-          placeholder={`Your ${label}`}
-          value={form[id] as string}
-          onChange={(e) => handleChange(id, e.target.value as T[keyof T])}
+          placeholder={typeof label === "string" ? `Your ${label}` : undefined}
+          value={
+            typeof form[id] === "boolean" ? undefined : (form[id] as string)
+          }
+          onChange={(e) =>
+            handleChange(
+              id,
+              (type === "checkbox"
+                ? e.target.checked
+                : e.target.value) as T[typeof id]
+            )
+          }
         />
       </div>
       {errors[id] && (

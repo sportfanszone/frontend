@@ -1,10 +1,8 @@
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 
-// Define a union of allowed value types for the form fields
-type FormValue = string | number | boolean | File;
+type FormValue = string | File | null;
 
-// Generic props type, where T is constrained to a record with FormValue types
 type InputGroupProps<T extends Record<string, FormValue>, K extends keyof T> = {
   id: K;
   label: string;

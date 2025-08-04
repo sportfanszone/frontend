@@ -14,7 +14,7 @@ import { League } from "@/types";
 
 interface ToggleLeagueStatusFormProps {
   league: League;
-  setData?: React.Dispatch<React.SetStateAction<any[]>>;
+  setData?: React.Dispatch<React.SetStateAction<League[]>>;
 }
 
 export default function ToggleLeagueStatusForm({
@@ -22,8 +22,9 @@ export default function ToggleLeagueStatusForm({
   setData,
 }: ToggleLeagueStatusFormProps) {
   const [leagueStatus, setLeagueStatus] = useState<boolean>(
-    league.pinned ? true : false
+    league.pinned ?? false
   );
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -52,7 +53,9 @@ export default function ToggleLeagueStatusForm({
       if (res.ok || data.status === "success") {
         Toast.fire({
           icon: "success",
-          title: data.message || "Password reset successfully!",
+          title:
+            data.message ||
+            `League ${leagueStatus ? "unpinned" : "pinned"} successfully!`,
         });
 
         if (setData) {
@@ -61,12 +64,12 @@ export default function ToggleLeagueStatusForm({
               u.id === league.id
                 ? {
                     ...u,
-                    pinned: u.pinned === true ? false : true,
+                    pinned: !leagueStatus,
                   }
                 : u
             )
           );
-          setLeagueStatus((prevData) => (prevData === true ? false : true));
+          setLeagueStatus(!leagueStatus);
         }
       } else {
         if (data.message) {
@@ -76,12 +79,12 @@ export default function ToggleLeagueStatusForm({
           });
         }
       }
-    } catch (err) {
+    } catch {
       Toast.fire({
         icon: "error",
         title: `Error ${
-          league.pinned === true ? "Disabl" : "Enabl"
-        }ing league. Please try again.`,
+          leagueStatus ? "unpinning" : "pinning"
+        } league. Please try again.`,
       });
     }
   };
@@ -90,13 +93,13 @@ export default function ToggleLeagueStatusForm({
     <form onSubmit={handleSubmit}>
       <DialogHeader className="mb-4 md:mb-6">
         <DialogTitle>
-          {leagueStatus === true ? "Disable League" : "Enable League"}
+          {leagueStatus ? "Unpin League" : "Pin League"}
         </DialogTitle>
       </DialogHeader>
       <div className="flex items-center gap-2 my-2 mb-4">
         <UserAvatar
           src={league.logo}
-          alt={`${league.name?.[0]}`}
+          alt={league.name?.[0] || ""}
           className="w-8 h-8 rounded-full border border-gray-300 shadow-sm"
         />
         <p className="text-sm text-black/50 font-medium">{league.name}</p>

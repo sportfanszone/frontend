@@ -16,12 +16,10 @@ import { User } from "@/types";
 
 interface ResetUserPasswordFormProps {
   user: User;
-  setData?: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
 export default function ResetUserPasswordForm({
   user,
-  setData,
 }: ResetUserPasswordFormProps) {
   const [form, setForm] = useState({
     password: "",
@@ -118,7 +116,7 @@ export default function ResetUserPasswordForm({
             title: data.message,
           });
         }
-        if (data.errors.length > 0) {
+        if (data.errors?.length > 0) {
           console.log("Field errors:", data.errors);
           const fieldErrors: Partial<typeof errors> = {};
           data.errors.forEach(
@@ -129,7 +127,7 @@ export default function ResetUserPasswordForm({
           setErrors((prevErrors) => ({ ...prevErrors, ...fieldErrors }));
         }
       }
-    } catch (err) {
+    } catch {
       Toast.fire({
         icon: "error",
         title: "Error resetting password. Please try again.",
@@ -145,11 +143,11 @@ export default function ResetUserPasswordForm({
       <div className="flex items-center gap-2 my-2 mb-4">
         <UserAvatar
           src={user.profileImageUrl}
-          alt={`${user.firstName?.[0]}${user.lastName?.[0]}`}
+          alt={`${user.firstName?.[0] || ""}${user.lastName?.[0] || ""}`}
           className="w-8 h-8 rounded-full border border-gray-300 shadow-sm"
         />
         <p className="text-sm text-black/50 font-medium">
-          {user.firstName} {user.middleName} {user.lastName}
+          {user.firstName} {user.middleName || ""} {user.lastName}
         </p>
       </div>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 w-full">

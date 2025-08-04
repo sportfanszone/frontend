@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { Input } from "@/app/components/ui/input";
@@ -17,8 +17,12 @@ import UserAvatar from "@/app/components/ui/UserAvatar";
 import ActionButtons from "@/app/(admin)/components/all_users/ActionButtons";
 
 import clientFetcher from "@/lib/clientFetcher";
+import { User } from "@/types";
 
-type User = any;
+interface ApiResponse {
+  users: User[];
+  total: number;
+}
 
 export function UsersTable() {
   const [data, setData] = useState<User[]>([]);
@@ -28,8 +32,30 @@ export function UsersTable() {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const refreshTable = () => {
+  const fetchUsers = useCallback(
+    async (page = 1, search = "") => {
+      setLoading(true);
+      const result: ApiResponse = await clientFetcher(
+        `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/admin/all_users?page=${page}&limit=${perPage}&search=${search}`,
+        "GET"
+      );
+
+      console.log(result);
+      setData(result.users);
+      setTotalRows(result.total);
+      setLoading(false);
+    },
+    [perPage]
+  );
+
+  useEffect(() => {
     fetchUsers(currentPage, searchTerm);
+  }, [currentPage, perPage, searchTerm, fetchUsers]);
+
+  const handlePageChange = (page: number) => setCurrentPage(page);
+  const handlePerRowsChange = (newPerPage: number) => {
+    setPerPage(newPerPage);
+    setCurrentPage(1);
   };
 
   const columns: TableColumn<User>[] = [
@@ -39,16 +65,16 @@ export function UsersTable() {
         [row.firstName, row.middleName, row.lastName].filter(Boolean).join(" "),
       cell: (row) => (
         <Link
-          href={`/admin/view_user/${row?.id}`}
+          href={`/admin/view_user/${row.id}`}
           className="flex items-center gap-3 hover:underline hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
         >
           <UserAvatar
             src={row.profileImageUrl}
-            alt={`${row.firstName?.[0]}${row.lastName?.[0]}`}
+            alt={`${row.firstName?.[0] || ""}${row.lastName?.[0] || ""}`}
             className="w-8 h-8 rounded-full object-cover"
           />
           <span className="flex-1 w-45 truncate">
-            {[row.firstName, row.middleName, row.lastName]
+            {[row.firstName, row.middleName || "", row.lastName]
               .filter(Boolean)
               .join(" ")}
           </span>
@@ -102,29 +128,6 @@ export function UsersTable() {
       width: "11em",
     },
   ];
-
-  const fetchUsers = async (page = 1, search = "") => {
-    setLoading(true);
-    const result: any = await clientFetcher(
-      `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/admin/all_users?page=${page}&limit=${perPage}&search=${search}`,
-      "GET"
-    );
-
-    console.log(result);
-    setData(result.users);
-    setTotalRows(result.total);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchUsers(currentPage, searchTerm);
-  }, [currentPage, perPage, searchTerm]);
-
-  const handlePageChange = (page: number) => setCurrentPage(page);
-  const handlePerRowsChange = (newPerPage: number) => {
-    setPerPage(newPerPage);
-    setCurrentPage(1);
-  };
 
   return (
     <Card className="@container/card">

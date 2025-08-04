@@ -10,7 +10,7 @@ export type User = {
   profileImageUrl: string;
   coverPhotoUrl: string;
   role: "user" | "admin";
-  status: "active" | "inactive";
+  status: "active" | "blocked";
   achievements: Achievement[];
   leaguesYouFollow: League[];
   clubsYouFollow: Club[];

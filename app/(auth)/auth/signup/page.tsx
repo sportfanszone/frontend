@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,9 +8,22 @@ import PasswordInputGroup from "@/app/(auth)/components/PasswordInputGroup";
 import { signupSchema } from "@/lib/validation/signupSchema";
 import Swal from "sweetalert2";
 
+type FormFields = {
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  username: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
+  termsAndConditions: boolean;
+};
+
+type PasswordFormFields = Pick<FormFields, "password" | "passwordConfirm">;
+
 export default function Signup() {
   const router = useRouter();
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<FormFields>({
     firstName: "",
     middleName: "",
     lastName: "",
@@ -18,12 +31,34 @@ export default function Signup() {
     email: "",
     password: "",
     passwordConfirm: "",
-    termsAndConditions: "",
+    termsAndConditions: false,
   });
 
   const [errors, setErrors] = useState<
-    Partial<Record<keyof typeof form, string>>
+    Partial<Record<keyof FormFields, string>>
   >({});
+
+  useEffect(() => {
+    const showAlert = sessionStorage.getItem("showLoginSuccessAlert");
+    if (showAlert === "true") {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "bottom-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
+      Toast.fire({
+        icon: "success",
+        title: "Sign up successful",
+      });
+      sessionStorage.removeItem("showLoginSuccessAlert");
+    }
+  }, []);
 
   const handleGoogleAuth = async () => {
     sessionStorage.setItem("showLoginSuccessAlert", "true");
@@ -35,7 +70,7 @@ export default function Signup() {
     if (!result.success) {
       const fieldErrors: typeof errors = {};
       result.error.issues.forEach((issue) => {
-        const key = issue.path[0] as keyof typeof form;
+        const key = issue.path[0] as keyof FormFields;
         fieldErrors[key] = issue.message;
       });
       setErrors(fieldErrors);
@@ -45,7 +80,10 @@ export default function Signup() {
     return true;
   };
 
-  const handleChange = (key: keyof typeof form, value: string) => {
+  const handleChange = <K extends keyof FormFields>(
+    key: K,
+    value: FormFields[K]
+  ) => {
     setForm((prev) => {
       const updatedForm = { ...prev, [key]: value };
       const result = signupSchema.safeParse(updatedForm);
@@ -103,6 +141,10 @@ export default function Signup() {
       console.log("Response data:", data);
       if (res.ok || data.status === "success") {
         router.push("/auth/otp");
+        Toast.fire({
+          icon: "success",
+          title: "Sign up successful",
+        });
       } else {
         if (data.message) {
           Toast.fire({
@@ -110,18 +152,18 @@ export default function Signup() {
             title: data.message,
           });
         }
-        if (data.errors.length > 0) {
+        if (data.errors?.length > 0) {
           console.log("Field errors:", data.errors);
           const fieldErrors: Partial<typeof errors> = {};
           data.errors.forEach(
-            (error: { field: keyof typeof form; message: string }) => {
+            (error: { field: keyof FormFields; message: string }) => {
               fieldErrors[error.field] = error.message;
             }
           );
           setErrors((prevErrors) => ({ ...prevErrors, ...fieldErrors }));
         }
       }
-    } catch (err) {
+    } catch {
       Toast.fire({
         icon: "error",
         title: "Error signing up",
@@ -139,14 +181,14 @@ export default function Signup() {
         {/* Google button */}
         <div onClick={handleGoogleAuth} className="googleButtonContainer">
           <Image
-            className="width-6 h-6 sm:w-6 sm:h-6 md:w-7.5 md:h-7.5"
+            className="w-6 h-6 sm:w-6 sm:h-6 md:w-7.5 md:h-7.5"
             src="/svgs/google-icon-logo.svg"
             alt="Google logo"
-            width={25}
-            height={25}
+            width={24}
+            height={24}
           />
           <span className="text-sm sm:text-md md:text-lg font-bold">
-            Login with Google
+            Sign up with Google
           </span>
         </div>
 
@@ -167,7 +209,7 @@ export default function Signup() {
           ].map(({ id, label, type = "text" }) => (
             <InputGroup
               key={id}
-              id={id as keyof typeof form}
+              id={id as keyof FormFields}
               label={label}
               type={type}
               errors={errors}
@@ -177,36 +219,42 @@ export default function Signup() {
           ))}
 
           {/* Password */}
-          {["password", "passwordConfirm"].map((id) => (
+          {[
+            { id: "password", label: "Password" },
+            { id: "passwordConfirm", label: "Confirm Password" },
+          ].map(({ id, label }) => (
             <PasswordInputGroup
               key={id}
-              id={id as keyof typeof form}
-              errors={errors}
-              form={form}
+              id={id as keyof PasswordFormFields}
+              label={label}
+              errors={
+                errors as Partial<Record<keyof PasswordFormFields, string>>
+              }
+              form={{
+                password: form.password,
+                passwordConfirm: form.passwordConfirm,
+              }}
               handleChange={handleChange}
             />
           ))}
 
           {/* Terms */}
           <label
-            htmlFor="rememberMe"
+            htmlFor="termsAndConditions"
             className="font-bold text-center flex items-center justify-center gap-2 cursor-pointer text-sm text-gray-700"
           >
             <input
-              id="rememberMe"
+              id="termsAndConditions"
               type="checkbox"
               className="w-5 h-5 accent-green-600 border-gray-300 rounded focus:ring-green-500 cursor-pointer"
               onChange={(e) =>
-                handleChange(
-                  "termsAndConditions",
-                  e.target.checked ? "true" : "false"
-                )
+                handleChange("termsAndConditions", e.target.checked)
               }
-              checked={form.termsAndConditions === "true"}
+              checked={form.termsAndConditions}
             />
             <span className="text-sm sm:text-md md:text-lg">
               Accept{" "}
-              <Link className="text-green-500" href="#">
+              <Link className="text-green-500" href="/terms">
                 terms and conditions
               </Link>
             </span>

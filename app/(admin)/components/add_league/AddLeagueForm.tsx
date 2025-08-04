@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import InputGroup from "@/app/(admin)/components/InputGroup";
 import { addLeagueSchema } from "@/lib/validation/addLeagueSchema";
 import { Button } from "@/app/components/ui/button";
@@ -18,7 +17,6 @@ import {
 } from "@/app/components/ui/card";
 
 export default function Signup() {
-  const router = useRouter();
   const [form, setForm] = useState({
     name: "",
     description: "",

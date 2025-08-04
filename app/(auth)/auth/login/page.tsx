@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -7,12 +7,6 @@ import InputGroup from "@/app/(auth)/components/InputGroup";
 import PasswordInputGroup from "@/app/(auth)/components/PasswordInputGroup";
 import { loginSchema } from "@/lib/validation/loginSchema";
 import Swal from "sweetalert2";
-import dynamic from "next/dynamic";
-
-const WorldMap = dynamic(
-  () => import("@/app/components/ui/world-map").then((mod) => mod.WorldMap), // or mod.default if it's a default export
-  { ssr: false }
-);
 
 type FormFields = {
   email: string;
@@ -20,9 +14,7 @@ type FormFields = {
   rememberMe: boolean;
 };
 
-type ErrorFields = Partial<
-  Record<Exclude<keyof FormFields, "rememberMe">, string>
->;
+type PasswordFormFields = Pick<FormFields, "password">;
 
 export default function Login() {
   const router = useRouter();
@@ -33,7 +25,31 @@ export default function Login() {
     rememberMe: false,
   });
 
-  const [errors, setErrors] = useState<ErrorFields>({});
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof FormFields, string>>
+  >({});
+
+  useEffect(() => {
+    const showAlert = sessionStorage.getItem("showLoginSuccessAlert");
+    if (showAlert === "true") {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "bottom-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
+      Toast.fire({
+        icon: "success",
+        title: "Login successful",
+      });
+      sessionStorage.removeItem("showLoginSuccessAlert");
+    }
+  }, []);
 
   const handleGoogleAuth = async () => {
     sessionStorage.setItem("showLoginSuccessAlert", "true");
@@ -43,12 +59,10 @@ export default function Login() {
   const validateForm = () => {
     const result = loginSchema.safeParse(form);
     if (!result.success) {
-      const fieldErrors: ErrorFields = {};
+      const fieldErrors: typeof errors = {};
       result.error.issues.forEach((issue) => {
         const key = issue.path[0] as keyof FormFields;
-        if (key !== "rememberMe") {
-          fieldErrors[key] = issue.message;
-        }
+        fieldErrors[key] = issue.message;
       });
       setErrors(fieldErrors);
       return false;
@@ -63,27 +77,21 @@ export default function Login() {
   ) => {
     setForm((prev) => {
       const updatedForm = { ...prev, [key]: value };
-
       const result = loginSchema.safeParse(updatedForm);
       if (!result.success) {
         const fieldError = result.error.issues.find(
           (issue) => issue.path[0] === key
         );
-        if (key !== "rememberMe") {
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            [key]: fieldError?.message || "",
-          }));
-        }
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [key]: fieldError?.message || "",
+        }));
       } else {
-        if (key !== "rememberMe") {
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            [key]: "",
-          }));
-        }
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [key]: "",
+        }));
       }
-
       return updatedForm;
     });
   };
@@ -134,18 +142,16 @@ export default function Login() {
           });
         }
         if (data.errors?.length > 0) {
-          const fieldErrors: ErrorFields = {};
+          const fieldErrors: typeof errors = {};
           data.errors.forEach(
             (error: { field: keyof FormFields; message: string }) => {
-              if (error.field !== "rememberMe") {
-                fieldErrors[error.field] = error.message;
-              }
+              fieldErrors[error.field] = error.message;
             }
           );
           setErrors((prevErrors) => ({ ...prevErrors, ...fieldErrors }));
         }
       }
-    } catch (err) {
+    } catch {
       Toast.fire({
         icon: "error",
         title: "Error signing in",
@@ -166,11 +172,11 @@ export default function Login() {
         {/* Google button */}
         <div onClick={handleGoogleAuth} className="googleButtonContainer">
           <Image
-            className="width-6 h-6 sm:w-6 sm:h-6 md:w-7.5 md:h-7.5"
+            className="w-6 h-6 sm:w-6 sm:h-6 md:w-7.5 md:h-7.5"
             src="/svgs/google-icon-logo.svg"
             alt="Google logo"
-            width={25}
-            height={25}
+            width={24}
+            height={24}
           />
           <span className="text-sm sm:text-md md:text-lg font-bold">
             Login with Google
@@ -197,8 +203,9 @@ export default function Login() {
 
           <PasswordInputGroup
             id="password"
-            errors={errors}
-            form={form}
+            label="Password"
+            errors={errors as Partial<Record<keyof PasswordFormFields, string>>}
+            form={{ password: form.password }}
             handleChange={handleChange}
           />
 
@@ -221,7 +228,7 @@ export default function Login() {
         </form>
 
         <div className="text-sm sm:text-md md:text-lg font-bold flex items-center justify-center gap-4 mb-6">
-          <span>Don't have an account?</span>
+          <span>Don&apos;t have an account?</span>
           <Link className="text-green-500" href="/auth/signup">
             Sign Up Now
           </Link>

@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { IconEdit, IconKey, IconForbid2, IconTrash } from "@tabler/icons-react";
 import {
@@ -15,8 +16,8 @@ import DeleteUserForm from "@/app/(admin)/components/all_users/DeleteUserForm";
 import { User } from "@/types";
 
 interface ActionButtonsProps {
-  row: any;
-  setData: React.Dispatch<React.SetStateAction<any[]>>;
+  row: User;
+  setData: React.Dispatch<React.SetStateAction<User[]>>;
 }
 
 const ActionButtons = ({ row, setData }: ActionButtonsProps) => {
@@ -24,6 +25,7 @@ const ActionButtons = ({ row, setData }: ActionButtonsProps) => {
   const [dialogType, setDialogType] = useState<
     "edit" | "password" | "disable" | "delete" | null
   >(null);
+
   return (
     <div className="flex items-center">
       <Tooltip>
@@ -87,19 +89,13 @@ const ActionButtons = ({ row, setData }: ActionButtonsProps) => {
         <DialogContent className="max-h-[90vh] overflow-y-auto">
           <div>
             {dialogType === "edit" ? (
-              <EditUserForm setData={setData} user={selectedUser as User} />
+              <EditUserForm setData={setData} user={selectedUser!} />
             ) : dialogType === "password" ? (
-              <ResetUserPasswordForm
-                setData={setData}
-                user={selectedUser as User}
-              />
+              <ResetUserPasswordForm user={selectedUser!} />
             ) : dialogType === "disable" ? (
-              <ToggleUserStatusForm
-                setData={setData}
-                user={selectedUser as User}
-              />
+              <ToggleUserStatusForm setData={setData} user={selectedUser!} />
             ) : dialogType === "delete" ? (
-              <DeleteUserForm setData={setData} user={selectedUser as User} />
+              <DeleteUserForm setData={setData} user={selectedUser!} />
             ) : null}
           </div>
         </DialogContent>

@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import InputGroup from "@/app/(admin)/components/InputGroup";
 import PasswordInputGroup from "@/app/(admin)/components/PasswordInputGroup";
 import SelectGroup from "@/app/(admin)/components/SelectGroup";
@@ -19,7 +18,6 @@ import {
 } from "@/app/components/ui/card";
 
 export default function AddUserForm() {
-  const router = useRouter();
   const [form, setForm] = useState({
     firstName: "",
     middleName: "",

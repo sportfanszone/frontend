@@ -18,29 +18,28 @@ import { Badge } from "@/app/components/ui/badge";
 import { IconPinned } from "@tabler/icons-react";
 
 import clientFetcher from "@/lib/clientFetcher";
-
-type User = any;
+import { Club } from "@/types";
 
 export function ClubsTable() {
-  const [data, setData] = useState<User[]>([]);
+  const [data, setData] = useState<Club[]>([]);
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const columns: TableColumn<User>[] = [
+  const columns: TableColumn<Club>[] = [
     {
       name: "Name",
       selector: (row) => row.name,
       cell: (row) => (
         <Link
-          href={`/admin/view_club/${row?.id}`}
+          href={`/admin/view_club/${row.id}`}
           className="flex items-center gap-3 hover:underline hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
         >
           <UserAvatar
             src={row.logo}
-            alt={row.name?.[0]}
+            alt={row.name?.[0] || ""}
             className="w-8 h-8 rounded-full object-cover"
           />
           <span className="flex-1 w-45 truncate">{row.name}</span>
@@ -60,7 +59,7 @@ export function ClubsTable() {
     },
     {
       name: "Pinned",
-      selector: (row) => row.pinned,
+      selector: (row) => row.pinned ?? false,
       cell: (row) => (
         <Badge variant="secondary">
           <IconPinned
@@ -85,7 +84,7 @@ export function ClubsTable() {
 
   const fetchUsers = async (page = 1, search = "") => {
     setLoading(true);
-    const result: any = await clientFetcher(
+    const result: { clubs: Club[]; total: number } = await clientFetcher(
       `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/admin/all_clubs?page=${page}&limit=${perPage}&search=${search}`,
       "GET"
     );
@@ -133,7 +132,6 @@ export function ClubsTable() {
             onChangePage={handlePageChange}
             onChangeRowsPerPage={handlePerRowsChange}
             highlightOnHover
-            // striped
           />
         </div>
       </CardContent>

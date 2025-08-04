@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { FC } from "react";
 import Link from "next/link";
+import Image from "next/image"; // Import Image component
 import { FiMessageCircle, FiShare2, FiPlay, FiPause } from "react-icons/fi";
 import UserAvatar from "@/app/components/ui/UserAvatar";
 import WaveSurfer from "wavesurfer.js";
@@ -25,10 +26,10 @@ const Comment: FC<Props> = ({ comment, level = 0 }) => {
   const [replyCount, setReplyCount] = useState<number>(
     comment?.replyCount || 0
   );
-  const [likes, setLikes] = useState<number>(comment?.likes || 0);
+  const [likes, setLikes] = useState<number>(comment?.likes || 0); // eslint-disable-line @typescript-eslint/no-unused-vars
   const [likedByUser, setLikedByUser] = useState<boolean>(
     comment?.likedByUser || false
-  );
+  ); // eslint-disable-line @typescript-eslint/no-unused-vars
   const [isPlaying, setIsPlaying] = useState(false);
   const [isAudioLoading, setIsAudioLoading] = useState(false);
   const [audioError, setAudioError] = useState<string | null>(null);
@@ -44,7 +45,6 @@ const Comment: FC<Props> = ({ comment, level = 0 }) => {
       setAudioError(null);
 
       try {
-        // Delay to ensure DOM is ready
         await new Promise((resolve) => setTimeout(resolve, 100));
 
         wavesurferRef.current = WaveSurfer.create({
@@ -92,10 +92,10 @@ const Comment: FC<Props> = ({ comment, level = 0 }) => {
         wavesurferRef.current.on("play", () => setIsPlaying(true));
         wavesurferRef.current.on("pause", () => setIsPlaying(false));
         wavesurferRef.current.on("finish", () => setIsPlaying(false));
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error(
           "WaveSurfer initialization error:",
-          error,
+          error instanceof Error ? error.message : String(error),
           "for URL:",
           comment.audioUrl
         );
@@ -108,7 +108,11 @@ const Comment: FC<Props> = ({ comment, level = 0 }) => {
             1000
           );
         } else {
-          setAudioError(error.message || "Failed to initialize audio player");
+          setAudioError(
+            error instanceof Error
+              ? error.message
+              : "Failed to initialize audio player"
+          );
           setUseFallback(true);
         }
         setIsAudioLoading(false);
@@ -183,10 +187,12 @@ const Comment: FC<Props> = ({ comment, level = 0 }) => {
           )}
           {comment.imageUrl && (
             <div className="mt-2">
-              <img
+              <Image
                 src={comment.imageUrl}
                 alt="Comment image"
                 className="max-h-40 md:max-h-50 h-auto rounded"
+                width={400}
+                height={200}
                 onError={(e) =>
                   console.error(`Failed to load image: ${comment.imageUrl}`, e)
                 }

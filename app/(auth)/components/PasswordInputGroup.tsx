@@ -1,16 +1,19 @@
+"use client";
 import { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import ResponsiveIcon from "@/app/(auth)/components/ResponsiveIcon";
 
-type PasswordInputGroupProps<T extends Record<string, any>> = {
+type PasswordInputGroupProps<T extends Record<string, string>> = {
   id: keyof T;
+  label: string;
   errors: Partial<Record<keyof T, string>>;
   form: T;
   handleChange: <K extends keyof T>(key: K, value: T[K]) => void;
 };
 
-const PasswordInputGroup = <T extends Record<string, any>>({
+const PasswordInputGroup = <T extends Record<string, string>>({
   id,
+  label,
   errors,
   form,
   handleChange,
@@ -32,17 +35,15 @@ const PasswordInputGroup = <T extends Record<string, any>>({
           className={errors[id] ? "formLabelError" : "formLabel"}
           htmlFor={String(id)}
         >
-          {id === "passwordConfirm" ? "Confirm Password" : "Password"}
+          {label}
         </label>
         <input
           className="formInput"
           id={String(id)}
           type={showPassword ? "text" : "password"}
-          placeholder={
-            id === "passwordConfirm" ? "Confirm Your Password" : "Your Password"
-          }
-          value={form[id] as string}
-          onChange={(e) => handleChange(id, e.target.value as T[keyof T])}
+          placeholder={`Your ${label}`}
+          value={form[id]}
+          onChange={(e) => handleChange(id, e.target.value as T[typeof id])}
         />
         <button
           type="button"

@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import InputGroup from "@/app/(admin)/components/InputGroup";
 import SelectGroup from "@/app/(admin)/components/SelectGroup";
 import { addClubSchema } from "@/lib/validation/addClubSchema";
@@ -22,7 +21,6 @@ import {
 } from "@/app/components/ui/card";
 
 export default function Signup() {
-  const router = useRouter();
   const [form, setForm] = useState({
     league: "",
     name: "",

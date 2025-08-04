@@ -17,7 +17,7 @@ import { User } from "@/types";
 
 interface EditUserFormProps {
   user: User;
-  setData?: React.Dispatch<React.SetStateAction<any[]>>;
+  setData?: React.Dispatch<React.SetStateAction<User[]>>;
 }
 
 export default function EditUserForm({ user, setData }: EditUserFormProps) {
@@ -28,7 +28,6 @@ export default function EditUserForm({ user, setData }: EditUserFormProps) {
     username: user.username || "",
     role: user.role || "",
     email: user.email || "",
-    termsAndConditions: "",
     profilePhoto: null as File | null,
     coverPhoto: null as File | null,
   });
@@ -104,7 +103,6 @@ export default function EditUserForm({ user, setData }: EditUserFormProps) {
       formData.append("username", form.username);
       formData.append("role", form.role);
       formData.append("email", form.email);
-      formData.append("termsAndConditions", form.termsAndConditions);
       if (form.profilePhoto) formData.append("profilePhoto", form.profilePhoto);
       if (form.coverPhoto) formData.append("coverPhoto", form.coverPhoto);
 
@@ -123,7 +121,7 @@ export default function EditUserForm({ user, setData }: EditUserFormProps) {
       if (res.ok || data.status === "success") {
         Toast.fire({
           icon: "success",
-          title: "Account updated successfully!",
+          title: data.message || "Account updated successfully!",
         });
 
         if (setData) {
@@ -151,7 +149,7 @@ export default function EditUserForm({ user, setData }: EditUserFormProps) {
             title: data.message,
           });
         }
-        if (data.errors.length > 0) {
+        if (data.errors?.length > 0) {
           console.log("Field errors:", data.errors);
           const fieldErrors: Partial<typeof errors> = {};
           data.errors.forEach(
@@ -162,10 +160,10 @@ export default function EditUserForm({ user, setData }: EditUserFormProps) {
           setErrors((prevErrors) => ({ ...prevErrors, ...fieldErrors }));
         }
       }
-    } catch (err) {
+    } catch {
       Toast.fire({
         icon: "error",
-        title: "Error signing up",
+        title: "Error updating user",
       });
     }
   };

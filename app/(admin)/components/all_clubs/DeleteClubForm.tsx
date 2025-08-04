@@ -13,7 +13,7 @@ import { Club } from "@/types";
 
 interface DeleteClubFormProps {
   club: Club;
-  setData?: React.Dispatch<React.SetStateAction<any[]>>;
+  setData?: React.Dispatch<React.SetStateAction<Club[]>>;
 }
 
 export default function DeleteClubForm({ club, setData }: DeleteClubFormProps) {
@@ -59,7 +59,7 @@ export default function DeleteClubForm({ club, setData }: DeleteClubFormProps) {
           });
         }
       }
-    } catch (err) {
+    } catch {
       Toast.fire({
         icon: "error",
         title: "Error deleting club. Please try again.",
@@ -75,7 +75,7 @@ export default function DeleteClubForm({ club, setData }: DeleteClubFormProps) {
       <div className="flex items-center gap-2 my-2 mb-4">
         <UserAvatar
           src={club.logo}
-          alt={`${club.name?.[0]}`}
+          alt={club.name?.[0] || ""}
           className="w-8 h-8 rounded-full border border-gray-300 shadow-sm"
         />
         <p className="text-sm text-black/50 font-medium">{club.name}</p>

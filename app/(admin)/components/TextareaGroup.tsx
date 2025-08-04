@@ -1,7 +1,12 @@
 import { Label } from "@/app/components/ui/label";
 import { Textarea } from "@/app/components/ui/textarea";
 
-type TextareaGroupProps<T extends Record<string, any>, K extends keyof T> = {
+type FormValue = string | File | null;
+
+type TextareaGroupProps<
+  T extends Record<string, FormValue>,
+  K extends keyof T
+> = {
   id: K;
   label: string;
   errors: Partial<Record<keyof T, string>>;
@@ -9,7 +14,7 @@ type TextareaGroupProps<T extends Record<string, any>, K extends keyof T> = {
   handleChange: (key: K, value: T[K]) => void;
 };
 
-const TextareaGroup = <T extends Record<string, any>, K extends keyof T>({
+const TextareaGroup = <T extends Record<string, FormValue>, K extends keyof T>({
   id,
   errors,
   label,
@@ -25,7 +30,7 @@ const TextareaGroup = <T extends Record<string, any>, K extends keyof T>({
         className={errors[id] ? "border-red-500" : ""}
         id={id as string}
         placeholder={`Your ${label}`}
-        value={typeof form[id] === "string" ? (form[id] as string) : ""}
+        value={typeof form[id] === "string" ? form[id] : ""}
         onChange={(e) => handleChange(id, e.target.value as T[K])}
       />
       {errors[id] && (

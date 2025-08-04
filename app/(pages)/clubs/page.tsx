@@ -64,7 +64,7 @@ export default async function Clubs({
         </div>
       </>
     );
-  } catch (error) {
+  } catch {
     return <p>An error occured while loading clubs</p>;
   }
 }

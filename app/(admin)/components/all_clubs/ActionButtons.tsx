@@ -14,7 +14,7 @@ import DeleteClubForm from "@/app/(admin)/components/all_clubs/DeleteClubForm";
 import { Club } from "@/types";
 
 interface ActionButtonsProps {
-  row: any;
+  row: Club;
   setData: React.Dispatch<React.SetStateAction<any[]>>;
 }
 

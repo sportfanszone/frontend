@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { IconEdit, IconPinned, IconTrash } from "@tabler/icons-react";
 import {
@@ -14,15 +15,16 @@ import DeleteLeagueForm from "@/app/(admin)/components/all_leagues/DeleteLeagueF
 import { League } from "@/types";
 
 interface ActionButtonsProps {
-  row: any;
-  setData: React.Dispatch<React.SetStateAction<any[]>>;
+  row: League;
+  setData: React.Dispatch<React.SetStateAction<League[]>>;
 }
 
 const ActionButtons = ({ row, setData }: ActionButtonsProps) => {
   const [selectedLeague, setSelectedLeague] = useState<League | null>(null);
   const [dialogType, setDialogType] = useState<
-    "edit" | "pin" | "disable" | "delete" | null
+    "edit" | "pin" | "delete" | null
   >(null);
+
   return (
     <div className="flex items-center">
       <Tooltip>
@@ -72,20 +74,14 @@ const ActionButtons = ({ row, setData }: ActionButtonsProps) => {
         <DialogContent className="max-h-[90vh] overflow-y-auto">
           <div>
             {dialogType === "edit" ? (
-              <EditLeagueForm
-                setData={setData}
-                league={selectedLeague as League}
-              />
+              <EditLeagueForm setData={setData} league={selectedLeague!} />
             ) : dialogType === "pin" ? (
               <TogglePinnedLeagueForm
-                league={selectedLeague as League}
+                league={selectedLeague!}
                 setData={setData}
               />
             ) : dialogType === "delete" ? (
-              <DeleteLeagueForm
-                league={selectedLeague as League}
-                setData={setData}
-              />
+              <DeleteLeagueForm league={selectedLeague!} setData={setData} />
             ) : null}
           </div>
         </DialogContent>

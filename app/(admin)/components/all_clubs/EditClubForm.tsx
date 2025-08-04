@@ -18,7 +18,7 @@ import { Club } from "@/types";
 
 interface EditClubFormProps {
   club: Club;
-  setData?: React.Dispatch<React.SetStateAction<any[]>>;
+  setData?: React.Dispatch<React.SetStateAction<Club[]>>;
 }
 
 export default function EditClubForm({ club, setData }: EditClubFormProps) {
@@ -141,7 +141,7 @@ export default function EditClubForm({ club, setData }: EditClubFormProps) {
             title: data.message,
           });
         }
-        if (data.errors.length > 0) {
+        if (data.errors?.length > 0) {
           console.log("Field errors:", data.errors);
           const fieldErrors: Partial<typeof errors> = {};
           data.errors.forEach(
@@ -152,10 +152,10 @@ export default function EditClubForm({ club, setData }: EditClubFormProps) {
           setErrors((prevErrors) => ({ ...prevErrors, ...fieldErrors }));
         }
       }
-    } catch (err) {
+    } catch {
       Toast.fire({
         icon: "error",
-        title: "Error signing up",
+        title: "Error updating club",
       });
     }
   };

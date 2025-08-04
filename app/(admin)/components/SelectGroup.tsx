@@ -9,17 +9,19 @@ import {
 } from "@/app/components/ui/select";
 import { Label } from "@/app/components/ui/label";
 
-type SelectGroupProps<T extends Record<string, any>> = {
+type FormValue = string | File | null;
+
+type SelectGroupProps<T extends Record<string, FormValue>> = {
   id: keyof T;
   label: string;
   placeholder?: string;
   options: { label: string; value: string }[];
   errors: Partial<Record<keyof T, string>>;
   form: T;
-  handleChange: <K extends keyof T>(key: K, value: T[K]) => void;
+  handleChange: (key: keyof T, value: string) => void;
 };
 
-const SelectGroup = <T extends Record<string, any>>({
+const SelectGroup = <T extends Record<string, FormValue>>({
   id,
   label,
   placeholder = "Select an option",
@@ -32,8 +34,8 @@ const SelectGroup = <T extends Record<string, any>>({
     <div key={String(id)}>
       <Label htmlFor={id as string}>{label}</Label>
       <Select
-        value={form[id] as string}
-        onValueChange={(value) => handleChange(id, value as T[keyof T])}
+        value={form[id] as string | undefined}
+        onValueChange={(value) => handleChange(id, value)}
       >
         <SelectTrigger
           className={`mt-1 w-full ${errors[id] ? "border-red-500" : ""}`}

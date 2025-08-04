@@ -3,6 +3,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
+interface ApiResponse {
+  status: "success" | "error";
+  message?: string;
+}
+
 export default function OtpVerification() {
   const router = useRouter();
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -52,57 +57,75 @@ export default function OtpVerification() {
       return;
     }
 
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/auth/verify_otp`,
-      {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ otp: code }),
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/auth/verify_otp`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ otp: code }),
+        }
+      );
+
+      const data: ApiResponse = await res.json();
+
+      if (res.ok && data.status === "success") {
+        router.push("/user/dashboard");
+        Toast.fire({
+          icon: "success",
+          title: "OTP verified successfully!",
+        });
+      } else {
+        setError(data.message || "Invalid OTP. Please try again.");
+        setOtp(["", "", "", "", "", ""]);
       }
-    );
-
-    const data = await res.json();
-
-    if (res.ok && data.status === "success") {
-      router.push("/user/dashboard");
+    } catch {
+      setError("Error verifying OTP. Please try again.");
+      setOtp(["", "", "", "", "", ""]);
       Toast.fire({
-        icon: "success",
-        title: "OTP verified successfully!",
+        icon: "error",
+        title: "Error verifying OTP",
       });
-    } else {
-      setError(data.message || "Invalid OTP. Please try again.");
     }
   };
 
   const resendOtp = async () => {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/auth/resend_otp`,
-      {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/auth/resend_otp`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data: ApiResponse = await res.json();
+
+      if (res.ok && data.status === "success") {
+        setError("");
+        setOtp(["", "", "", "", "", ""]);
+        Toast.fire({
+          icon: "success",
+          title: "OTP has been resent to your email.",
+        });
+      } else {
+        setError(data.message || "Failed to resend OTP. Please try again.");
+        Toast.fire({
+          icon: "error",
+          title: "Failed to resend OTP. Please try again.",
+        });
       }
-    );
-
-    const data = await res.json();
-
-    if (res.ok && data.status === "success") {
-      setError("");
-      setOtp(["", "", "", "", "", ""]);
-      Toast.fire({
-        icon: "success",
-        title: "OTP has been resent to your email.",
-      });
-    } else {
-      setError(data.message || "Failed to resend OTP. Please try again.");
+    } catch {
+      setError("Error resending OTP. Please try again.");
       Toast.fire({
         icon: "error",
-        title: "Failed to resend OTP. Please try again.",
+        title: "Error resending OTP",
       });
     }
   };
@@ -114,7 +137,7 @@ export default function OtpVerification() {
           Enter OTP
         </h1>
         <p className="text-sm sm:text-md md:text-lg text-gray-700 mb-6">
-          We've sent a 6-digit code to your email. Please enter it below.
+          We&apos;ve sent a 6-digit code to your email. Please enter it below.
         </p>
 
         <form onSubmit={handleSubmit}>
@@ -142,7 +165,7 @@ export default function OtpVerification() {
         </form>
 
         <div className="text-sm sm:text-md md:text-lg font-bold mt-6">
-          <span>Didn't receive a code? </span>
+          <span>Didn&apos;t receive a code? </span>
           <button
             type="button"
             onClick={() => resendOtp()}

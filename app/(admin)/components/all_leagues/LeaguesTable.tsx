@@ -18,29 +18,28 @@ import { Badge } from "@/app/components/ui/badge";
 import { IconPinned } from "@tabler/icons-react";
 
 import clientFetcher from "@/lib/clientFetcher";
-
-type User = any;
+import { League } from "@/types";
 
 export function LeaguesTable() {
-  const [data, setData] = useState<User[]>([]);
+  const [data, setData] = useState<League[]>([]);
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const columns: TableColumn<User>[] = [
+  const columns: TableColumn<League>[] = [
     {
       name: "Name",
       selector: (row) => row.name,
       cell: (row) => (
         <Link
-          href={`/admin/view_league/${row?.id}`}
+          href={`/admin/view_league/${row.id}`}
           className="flex items-center gap-3 hover:underline hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
         >
           <UserAvatar
             src={row.logo}
-            alt={row.name?.[0]}
+            alt={row.name?.[0] || ""}
             className="w-8 h-8 rounded-full object-cover"
           />
           <span className="flex-1 w-45 truncate">{row.name}</span>
@@ -61,7 +60,7 @@ export function LeaguesTable() {
     },
     {
       name: "Pinned",
-      selector: (row) => row.pinned,
+      selector: (row) => row.pinned ?? false,
       cell: (row) => (
         <Badge variant="secondary">
           <IconPinned
@@ -84,9 +83,9 @@ export function LeaguesTable() {
     },
   ];
 
-  const fetchUsers = async (page = 1, search = "") => {
+  const fetchLeagues = async (page = 1, search = "") => {
     setLoading(true);
-    const result: any = await clientFetcher(
+    const result: { leagues: League[]; total: number } = await clientFetcher(
       `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/admin/all_leagues?page=${page}&limit=${perPage}&search=${search}`,
       "GET"
     );
@@ -98,7 +97,7 @@ export function LeaguesTable() {
   };
 
   useEffect(() => {
-    fetchUsers(currentPage, searchTerm);
+    fetchLeagues(currentPage, searchTerm);
   }, [currentPage, perPage, searchTerm]);
 
   const handlePageChange = (page: number) => setCurrentPage(page);
@@ -115,7 +114,7 @@ export function LeaguesTable() {
           <CardDescription>Manage and review league accounts</CardDescription>
         </div>
         <Input
-          placeholder="Search league..."
+          placeholder="Search leagues..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="max-w-sm"
@@ -134,7 +133,6 @@ export function LeaguesTable() {
             onChangePage={handlePageChange}
             onChangeRowsPerPage={handlePerRowsChange}
             highlightOnHover
-            // striped
           />
         </div>
       </CardContent>

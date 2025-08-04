@@ -14,16 +14,15 @@ import { Club } from "@/types";
 
 interface ToggleClubStatusFormProps {
   club: Club;
-  setData?: React.Dispatch<React.SetStateAction<any[]>>;
+  setData?: React.Dispatch<React.SetStateAction<Club[]>>;
 }
 
 export default function ToggleClubStatusForm({
   club,
   setData,
 }: ToggleClubStatusFormProps) {
-  const [clubStatus, setClubStatus] = useState<boolean>(
-    club.pinned ? true : false
-  );
+  const [clubStatus, setClubStatus] = useState<boolean>(club.pinned ?? false);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -54,7 +53,7 @@ export default function ToggleClubStatusForm({
           icon: "success",
           title:
             data.message ||
-            `Club ${clubStatus ? "Unpinned" : "Pinned"} successfully!`,
+            `Club ${clubStatus ? "unpinned" : "pinned"} successfully!`,
         });
 
         if (setData) {
@@ -63,12 +62,12 @@ export default function ToggleClubStatusForm({
               u.id === club.id
                 ? {
                     ...u,
-                    pinned: u.pinned === true ? false : true,
+                    pinned: !clubStatus,
                   }
                 : u
             )
           );
-          setClubStatus((prevData) => (prevData === true ? false : true));
+          setClubStatus(!clubStatus);
         }
       } else {
         if (data.message) {
@@ -78,12 +77,12 @@ export default function ToggleClubStatusForm({
           });
         }
       }
-    } catch (err) {
+    } catch {
       Toast.fire({
         icon: "error",
         title: `Error ${
-          club.pinned === true ? "Disabl" : "Enabl"
-        }ing club. Please try again.`,
+          clubStatus ? "unpinning" : "pinning"
+        } club. Please try again.`,
       });
     }
   };
@@ -91,14 +90,12 @@ export default function ToggleClubStatusForm({
   return (
     <form onSubmit={handleSubmit}>
       <DialogHeader className="mb-4 md:mb-6">
-        <DialogTitle>
-          {clubStatus === true ? "Disable Club" : "Enable Club"}
-        </DialogTitle>
+        <DialogTitle>{clubStatus ? "Unpin Club" : "Pin Club"}</DialogTitle>
       </DialogHeader>
       <div className="flex items-center gap-2 my-2 mb-4">
         <UserAvatar
           src={club.logo}
-          alt={`${club.name?.[0]}`}
+          alt={club.name?.[0] || ""}
           className="w-8 h-8 rounded-full border border-gray-300 shadow-sm"
         />
         <p className="text-sm text-black/50 font-medium">{club.name}</p>

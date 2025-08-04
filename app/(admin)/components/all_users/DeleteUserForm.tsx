@@ -13,7 +13,7 @@ import { User } from "@/types";
 
 interface DeleteUserFormProps {
   user: User;
-  setData?: React.Dispatch<React.SetStateAction<any[]>>;
+  setData?: React.Dispatch<React.SetStateAction<User[]>>;
 }
 
 export default function DeleteUserForm({ user, setData }: DeleteUserFormProps) {
@@ -59,7 +59,7 @@ export default function DeleteUserForm({ user, setData }: DeleteUserFormProps) {
           });
         }
       }
-    } catch (err) {
+    } catch {
       Toast.fire({
         icon: "error",
         title: "Error deleting user. Please try again.",
@@ -75,11 +75,11 @@ export default function DeleteUserForm({ user, setData }: DeleteUserFormProps) {
       <div className="flex items-center gap-2 my-2 mb-4">
         <UserAvatar
           src={user.profileImageUrl}
-          alt={`${user.firstName?.[0]}${user.lastName?.[0]}`}
+          alt={`${user.firstName?.[0] || ""}${user.lastName?.[0] || ""}`}
           className="w-8 h-8 rounded-full border border-gray-300 shadow-sm"
         />
         <p className="text-sm text-black/50 font-medium">
-          {user.firstName} {user.middleName} {user.lastName}
+          {user.firstName} {user.middleName || ""} {user.lastName}
         </p>
       </div>
 

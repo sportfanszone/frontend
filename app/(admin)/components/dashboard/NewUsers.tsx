@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import DataTable, { TableColumn } from "react-data-table-component";
@@ -14,8 +14,11 @@ import {
 import { Badge } from "@/app/components/ui/badge";
 import { IconCircleCheckFilled } from "@tabler/icons-react";
 import { Button } from "@/app/components/ui/button";
+import { User } from "@/types";
 
-type User = any;
+interface ApiResponse {
+  users: User[];
+}
 
 const columns: TableColumn<User>[] = [
   {
@@ -24,13 +27,13 @@ const columns: TableColumn<User>[] = [
       <div className="flex items-center gap-3">
         <Image
           src={row.profileImageUrl || "/images/blankProfile.png"}
-          alt="User avatar"
+          alt={`${row.firstName} ${row.lastName}`}
           className="w-8 h-8 rounded-full object-cover"
-          width={200}
-          height={200}
+          width={32}
+          height={32}
         />
         <span>
-          {[row.firstName, row.middleName, row.lastName]
+          {[row.firstName, row.middleName || "", row.lastName]
             .filter(Boolean)
             .join(" ")}
         </span>
@@ -38,8 +41,16 @@ const columns: TableColumn<User>[] = [
     ),
     sortable: true,
   },
-  { name: "Username", selector: (row) => row.email, sortable: true },
-  { name: "Email", selector: (row) => row.email, sortable: true },
+  {
+    name: "Username",
+    selector: (row) => row.username,
+    sortable: true,
+  },
+  {
+    name: "Email",
+    selector: (row) => row.email,
+    sortable: true,
+  },
   {
     name: "Role",
     cell: (row) => (
@@ -52,8 +63,14 @@ const columns: TableColumn<User>[] = [
   {
     name: "Status",
     cell: (row) => (
-      <Badge variant={row.status === "admin" ? "outline" : "secondary"}>
-        <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
+      <Badge variant="secondary">
+        <IconCircleCheckFilled
+          className={`${
+            row.status === "active"
+              ? "fill-green-500 dark:fill-green-400"
+              : "fill-red-500 dark:fill-red-400"
+          }`}
+        />
         {row.status}
       </Badge>
     ),
@@ -65,19 +82,28 @@ export function UsersTable() {
   const [data, setData] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     setLoading(true);
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/admin/all_users?&limit=${5}`
-    );
-    const result = await res.json();
-    setData(result.users);
-    setLoading(false);
-  };
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/admin/all_users?limit=5`
+      );
+      if (!res.ok) {
+        throw new Error("Failed to fetch users");
+      }
+      const result: ApiResponse = await res.json();
+      setData(result.users);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      setData([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [fetchUsers]);
 
   return (
     <Card className="@container/card">

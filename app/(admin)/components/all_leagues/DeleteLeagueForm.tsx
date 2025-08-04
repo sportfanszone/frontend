@@ -13,7 +13,7 @@ import { League } from "@/types";
 
 interface DeleteLeagueFormProps {
   league: League;
-  setData?: React.Dispatch<React.SetStateAction<any[]>>;
+  setData?: React.Dispatch<React.SetStateAction<League[]>>;
 }
 
 export default function DeleteLeagueForm({
@@ -62,7 +62,7 @@ export default function DeleteLeagueForm({
           });
         }
       }
-    } catch (err) {
+    } catch {
       Toast.fire({
         icon: "error",
         title: "Error deleting league. Please try again.",
@@ -78,7 +78,7 @@ export default function DeleteLeagueForm({
       <div className="flex items-center gap-2 my-2 mb-4">
         <UserAvatar
           src={league.logo}
-          alt={`${league.name?.[0]}`}
+          alt={league.name?.[0] || ""}
           className="w-8 h-8 rounded-full border border-gray-300 shadow-sm"
         />
         <p className="text-sm text-black/50 font-medium">{league.name}</p>

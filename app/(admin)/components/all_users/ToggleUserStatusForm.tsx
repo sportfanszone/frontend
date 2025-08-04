@@ -14,7 +14,7 @@ import { User } from "@/types";
 
 interface ToggleUserStatusFormProps {
   user: User;
-  setData?: React.Dispatch<React.SetStateAction<any[]>>;
+  setData?: React.Dispatch<React.SetStateAction<User[]>>;
 }
 
 export default function ToggleUserStatusForm({
@@ -24,6 +24,7 @@ export default function ToggleUserStatusForm({
   const [userStatus, setUserStatus] = useState<string>(
     user.status === "active" ? "active" : "blocked"
   );
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -52,7 +53,11 @@ export default function ToggleUserStatusForm({
       if (res.ok || data.status === "success") {
         Toast.fire({
           icon: "success",
-          title: data.message || "Password reset successfully!",
+          title:
+            data.message ||
+            `User ${
+              userStatus === "active" ? "disabled" : "enabled"
+            } successfully!`,
         });
 
         if (setData) {
@@ -61,14 +66,12 @@ export default function ToggleUserStatusForm({
               u.id === user.id
                 ? {
                     ...u,
-                    status: u.status === "active" ? "blocked" : "active",
+                    status: userStatus === "active" ? "blocked" : "active",
                   }
                 : u
             )
           );
-          setUserStatus((prevData) =>
-            prevData === "active" ? "blocked" : "active"
-          );
+          setUserStatus(userStatus === "active" ? "blocked" : "active");
         }
       } else {
         if (data.message) {
@@ -78,12 +81,12 @@ export default function ToggleUserStatusForm({
           });
         }
       }
-    } catch (err) {
+    } catch {
       Toast.fire({
         icon: "error",
         title: `Error ${
-          user.status === "active" ? "Disabl" : "Enabl"
-        }ing user. Please try again.`,
+          userStatus === "active" ? "disabling" : "enabling"
+        } user. Please try again.`,
       });
     }
   };
@@ -98,11 +101,11 @@ export default function ToggleUserStatusForm({
       <div className="flex items-center gap-2 my-2 mb-4">
         <UserAvatar
           src={user.profileImageUrl}
-          alt={`${user.firstName?.[0]}${user.lastName?.[0]}`}
+          alt={`${user.firstName?.[0] || ""}${user.lastName?.[0] || ""}`}
           className="w-8 h-8 rounded-full border border-gray-300 shadow-sm"
         />
         <p className="text-sm text-black/50 font-medium">
-          {user.firstName} {user.middleName} {user.lastName}
+          {user.firstName} {user.middleName || ""} {user.lastName}
         </p>
       </div>
 

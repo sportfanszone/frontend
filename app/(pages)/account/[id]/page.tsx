@@ -1,4 +1,3 @@
-import { getUserFromCookie } from "@/lib/auth";
 import BackButton from "@/app/components/ui/BackButton";
 
 export default async function UserDashboard() {
