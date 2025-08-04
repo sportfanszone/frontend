@@ -137,13 +137,11 @@ export default function Signup() {
       );
       const data = await res.json();
 
-      console.log("Response data:", res);
-      console.log("Response data:", data);
       if (res.ok || data.status === "success") {
         router.push("/auth/otp");
         Toast.fire({
           icon: "success",
-          title: "Sign up successful",
+          title: "An otp has been sent to your email",
         });
       } else {
         if (data.message) {
