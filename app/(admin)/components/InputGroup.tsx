@@ -1,7 +1,11 @@
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 
-type InputGroupProps<T extends Record<string, any>, K extends keyof T> = {
+// Define a union of allowed value types for the form fields
+type FormValue = string | number | boolean | File;
+
+// Generic props type, where T is constrained to a record with FormValue types
+type InputGroupProps<T extends Record<string, FormValue>, K extends keyof T> = {
   id: K;
   label: string;
   type?: string;
@@ -10,7 +14,7 @@ type InputGroupProps<T extends Record<string, any>, K extends keyof T> = {
   handleChange: (key: K, value: T[K]) => void;
 };
 
-const InputGroup = <T extends Record<string, any>, K extends keyof T>({
+const InputGroup = <T extends Record<string, FormValue>, K extends keyof T>({
   id,
   errors,
   label,
@@ -32,13 +36,14 @@ const InputGroup = <T extends Record<string, any>, K extends keyof T>({
           id={id as string}
           type={type}
           placeholder={`Your ${label}`}
-          value={typeof form[id] === "string" ? (form[id] as string) : ""}
+          value={typeof form[id] === "string" ? form[id] : ""}
           onChange={(e) => {
-            const value: T[K] =
-              type === "file"
-                ? (e.target.files?.[0] as T[K])
-                : (e.target.value as T[K]);
-
+            let value: T[K];
+            if (type === "file") {
+              value = (e.target.files?.[0] || null) as T[K];
+            } else {
+              value = e.target.value as T[K];
+            }
             handleChange(id, value);
           }}
         />
