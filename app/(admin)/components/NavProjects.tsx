@@ -8,7 +8,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "@/app/components/ui/sidebar";
 
 export function NavProjects({
@@ -21,8 +20,6 @@ export function NavProjects({
     isActive?: boolean;
   }[];
 }) {
-  const { isMobile } = useSidebar();
-
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Others</SidebarGroupLabel>
