@@ -14,7 +14,7 @@ import LeftSidebarLink from "@/app/components/ui/LeftSidebarLink";
 const navItems = [
   { href: "/", text: "Home", icon: FiHome },
   { href: "/leagues", text: "Leagues", icon: FiUsers },
-  { href: "/Fixtures", text: "Leagues", icon: FiCalendar },
+  { href: "/topics", text: "Topics", icon: FiCalendar },
   { href: "/Standings", text: "Leagues", icon: FiBarChart2 },
 ];
 
