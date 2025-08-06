@@ -129,6 +129,16 @@ export default function Login() {
       const data = await res.json();
 
       if (res.ok || data.status === "success") {
+        // Calculate expiration date (7 days from now)
+        const expires = new Date();
+        expires.setDate(expires.getDate() + 7);
+        // Set the token in a cookie using document.cookie
+        document.cookie = `userToken=${encodeURIComponent(
+          data.token
+        )}; expires=${expires.toUTCString()}; path=/; SameSite=Strict; ${
+          process.env.NODE_ENV === "production" ? "Secure" : ""
+        }`;
+
         router.push("/user/dashboard");
         Toast.fire({
           icon: "success",

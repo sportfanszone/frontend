@@ -1,3 +1,4 @@
+// app/auth/signup/page.tsx
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -33,10 +34,10 @@ export default function Signup() {
     passwordConfirm: "",
     termsAndConditions: false,
   });
-
   const [errors, setErrors] = useState<
     Partial<Record<keyof FormFields, string>>
   >({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const showAlert = sessionStorage.getItem("showLoginSuccessAlert");
@@ -62,7 +63,7 @@ export default function Signup() {
 
   const handleGoogleAuth = async () => {
     sessionStorage.setItem("showLoginSuccessAlert", "true");
-    window.location.href = `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/auth/google`;
+    window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/google`;
   };
 
   const validateForm = () => {
@@ -106,11 +107,10 @@ export default function Signup() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log("Form submitted:", form);
     e.preventDefault();
-
     if (!validateForm()) return;
 
+    setIsSubmitting(true);
     const Toast = Swal.mixin({
       toast: true,
       position: "bottom-end",
@@ -124,48 +124,53 @@ export default function Signup() {
     });
 
     try {
-      const res = await fetch(
+      const response = await fetch(
         `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/auth/signup`,
         {
           method: "POST",
+          headers: { "Content-Type": "application/json" },
           credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
           body: JSON.stringify(form),
         }
       );
-      const data = await res.json();
+      const data = await response.json();
 
-      if (res.ok || data.status === "success") {
-        router.push("/auth/otp");
+      if (response.ok && data.status === "success") {
+        const { sessionId } = data.data || {};
+        console.log("Data");
+        console.log(data.data);
+        console.log(`/auth/otp?session=${sessionId}`);
+        if (!sessionId) {
+          throw new Error("No session ID returned");
+        }
+        router.push(`/auth/otp?session=${sessionId}`);
         Toast.fire({
           icon: "success",
-          title: "An otp has been sent to your email",
+          title: "An OTP has been sent to your email",
         });
       } else {
-        if (data.message) {
-          Toast.fire({
-            icon: "error",
-            title: data.message,
-          });
-        }
+        Toast.fire({
+          icon: "error",
+          title: data.message || "Error signing up",
+        });
         if (data.errors?.length > 0) {
-          console.log("Field errors:", data.errors);
           const fieldErrors: Partial<typeof errors> = {};
           data.errors.forEach(
             (error: { field: keyof FormFields; message: string }) => {
               fieldErrors[error.field] = error.message;
             }
           );
-          setErrors((prevErrors) => ({ ...prevErrors, ...fieldErrors }));
+          setErrors(fieldErrors);
         }
       }
-    } catch {
+    } catch (error) {
+      console.error("Signup error:", error);
       Toast.fire({
         icon: "error",
         title: "Error signing up",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -176,7 +181,6 @@ export default function Signup() {
           Sign up
         </h1>
 
-        {/* Google button */}
         <div onClick={handleGoogleAuth} className="googleButtonContainer">
           <Image
             className="w-6 h-6 sm:w-6 sm:h-6 md:w-7.5 md:h-7.5"
@@ -190,7 +194,6 @@ export default function Signup() {
           </span>
         </div>
 
-        {/* Divider */}
         <div className="flex items-center justify-center gap-4 mb-6 sm:mb-7 md:mb-10">
           <hr className="border-b w-full border-black/20" />
           <span className="md:text-lg">or</span>
@@ -216,7 +219,6 @@ export default function Signup() {
             />
           ))}
 
-          {/* Password */}
           {[
             { id: "password", label: "Password" },
             { id: "passwordConfirm", label: "Confirm Password" },
@@ -236,7 +238,6 @@ export default function Signup() {
             />
           ))}
 
-          {/* Terms */}
           <label
             htmlFor="termsAndConditions"
             className="font-bold text-center flex items-center justify-center gap-2 cursor-pointer text-sm text-gray-700"
@@ -261,8 +262,12 @@ export default function Signup() {
             <p className="text-red-500 text-sm">{errors.termsAndConditions}</p>
           )}
 
-          <button className="formButton mt-6" type="submit">
-            Sign Up
+          <button
+            className="formButton mt-6"
+            type="submit"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Submitting..." : "Sign Up"}
           </button>
         </form>
 

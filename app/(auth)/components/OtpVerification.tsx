@@ -6,12 +6,20 @@ import Swal from "sweetalert2";
 interface ApiResponse {
   status: "success" | "error";
   message?: string;
+  token: string;
 }
 
-export default function OtpVerification() {
+export default function OtpVerification({
+  sessionId,
+  error: initialError,
+}: {
+  sessionId: string;
+  error?: string;
+}) {
   const router = useRouter();
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(initialError || "");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const Toast = Swal.mixin({
     toast: true,
@@ -50,10 +58,13 @@ export default function OtpVerification() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setError("");
     const code = otp.join("");
 
     if (code.length !== 6) {
       setError("Please enter a valid 6-digit OTP.");
+      setIsSubmitting(false);
       return;
     }
 
@@ -73,6 +84,15 @@ export default function OtpVerification() {
       const data: ApiResponse = await res.json();
 
       if (res.ok && data.status === "success") {
+        // Calculate expiration date (7 days from now)
+        const expires = new Date();
+        expires.setDate(expires.getDate() + 7);
+        // Set the token in a cookie using document.cookie
+        document.cookie = `userToken=${encodeURIComponent(
+          data.token
+        )}; expires=${expires.toUTCString()}; path=/; SameSite=Strict; ${
+          process.env.NODE_ENV === "production" ? "Secure" : ""
+        }`;
         router.push("/user/dashboard");
         Toast.fire({
           icon: "success",
@@ -81,6 +101,10 @@ export default function OtpVerification() {
       } else {
         setError(data.message || "Invalid OTP. Please try again.");
         setOtp(["", "", "", "", "", ""]);
+        Toast.fire({
+          icon: "error",
+          title: data.message || "Invalid OTP",
+        });
       }
     } catch {
       setError("Error verifying OTP. Please try again.");
@@ -89,6 +113,8 @@ export default function OtpVerification() {
         icon: "error",
         title: "Error verifying OTP",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -102,6 +128,7 @@ export default function OtpVerification() {
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify({ sessionId }),
         }
       );
 
@@ -118,7 +145,7 @@ export default function OtpVerification() {
         setError(data.message || "Failed to resend OTP. Please try again.");
         Toast.fire({
           icon: "error",
-          title: "Failed to resend OTP. Please try again.",
+          title: data.message || "Failed to resend OTP",
         });
       }
     } catch {
@@ -161,7 +188,9 @@ export default function OtpVerification() {
             <p className="text-red-500 text-sm mb-4 font-semibold">{error}</p>
           )}
 
-          <button className="formButton">Verify</button>
+          <button className="formButton" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Verifying..." : "Verify"}
+          </button>
         </form>
 
         <div className="text-sm sm:text-md md:text-lg font-bold mt-6">
