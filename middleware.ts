@@ -33,7 +33,15 @@ export async function middleware(request: NextRequest) {
     const user = await getUserFromToken(token);
 
     if (!user) {
-      return NextResponse.redirect(new URL("/auth/login", request.url));
+      const response = NextResponse.redirect(
+        new URL("/auth/login", request.url)
+      );
+      response.cookies.set("userToken", "", {
+        expires: new Date(0),
+        path: "/",
+        sameSite: "strict",
+      });
+      return response;
     }
 
     if (isAdminPath && user.role !== "admin") {
