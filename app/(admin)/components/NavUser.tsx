@@ -2,6 +2,7 @@
 
 import { useLogoutStore } from "@/stores/useLogoutStore";
 
+import Link from "next/link";
 import {
   BadgeCheck,
   Bell,
@@ -80,24 +81,26 @@ export function NavUser({ user }: { user: User }) {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  <Sparkles />
-                  Upgrade to Pro
-                </DropdownMenuItem>
+                <Link href="/user/dashboard" className="cursor-pointer">
+                  <DropdownMenuItem>
+                    <Sparkles />
+                    User dashboard
+                  </DropdownMenuItem>
+                </Link>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
                 <DropdownMenuItem>
                   <BadgeCheck />
-                  Account
+                  Profile
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <CreditCard />
-                  Billing
+                  Profile settings
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Bell />
-                  Notifications
+                  Activity log
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
