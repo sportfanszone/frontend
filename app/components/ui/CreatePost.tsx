@@ -21,6 +21,9 @@ import PostFiles from "@/app/components/ui/PostFiles";
 import { postSchema, PostSchema } from "@/lib/validation/postSchema";
 import Swal from "sweetalert2";
 
+// Maximum number of files allowed
+const MAX_FILES = 10;
+
 type Props = {
   user: {
     firstName: string;
@@ -42,11 +45,32 @@ const CreatePost = ({ user }: Props) => {
   const [errors, setErrors] = useState<
     Partial<Record<keyof PostSchema, string>>
   >({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Handle file drop
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "bottom-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
+
+  // Handle file drop with limit
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setPostData((prev) => {
-      const updatedFiles = [...prev.files, ...acceptedFiles];
+      const currentFileCount = prev.files.length;
+      const filesToAdd = acceptedFiles.slice(0, MAX_FILES - currentFileCount);
+      if (acceptedFiles.length > MAX_FILES - currentFileCount) {
+        Toast.fire({
+          icon: "warning",
+          title: `You can only upload up to ${MAX_FILES} files.`,
+        });
+      }
+      const updatedFiles = [...prev.files, ...filesToAdd];
       return { ...prev, files: updatedFiles };
     });
   }, []);
@@ -59,7 +83,8 @@ const CreatePost = ({ user }: Props) => {
       "video/*": [],
     },
     multiple: true,
-    noClick: true, // Prevent click from opening file explorer
+    noClick: true,
+    maxFiles: MAX_FILES,
   });
 
   // Update thumbnail when link changes
@@ -94,7 +119,6 @@ const CreatePost = ({ user }: Props) => {
       return false;
     }
 
-    // Additional validation for YouTube link
     if (postData.link && !isValidYouTubeUrl(postData.link)) {
       setErrors((prev) => ({
         ...prev,
@@ -111,11 +135,9 @@ const CreatePost = ({ user }: Props) => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-
     setPostData((prev) => {
       const updated = { ...prev, [name]: value };
       const result = postSchema.safeParse(updated);
-
       if (!result.success) {
         const fieldError = result.error.issues.find((i) => i.path[0] === name);
         setErrors((prevErrors) => ({
@@ -130,7 +152,6 @@ const CreatePost = ({ user }: Props) => {
       } else {
         setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
       }
-
       return updated;
     });
   };
@@ -141,7 +162,15 @@ const CreatePost = ({ user }: Props) => {
 
     const newFiles = Array.from(selectedFiles);
     setPostData((prev) => {
-      const updatedFiles = [...prev.files, ...newFiles];
+      const currentFileCount = prev.files.length;
+      const filesToAdd = newFiles.slice(0, MAX_FILES - currentFileCount);
+      if (newFiles.length > MAX_FILES - currentFileCount) {
+        Toast.fire({
+          icon: "warning",
+          title: `You can only upload up to ${MAX_FILES} files.`,
+        });
+      }
+      const updatedFiles = [...prev.files, ...filesToAdd];
       return { ...prev, files: updatedFiles };
     });
   };
@@ -181,37 +210,15 @@ const CreatePost = ({ user }: Props) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!validatePostData()) {
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "bottom-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.onmouseenter = Swal.stopTimer;
-          toast.onmouseleave = Swal.resumeTimer;
-        },
-      });
       Toast.fire({
         icon: "error",
-        title: "Invalid YouTube URL",
+        title: "Invalid YouTube URL or form data",
       });
       return;
     }
 
-    const Toast = Swal.mixin({
-      toast: true,
-      position: "bottom-end",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.onmouseenter = Swal.stopTimer;
-        toast.onmouseleave = Swal.resumeTimer;
-      },
-    });
+    setIsSubmitting(true);
 
     try {
       const formData = new FormData();
@@ -233,6 +240,11 @@ const CreatePost = ({ user }: Props) => {
       );
 
       const data = await res.json();
+
+      console.log("res");
+      console.log(res);
+      console.log("data");
+      console.log(data);
 
       if (res.ok || data.status === "success") {
         Toast.fire({
@@ -264,8 +276,10 @@ const CreatePost = ({ user }: Props) => {
       console.error("Error adding post:", err);
       Toast.fire({
         icon: "error",
-        title: err?.message,
+        title: err?.message || "Failed to create post",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -381,7 +395,7 @@ const CreatePost = ({ user }: Props) => {
                   accept="image/*,video/*"
                   className="hidden"
                   onChange={handleFileChange}
-                  name="file"
+                  name="files"
                   multiple
                 />
                 <label htmlFor="media-upload">
@@ -394,8 +408,9 @@ const CreatePost = ({ user }: Props) => {
               <Button
                 type="submit"
                 className="bg-primary text-white cursor-pointer hover:bg-primary/80 hover:text-white transition-all"
+                disabled={isSubmitting}
               >
-                Post
+                {isSubmitting ? "Submitting..." : "Post"}
                 <FiArrowRight className="ml-2" />
               </Button>
             </div>
