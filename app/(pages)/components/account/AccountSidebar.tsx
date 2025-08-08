@@ -1,6 +1,7 @@
 import Image from "next/image";
 import getDashboardData from "@/lib/getDashboardData";
 import { DashboardPageData } from "@/types";
+import UserAvatar from "@/app/components/ui/UserAvatar";
 
 const DashboardSidebar = async () => {
   try {
@@ -24,11 +25,9 @@ const DashboardSidebar = async () => {
             {profileViews.map(
               ({ id, firstName, middleName, lastName, profileImageUrl }) => (
                 <div key={id} className="flex items-center w-ful gap-3 mb-4">
-                  <Image
+                  <UserAvatar
                     src={profileImageUrl}
-                    width={200}
-                    height={200}
-                    alt="League logo"
+                    alt={`${firstName?.[0]}${lastName?.[0]}`}
                     className="h-10 w-10 object-cover rounded-full"
                   />
                   <span className="text-sm">

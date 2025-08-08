@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState, useCallback } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import DataTable, { TableColumn } from "react-data-table-component";
 import {
@@ -15,6 +14,7 @@ import { Badge } from "@/app/components/ui/badge";
 import { IconCircleCheckFilled } from "@tabler/icons-react";
 import { Button } from "@/app/components/ui/button";
 import { User } from "@/types";
+import UserAvatar from "@/app/components/ui/UserAvatar";
 
 interface ApiResponse {
   users: User[];
@@ -25,12 +25,10 @@ const columns: TableColumn<User>[] = [
     name: "Name",
     cell: (row) => (
       <div className="flex items-center gap-3">
-        <Image
-          src={row.profileImageUrl || "/images/blankProfile.png"}
-          alt={`${row.firstName} ${row.lastName}`}
+        <UserAvatar
+          src={row.profileImageUrl}
+          alt={`${row.firstName?.[0]}${row.lastName?.[0]}`}
           className="w-8 h-8 rounded-full object-cover"
-          width={32}
-          height={32}
         />
         <span>
           {[row.firstName, row.middleName || "", row.lastName]
