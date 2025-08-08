@@ -3,7 +3,7 @@ import DashboardSidebar from "@/app/(user)/components/dashboard/DashboardSidebar
 import DashboardPageSkeleton from "@/app/(user)/components/dashboard/DashboardPageSkeleton";
 import DashboardSidebarSkeleton from "@/app/(user)/components/dashboard/DashboardSidebarSkeleton";
 
-export default async function TopicsLayout({
+export default async function UserDashboardLayout({
   children,
 }: {
   children: React.ReactNode;
