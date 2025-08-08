@@ -89,9 +89,9 @@ export default function OtpVerification({
 
         document.cookie = `userToken=${encodeURIComponent(
           data.token
-        )}; expires=${expires.toUTCString()}; path=/; SameSite=Strict; ${
-          process.env.NODE_ENV === "production" ? "Secure" : ""
-        }`;
+        )}; expires=${expires.toUTCString()}; path=/; SameSite=${
+          process.env.NODE_ENV === "production" ? "None" : "Lax"
+        }; ${process.env.NODE_ENV === "production" ? "Secure" : ""}`;
 
         router.push("/user/dashboard");
         Toast.fire({
