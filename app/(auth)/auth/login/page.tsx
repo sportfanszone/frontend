@@ -28,6 +28,7 @@ export default function Login() {
   const [errors, setErrors] = useState<
     Partial<Record<keyof FormFields, string>>
   >({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const showAlert = sessionStorage.getItem("showLoginSuccessAlert");
@@ -98,8 +99,9 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!validateForm()) return;
+
+    setIsSubmitting(true);
 
     const Toast = Swal.mixin({
       toast: true,
@@ -165,6 +167,8 @@ export default function Login() {
         icon: "error",
         title: "Error signing in",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -233,7 +237,13 @@ export default function Login() {
             <span className="text-sm sm:text-md md:text-lg">Remember me</span>
           </label>
 
-          <button className="formButton mt-6">Login</button>
+          <button
+            className="formButton mt-6"
+            type="submit"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Submitting..." : "Login"}
+          </button>
         </form>
 
         <div className="text-sm sm:text-md md:text-lg font-bold flex items-center justify-center gap-4 mb-6">
