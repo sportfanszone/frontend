@@ -1,11 +1,12 @@
 import Image from "next/image";
 import { Club } from "@/types";
+import Link from "next/link";
 
-interface ClubsSidebarProps {
+interface LeaguesSidebarProps {
   clubs: Club[];
 }
 
-const ClubsSidebar = async ({ clubs }: ClubsSidebarProps) => {
+const LeaguesSidebar = async ({ clubs }: LeaguesSidebarProps) => {
   return (
     <div className="w-full h-fit">
       {/* Related Leagues */}
@@ -15,7 +16,11 @@ const ClubsSidebar = async ({ clubs }: ClubsSidebarProps) => {
           {clubs?.length > 0 ? (
             <>
               {clubs.map((club) => (
-                <div key={club.id} className="flex items-center gap-3 mb-2">
+                <Link
+                  href={`/topics?club=${club.id}`}
+                  key={club.id}
+                  className="flex items-center gap-3 mb-2 hover:from-blue-50 hover:to-indigo-50 hover:text-blue-700 hover:bg-blue-700/10 transition-colors duration-200 px-4 py-2 rounded-lg text-gray-800 font-semibold"
+                >
                   <Image
                     src={club.logo}
                     width={200}
@@ -24,7 +29,7 @@ const ClubsSidebar = async ({ clubs }: ClubsSidebarProps) => {
                     className="h-10 w-10 object-cover rounded-full"
                   />
                   <span className="text-sm">{club.name}</span>
-                </div>
+                </Link>
               ))}
             </>
           ) : (
@@ -36,4 +41,4 @@ const ClubsSidebar = async ({ clubs }: ClubsSidebarProps) => {
   );
 };
 
-export default ClubsSidebar;
+export default LeaguesSidebar;
