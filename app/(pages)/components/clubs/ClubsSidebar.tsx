@@ -4,6 +4,7 @@ import getClubsData from "@/lib/getClubsData";
 import { ClubPageData } from "@/types";
 import formatDate from "@/lib/formatDate";
 import moment from "moment";
+import Link from "next/link";
 
 interface ClubsSidebarProps {
   leagueId: string;
@@ -19,7 +20,10 @@ const ClubsSidebar = async ({ leagueId }: ClubsSidebarProps) => {
       <div className="w-full h-fit">
         {/* League */}
         {league && (
-          <div className="bg-white border-2 border-gray-200 rounded-xl flex flex-col justify-center mb-4 p-6">
+          <Link
+            href={`/clubs?league=${league.id}`}
+            className="bg-white border-2 border-gray-200 rounded-xl flex flex-col justify-center mb-4 p-6"
+          >
             <span className="text-gray-500 text-sm mb-1">{league.name}</span>
             <div className="flex justify-start items-center gap-3 pb-3">
               <Image
@@ -51,7 +55,7 @@ const ClubsSidebar = async ({ leagueId }: ClubsSidebarProps) => {
                 Created {moment(league.createdAt).format("MMMM, YYYY")}
               </span>
             </div>
-          </div>
+          </Link>
         )}
 
         {/* Related Leagues */}
@@ -61,9 +65,10 @@ const ClubsSidebar = async ({ leagueId }: ClubsSidebarProps) => {
             {relatedLeagues?.length > 0 ? (
               <>
                 {relatedLeagues.map((related) => (
-                  <div
+                  <Link
+                    href={`/clubs?league=${related.id}`}
                     key={related.id}
-                    className="flex items-center gap-3 mb-2"
+                    className="flex items-center gap-3 mb-2 hover:from-blue-50 hover:to-indigo-50 hover:text-blue-700 hover:bg-blue-700/10 transition-colors duration-200 px-4 py-2 rounded-lg text-gray-800 font-semibold"
                   >
                     <Image
                       src={related.logo}
@@ -73,7 +78,7 @@ const ClubsSidebar = async ({ leagueId }: ClubsSidebarProps) => {
                       className="h-10 w-10 object-cover rounded-full"
                     />
                     <span className="text-sm">{related.name}</span>
-                  </div>
+                  </Link>
                 ))}
               </>
             ) : (
