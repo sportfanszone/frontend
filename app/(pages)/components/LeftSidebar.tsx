@@ -15,7 +15,6 @@ const navItems = [
   { href: "/", text: "Home", icon: FiHome },
   { href: "/leagues", text: "Leagues", icon: FiUsers },
   { href: "/topics", text: "Topics", icon: FiCalendar },
-  { href: "/Standings", text: "Leagues", icon: FiBarChart2 },
 ];
 
 import { LeftSidebarProps } from "@/types";
