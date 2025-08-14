@@ -1,7 +1,7 @@
 import ContributorCard from "@/app/(pages)/components/ContributorCard";
 import getTopContributorsData from "@/lib/getTopContributorsData";
 
-const PostSidebar = async () => {
+const TopicsSidebar = async () => {
   try {
     const { contributors } = await getTopContributorsData();
 
@@ -37,4 +37,4 @@ const PostSidebar = async () => {
   }
 };
 
-export default PostSidebar;
+export default TopicsSidebar;
