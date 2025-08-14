@@ -252,12 +252,6 @@ const CreatePost = ({ user }: Props) => {
           title: "Post created successfully!",
         });
       } else {
-        if (data.message) {
-          Toast.fire({
-            icon: "error",
-            title: data.message,
-          });
-        }
         if (data?.errors?.length > 0) {
           const fieldErrors: Partial<typeof errors> = {};
           data.errors.forEach(
@@ -267,9 +261,10 @@ const CreatePost = ({ user }: Props) => {
           );
           setErrors((prevErrors) => ({ ...prevErrors, ...fieldErrors }));
         }
+
         Toast.fire({
           icon: "error",
-          title: "Failed to post",
+          title: data.message || "Failed to post",
         });
       }
     } catch (err: { message?: string } | any) {
