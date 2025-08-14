@@ -24,6 +24,7 @@ export async function GET(request: NextRequest) {
       sameSite: isProd ? "none" : "lax",
       path: "/",
       maxAge: 2 * 60 * 60,
+      ...(isProd && { domain: ".sportfanszone.com" }),
     });
 
     return response;
