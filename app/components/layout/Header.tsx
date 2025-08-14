@@ -4,18 +4,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight, FiMenu, FiX } from "react-icons/fi";
 import { User } from "@/types";
-
+import { useLogoutStore } from "@/stores/useLogoutStore";
 import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogCancel,
-  AlertDialogAction,
-} from "@/app/components/ui/alert-dialog";
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/app/components/ui/dropdown-menu";
+import { Logout } from "@/app/components/ui/Logout";
 import { useLogout } from "@/hooks/useLogout";
+import UserAvatar from "@/app/components/ui/UserAvatar";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -31,8 +32,7 @@ interface HeaderProps {
 }
 
 const Header = ({ theme = null, className = "", user }: HeaderProps) => {
-  const logout = useLogout();
-  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const { setShowLogoutConfirm } = useLogoutStore();
   const [navOpen, setNavOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -104,41 +104,39 @@ const Header = ({ theme = null, className = "", user }: HeaderProps) => {
 
         {/* Desktop Navigation */}
         {user ? (
-          <div className="hidden md:flex items-center justify-between gap-6">
-            <button
-              className="cursor-pointer"
-              onClick={() => setShowLogoutConfirm(true)}
-            >
-              Logout
-            </button>
+          <div className="hidden md:flex">
+            {/* User Avatar and Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div className="flex items-center gap-2 cursor-pointer">
+                  <UserAvatar
+                    alt={`${user.firstName?.[0]}${user.lastName?.[0]}`}
+                    src={user.profileImageUrl}
+                    className="text-base cursor-pointer"
+                  />
+                  <p>@{user.username}</p>
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="start">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuGroup>
+                  <Link href="/user/dashboard">
+                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                  </Link>
+                  <Link href="#">
+                    <DropdownMenuItem>Settings</DropdownMenuItem>
+                  </Link>
+                  <Link href="#">
+                    <DropdownMenuItem>Advert</DropdownMenuItem>
+                  </Link>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
 
-            <AlertDialog
-              open={showLogoutConfirm}
-              onOpenChange={setShowLogoutConfirm}
-            >
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Log out of your account?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    You will be logged out from your current session. You can
-                    log in again at any time using your credentials.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={logout}>
-                    Log out
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-            <Link
-              href="/user/dashboard"
-              className="bg-white font-semibold text-black py-1 px-4 ml-3 rounded-3xl flex items-center gap-1 shadow-md hover:shadow-xl transition-all"
-            >
-              <span>Dashboard</span>
-              <FiArrowRight className="size-5.5" />
-            </Link>
+                <DropdownMenuItem onClick={() => setShowLogoutConfirm(true)}>
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         ) : (
           <div className="hidden md:flex items-center justify-between gap-6">
@@ -197,21 +195,42 @@ const Header = ({ theme = null, className = "", user }: HeaderProps) => {
               ))}
 
               {user ? (
-                <>
-                  <Link
-                    href="/user/dashboard"
-                    onClick={handleNavToggle}
-                    className="text-black text-lg font-semibold hover:bg-black/10 py-2 rounded-md transition"
-                  >
-                    Dashboard
-                  </Link>
-                  <span
-                    onClick={() => setShowLogoutConfirm(true)}
-                    className="text-black text-lg font-semibold hover:bg-black/10 py-2 rounded-md transition cursor-pointer"
-                  >
-                    Logout
-                  </span>
-                </>
+                <div>
+                  {/* User Avatar and Dropdown */}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <div className="flex items-center gap-2 cursor-pointer">
+                        <UserAvatar
+                          alt={`${user.firstName?.[0]}${user.lastName?.[0]}`}
+                          src={user.profileImageUrl}
+                          className="text-base cursor-pointer"
+                        />
+                        <p>@{user.username}</p>
+                      </div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56" align="start">
+                      <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                      <DropdownMenuGroup>
+                        <Link href="/user/dashboard">
+                          <DropdownMenuItem>Profile</DropdownMenuItem>
+                        </Link>
+                        <Link href="#">
+                          <DropdownMenuItem>Settings</DropdownMenuItem>
+                        </Link>
+                        <Link href="#">
+                          <DropdownMenuItem>Advert</DropdownMenuItem>
+                        </Link>
+                      </DropdownMenuGroup>
+                      <DropdownMenuSeparator />
+
+                      <DropdownMenuItem
+                        onClick={() => setShowLogoutConfirm(true)}
+                      >
+                        Log out
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               ) : (
                 <>
                   <Link
@@ -235,6 +254,7 @@ const Header = ({ theme = null, className = "", user }: HeaderProps) => {
           </div>
         </>
       )}
+      <Logout />
     </>
   );
 };
