@@ -190,7 +190,7 @@ const Comment: FC<Props> = ({ comment, level = 0 }) => {
               <Image
                 src={comment.imageUrl}
                 alt="Comment image"
-                className="max-h-40 md:max-h-50 h-auto rounded"
+                className="max-h-40 md:max-h-50 h-auto rounded object-cover"
                 width={400}
                 height={200}
                 onError={(e) =>
