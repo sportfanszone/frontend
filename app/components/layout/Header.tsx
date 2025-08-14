@@ -19,7 +19,7 @@ import { useLogout } from "@/hooks/useLogout";
 
 const navItems = [
   { name: "Home", href: "/" },
-  { name: "Topics", href: "#" },
+  { name: "Leagues", href: "/leagues" },
   { name: "FAQs", href: "#" },
   { name: "About", href: "#" },
 ];
