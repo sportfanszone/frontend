@@ -2,6 +2,7 @@ import Image from "next/image";
 import getDashboardData from "@/lib/getDashboardData";
 import { DashboardPageData } from "@/types";
 import UserAvatar from "@/app/components/ui/UserAvatar";
+import Link from "next/link";
 
 const DashboardSidebar = async () => {
   try {
@@ -20,8 +21,19 @@ const DashboardSidebar = async () => {
           {profileViews.length > 0 ? (
             <div>
               {profileViews.map(
-                ({ id, firstName, middleName, lastName, profileImageUrl }) => (
-                  <div key={id} className="flex items-center w-ful gap-3 mb-4">
+                ({
+                  id,
+                  firstName,
+                  middleName,
+                  lastName,
+                  username,
+                  profileImageUrl,
+                }) => (
+                  <Link
+                    href={`/account/@${username}`}
+                    key={id}
+                    className="flex items-center w-ful gap-3 mb-4 hover:from-blue-50 hover:to-indigo-50 hover:text-blue-700 hover:bg-blue-700/10 transition-colors duration-200 px-4 py-2 rounded-lg text-gray-800 font-semibold"
+                  >
                     <UserAvatar
                       src={profileImageUrl}
                       alt={`${firstName?.[0]}${lastName?.[0]}`}
@@ -30,7 +42,7 @@ const DashboardSidebar = async () => {
                     <span className="text-sm">
                       {firstName} {middleName} {lastName}
                     </span>
-                  </div>
+                  </Link>
                 )
               )}
             </div>
@@ -45,7 +57,11 @@ const DashboardSidebar = async () => {
           </span>
           <div>
             {leaguesYouFollow.map(({ id, name, backgroundImage }) => (
-              <div key={id} className="flex items-center w-ful gap-3 mb-4">
+              <Link
+                href={`/clubs?league=${id}`}
+                key={id}
+                className="flex items-center w-ful gap-3 mb-4 hover:from-blue-50 hover:to-indigo-50 hover:text-blue-700 hover:bg-blue-700/10 transition-colors duration-200 px-4 py-2 rounded-lg text-gray-800 font-semibold"
+              >
                 <Image
                   src={backgroundImage || "/images/gray.png"}
                   width={200}
@@ -54,7 +70,7 @@ const DashboardSidebar = async () => {
                   className="h-10 w-10 object-cover rounded-full"
                 />
                 <span className="text-sm">{name}</span>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -65,7 +81,11 @@ const DashboardSidebar = async () => {
           </span>
           <div>
             {clubsYouFollow.map(({ id, name, backgroundImage }) => (
-              <div key={id} className="flex items-center w-ful gap-3 mb-4">
+              <Link
+                href={`/topics?club=${id}`}
+                key={id}
+                className="flex items-center w-ful gap-3 mb-4 hover:from-blue-50 hover:to-indigo-50 hover:text-blue-700 hover:bg-blue-700/10 transition-colors duration-200 px-4 py-2 rounded-lg text-gray-800 font-semibold"
+              >
                 <Image
                   src={backgroundImage || "/images/gray.png"}
                   width={200}
@@ -74,7 +94,7 @@ const DashboardSidebar = async () => {
                   className="h-10 w-10 object-cover rounded-full"
                 />
                 <span className="text-sm">{name}</span>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
