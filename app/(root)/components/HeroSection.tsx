@@ -21,7 +21,7 @@ const HeroSection = () => {
   }, [backgrounds.length]);
 
   return (
-    <section className="text-white relative w-full h-screen overflow-hidden">
+    <section className="text-white relative w-full h-[60dvh] overflow-hidden">
       {backgrounds.map((bg, index) => (
         <div
           key={index}
