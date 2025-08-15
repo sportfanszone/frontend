@@ -183,6 +183,38 @@ export const ImageUpload = () => {
     }
   }, []);
 
+  const removeAllImages = useCallback(async () => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/admin/delete_all_slider_images`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+      const data = await res.json();
+
+      if (res.ok && data.status === "success") {
+        setImages([]);
+        Toast.fire({
+          icon: "success",
+          title: "All Images have been removed from the slider",
+        });
+      } else {
+        Toast.fire({
+          icon: "error",
+          title: data.message || "Failed to remove images",
+        });
+      }
+    } catch (error) {
+      console.error("Error deleting image:", error);
+      Toast.fire({
+        icon: "error",
+        title: "Failed to remove images",
+      });
+    }
+  }, []);
+
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return "0 Bytes";
     const k = 1024;
@@ -254,13 +286,7 @@ export const ImageUpload = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => {
-                    setImages([]);
-                    Toast.fire({
-                      icon: "success",
-                      title: "All images have been cleared from the slider",
-                    });
-                  }}
+                  onClick={() => removeAllImages()}
                   disabled={images.length === 0}
                 >
                   Clear All
