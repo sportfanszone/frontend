@@ -2,33 +2,54 @@
 import Searchbar from "@/app/components/ui/Searchbar";
 import { useState, useEffect } from "react";
 
+import clientFetcher from "@/lib/clientFetcher";
+
 const HeroSection = () => {
-  const backgrounds = [
-    "/images/heroBackground.jpg",
-    "/images/ligue1BackgroundImage.png",
-    "/images/arsenalBackgroundImage.png",
-    "/images/postImage1.jpg",
-  ];
+  const [sliderImages, setSliderImages] = useState<
+    { id: string; url: string }[]
+  >([]);
+
+  const sliderImageFetcher = async () => {
+    try {
+      const response: { data: { id: string; url: string }[] } =
+        await clientFetcher(
+          `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/slider`,
+          "GET"
+        );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching background images:", error);
+      return [];
+    }
+  };
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      const images = await sliderImageFetcher();
+      setSliderImages(images);
+    };
+    fetchImages();
+  }, []);
 
   const [currentBg, setCurrentBg] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentBg((prev) => (prev + 1) % backgrounds.length);
+      setCurrentBg((prev) => (prev + 1) % sliderImages.length);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [backgrounds.length]);
+  }, [sliderImages.length]);
 
   return (
     <section className="text-white relative w-full h-[60dvh] overflow-hidden">
-      {backgrounds.map((bg, index) => (
+      {sliderImages.map((bg, index) => (
         <div
           key={index}
           className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
             index === currentBg ? "opacity-100" : "opacity-0"
           }`}
-          style={{ backgroundImage: `url(${bg})` }}
+          style={{ backgroundImage: `url(${bg.url})` }}
         />
       ))}
       <div className="w-full h-screen bg-black/70 absolute top-0 left-0"></div>
