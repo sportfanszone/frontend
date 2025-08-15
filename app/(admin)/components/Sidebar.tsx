@@ -144,6 +144,11 @@ export function AdminSidebar({ ...props }: SidebarProps) {
 
   const others = [
     {
+      name: "Hero Images",
+      url: "/admin/hero_slider",
+      icon: Frame,
+    },
+    {
       name: "Profile",
       url: "#",
       icon: Frame,
@@ -167,7 +172,7 @@ export function AdminSidebar({ ...props }: SidebarProps) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navMain} pathname={pathname} />
-        <NavProjects projects={others} />
+        <NavProjects items={others} pathname={pathname} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={props.user} />

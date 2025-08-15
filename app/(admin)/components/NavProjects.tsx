@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { MoreHorizontal, type LucideIcon } from "lucide-react";
 
 import {
@@ -11,33 +12,33 @@ import {
 } from "@/app/components/ui/sidebar";
 
 export function NavProjects({
-  projects,
+  items,
+  pathname,
 }: {
-  projects: {
+  items: {
     name: string;
     url: string;
-    icon: LucideIcon;
-    isActive?: boolean;
+    icon?: LucideIcon;
   }[];
+  pathname: string;
 }) {
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Others</SidebarGroupLabel>
       <SidebarMenu>
-        {projects.map((item) => (
+        {items.map((item) => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton
-              className={`hover:bg-acent-1/10 ${
-                item.isActive &&
-                "bg-acent-1 text-white hover:bg-acent-1 hover:text-white"
-              }`}
-              asChild
-            >
-              <a href={item.url}>
-                <item.icon />
+            <Link href={item.url || "#"}>
+              <SidebarMenuButton
+                className={`hover:bg-acent-1/10 ${
+                  item.url === pathname &&
+                  "bg-acent-1 text-white hover:bg-acent-1 hover:text-white"
+                }`}
+              >
+                {item.icon && <item.icon />}
                 <span>{item.name}</span>
-              </a>
-            </SidebarMenuButton>
+              </SidebarMenuButton>
+            </Link>
           </SidebarMenuItem>
         ))}
         <SidebarMenuItem>
