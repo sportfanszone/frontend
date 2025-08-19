@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import { Sora } from "next/font/google";
 import "@/app/globals.css";
 
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
+const sora = Sora({
+  variable: "--font-sora",
   subsets: ["latin"],
 });
 
@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${montserrat.variable} antialiased font-montserrat`}>
+      <body className={`${sora.variable} antialiased font-sora`}>
         {children}
       </body>
     </html>

@@ -33,7 +33,7 @@ const HeroSection = () => {
       ))}
       <div className="w-full h-screen bg-black/70 absolute top-0 left-0"></div>
       <div className="w-full absolute top-[50%] left-[50%] transform -translate-x-[50%] -translate-y-[50%] text-center px-10">
-        <h1 className="font-semibold text-5xl md:text-6xl mb-5">
+        <h1 className="font-extrabold text-5xl md:text-6xl mb-5">
           made for sport lovers
         </h1>
         <p className="mb-6 max-w-100 sm:max-w-full mx-auto text-sm md:text-lg font-light">
