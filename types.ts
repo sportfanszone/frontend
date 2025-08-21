@@ -16,6 +16,9 @@ export type User = {
   clubsYouFollow: Club[];
   Followers: User[];
   Following: User[];
+  lastAccess: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type Topic = Post;
