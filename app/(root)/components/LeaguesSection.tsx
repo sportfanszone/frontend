@@ -42,7 +42,7 @@ const LeaguesSection = async () => {
         </div>
         <Link
           href="/leagues"
-          className="flex items-center text-center justify-center hover:text-blue-700 hover:underline transition-all"
+          className="flex items-center text-center justify-center hover:text-blue-700 hover:underline transition-all w-fit mx-auto"
         >
           <span>See more</span> <FiChevronRight />
         </Link>
