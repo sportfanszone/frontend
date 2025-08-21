@@ -347,7 +347,7 @@ export const ImageUpload = () => {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-gray-900">
-                  Uploaded Images ({images.length})
+                  Uploaded Images ({images.length} of 5)
                 </h3>
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                   <DialogTrigger asChild>
