@@ -62,6 +62,7 @@ const HeroSection = () => {
         </p>
         <Searchbar
           color="primary"
+          autoSearch={false}
           className="bg-white text-black rounded-full w-full m-auto flex justify-center items-center mx-auto"
         />
       </div>

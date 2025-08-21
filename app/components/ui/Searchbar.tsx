@@ -1,13 +1,12 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { FiSearch } from "react-icons/fi";
 import { useRouter, useSearchParams } from "next/navigation";
 import debounce from "lodash.debounce";
 import { cn } from "@/lib/utils";
 import { tv, VariantProps } from "tailwind-variants";
 
-// Define the variants
 const searchbarVariants = tv({
   base: "rounded-full flex justify-center items-center py-0 px-1",
   variants: {
@@ -37,27 +36,46 @@ const searchbarVariants = tv({
 
 interface SearchbarProps extends VariantProps<typeof searchbarVariants> {
   className?: string;
+  autoSearch?: boolean;
 }
 
-const Searchbar = ({ className, size, align, color }: SearchbarProps) => {
+const Searchbar = ({
+  className,
+  size,
+  align,
+  color,
+  autoSearch = true,
+}: SearchbarProps) => {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("q")
     ? decodeURIComponent(searchParams.get("q")!)
     : "";
   const [searchQuery, setSearchQuery] = useState(initialQuery);
   const router = useRouter();
+  const isInitialMount = useRef(true);
+  const lastSubmittedQuery = useRef<string | null>(null);
 
-  // Update searchQuery when URL query changes (e.g., browser back/forward)
   useEffect(() => {
-    const query = searchParams.get("q")
-      ? decodeURIComponent(searchParams.get("q")!)
-      : "";
-    setSearchQuery(query);
+    if (isInitialMount.current) {
+      const query = searchParams.get("q")
+        ? decodeURIComponent(searchParams.get("q")!)
+        : "";
+      setSearchQuery(query);
+      isInitialMount.current = false;
+    } else {
+      const urlQuery = searchParams.get("q")
+        ? decodeURIComponent(searchParams.get("q")!)
+        : "";
+      if (urlQuery !== lastSubmittedQuery.current) {
+        setSearchQuery(urlQuery);
+      }
+    }
   }, [searchParams]);
 
   const debouncedSearch = useCallback(
     debounce((query: string) => {
       const url = `/topics?${query ? `q=${encodeURIComponent(query)}` : ""}`;
+      lastSubmittedQuery.current = query;
       if (router) {
         router.push(url);
       } else {
@@ -70,14 +88,16 @@ const Searchbar = ({ className, size, align, color }: SearchbarProps) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setSearchQuery(query);
-    debouncedSearch(query.trim());
+    if (autoSearch) {
+      debouncedSearch(query.trim());
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const url = `/topics?${
-      searchQuery ? `q=${encodeURIComponent(searchQuery)}` : ""
-    }`;
+    const query = searchQuery.trim();
+    const url = `/topics?${query ? `q=${encodeURIComponent(query)}` : ""}`;
+    lastSubmittedQuery.current = query;
     if (router) {
       router.push(url);
     } else {
@@ -85,7 +105,6 @@ const Searchbar = ({ className, size, align, color }: SearchbarProps) => {
     }
   };
 
-  // Map button background classes to the color variant
   const buttonColorClasses: Record<string, string> = {
     default: "bg-black/40 text-white",
     primary: "bg-primary text-white",
