@@ -262,7 +262,7 @@ const UserPreview = ({ user }: UserPreviewProps) => {
                   <label className="text-sm font-medium text-muted-foreground">
                     Profile Image URL
                   </label>
-                  <p className="text-foreground font-medium truncate">
+                  <p className="text-foreground font-medium whitespace-nowrap overflow-x-auto">
                     {user.profileImageUrl || "No profile image set"}
                   </p>
                 </div>
@@ -270,7 +270,7 @@ const UserPreview = ({ user }: UserPreviewProps) => {
                   <label className="text-sm font-medium text-muted-foreground">
                     Cover Photo URL
                   </label>
-                  <p className="text-foreground font-medium truncate">
+                  <p className="text-foreground font-medium whitespace-nowrap overflow-x-auto">
                     {user.coverPhotoUrl || "No cover photo set"}
                   </p>
                 </div>
