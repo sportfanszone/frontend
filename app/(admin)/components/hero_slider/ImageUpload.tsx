@@ -1,8 +1,7 @@
 "use client";
 import React, { useCallback, useState, useEffect } from "react";
-import { Upload, X, Image as ImageIcon } from "lucide-react";
+import { Upload, X, Image as ImageIcon, Loader2 } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
-import Swal from "sweetalert2";
 import {
   Card,
   CardContent,
@@ -10,6 +9,16 @@ import {
   CardTitle,
   CardDescription,
 } from "@/app/components/ui/card";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/app/components/ui/dialog";
+import Swal from "sweetalert2";
 
 interface UploadedImage {
   id: string;
@@ -21,6 +30,16 @@ interface UploadedImage {
 export const ImageUpload = () => {
   const [images, setImages] = useState<UploadedImage[]>([]);
   const [isDragOver, setIsDragOver] = useState(false);
+  const [loading, setLoading] = useState<{
+    isUploading: boolean;
+    isDeleting: Set<string>;
+    isClearingAll: boolean;
+  }>({
+    isUploading: false,
+    isDeleting: new Set(),
+    isClearingAll: false,
+  });
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const Toast = Swal.mixin({
     toast: true,
@@ -48,6 +67,12 @@ export const ImageUpload = () => {
         const data = await res.json();
         if (res.ok && data.status === "success") {
           setImages(data.data || []);
+          if (data.data.length >= 5) {
+            Toast.fire({
+              icon: "warning",
+              title: "Maximum 5 images allowed in the slider",
+            });
+          }
         } else {
           Toast.fire({
             icon: "error",
@@ -86,6 +111,7 @@ export const ImageUpload = () => {
 
     if (validFiles.length === 0) return;
 
+    setLoading((prev) => ({ ...prev, isUploading: true }));
     const formData = new FormData();
     validFiles.forEach((file) => {
       formData.append("sliderImage", file);
@@ -120,6 +146,8 @@ export const ImageUpload = () => {
         icon: "error",
         title: "Failed to upload images",
       });
+    } finally {
+      setLoading((prev) => ({ ...prev, isUploading: false }));
     }
   }, []);
 
@@ -127,15 +155,22 @@ export const ImageUpload = () => {
     (e: React.DragEvent) => {
       e.preventDefault();
       setIsDragOver(false);
-      handleFileUpload(e.dataTransfer.files);
+      if (!loading.isUploading) {
+        handleFileUpload(e.dataTransfer.files);
+      }
     },
-    [handleFileUpload]
+    [handleFileUpload, loading.isUploading]
   );
 
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(true);
-  }, []);
+  const handleDragOver = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      if (!loading.isUploading) {
+        setIsDragOver(true);
+      }
+    },
+    [loading.isUploading]
+  );
 
   const handleDragLeave = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -144,14 +179,19 @@ export const ImageUpload = () => {
 
   const handleFileInput = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.files) {
+      if (e.target.files && !loading.isUploading) {
         handleFileUpload(e.target.files);
       }
     },
-    [handleFileUpload]
+    [handleFileUpload, loading.isUploading]
   );
 
   const removeImage = useCallback(async (id: string) => {
+    setLoading((prev) => ({
+      ...prev,
+      isDeleting: new Set(prev.isDeleting).add(id),
+    }));
+
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/admin/delete_slider_image/${id}`,
@@ -180,10 +220,17 @@ export const ImageUpload = () => {
         icon: "error",
         title: "Failed to remove image",
       });
+    } finally {
+      setLoading((prev) => {
+        const newSet = new Set(prev.isDeleting);
+        newSet.delete(id);
+        return { ...prev, isDeleting: newSet };
+      });
     }
   }, []);
 
-  const removeAllImages = useCallback(async () => {
+  const handleClearAll = useCallback(async () => {
+    setLoading((prev) => ({ ...prev, isClearingAll: true }));
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/admin/delete_all_slider_images`,
@@ -193,25 +240,27 @@ export const ImageUpload = () => {
         }
       );
       const data = await res.json();
-
       if (res.ok && data.status === "success") {
         setImages([]);
         Toast.fire({
           icon: "success",
-          title: "All Images have been removed from the slider",
+          title: data.message || "All images have been cleared from the slider",
         });
       } else {
         Toast.fire({
           icon: "error",
-          title: data.message || "Failed to remove images",
+          title: data.message || "Failed to clear slider images",
         });
       }
     } catch (error) {
-      console.error("Error deleting image:", error);
+      console.error("Error deleting all slider images:", error);
       Toast.fire({
         icon: "error",
-        title: "Failed to remove images",
+        title: "Failed to clear slider images",
       });
+    } finally {
+      setLoading((prev) => ({ ...prev, isClearingAll: false }));
+      setIsDialogOpen(false);
     }
   }, []);
 
@@ -238,10 +287,11 @@ export const ImageUpload = () => {
             className={`
               relative border-2 border-dashed rounded-lg p-8 text-center transition-all duration-200
               ${
-                isDragOver
+                isDragOver && !loading.isUploading
                   ? "border-blue-500 bg-blue-50 shadow-md"
                   : "border-gray-300 bg-gray-50 hover:bg-gray-100 hover:border-blue-400"
               }
+              ${loading.isUploading ? "opacity-50 cursor-not-allowed" : ""}
             `}
             onDrop={handleDrop}
             onDragOver={handleDragOver}
@@ -253,6 +303,7 @@ export const ImageUpload = () => {
               accept="image/*"
               onChange={handleFileInput}
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              disabled={loading.isUploading}
             />
 
             <div className="flex flex-col items-center space-y-4">
@@ -262,16 +313,31 @@ export const ImageUpload = () => {
 
               <div className="space-y-2">
                 <h3 className="text-lg font-semibold text-gray-900">
-                  Drop images here or click to upload
+                  {loading.isUploading
+                    ? "Uploading..."
+                    : "Drop images here or click to upload"}
                 </h3>
                 <p className="text-sm text-gray-500">
                   Support for JPG, PNG, WebP files up to 5MB each
                 </p>
               </div>
 
-              <Button variant="outline" className="mt-4">
-                <Upload className="w-4 h-4 mr-2" />
-                Choose Files
+              <Button
+                variant="outline"
+                className="mt-4"
+                disabled={loading.isUploading}
+              >
+                {loading.isUploading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Uploading...
+                  </>
+                ) : (
+                  <>
+                    <Upload className="w-4 h-4 mr-2" />
+                    Choose Files
+                  </>
+                )}
               </Button>
             </div>
           </div>
@@ -283,14 +349,56 @@ export const ImageUpload = () => {
                 <h3 className="text-lg font-semibold text-gray-900">
                   Uploaded Images ({images.length})
                 </h3>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => removeAllImages()}
-                  disabled={images.length === 0}
-                >
-                  Clear All
-                </Button>
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={images.length === 0 || loading.isClearingAll}
+                    >
+                      {loading.isClearingAll ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          Clearing...
+                        </>
+                      ) : (
+                        "Clear All"
+                      )}
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Are you sure?</DialogTitle>
+                      <DialogDescription>
+                        This will permanently delete all slider images. This
+                        action cannot be undone.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                      <Button
+                        variant="outline"
+                        onClick={() => setIsDialogOpen(false)}
+                        disabled={loading.isClearingAll}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        onClick={handleClearAll}
+                        disabled={loading.isClearingAll}
+                      >
+                        {loading.isClearingAll ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            Deleting...
+                          </>
+                        ) : (
+                          "Delete All"
+                        )}
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -313,8 +421,13 @@ export const ImageUpload = () => {
                         size="sm"
                         className="bg-black/40 absolute top-2 right-2 w-8 h-8 p-0 md:opacity-0 group-hover:bg-red-500/80 group-hover:opacity-100 transition-opacity duration-200"
                         onClick={() => removeImage(image.id)}
+                        disabled={loading.isDeleting.has(image.id)}
                       >
-                        <X className="w-4 h-4" />
+                        {loading.isDeleting.has(image.id) ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <X className="w-4 h-4" />
+                        )}
                       </Button>
                     </div>
 
