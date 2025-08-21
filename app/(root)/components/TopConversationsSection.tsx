@@ -26,15 +26,15 @@ const TopConversations = async () => {
   }
 
   return (
-    <section className="font-medium bg-gray-800">
+    <section className="font-medium bg-primary-gradient">
       <div className="w-full p-10 mx-auto max-w-300">
         <h2 className="text-white font-bold text-2xl sm:text-3xl md:text-4xl text-center mb-10">
           Top Conversations
         </h2>
 
-        <div className="flex justify-center items-center flex-wrap gap-8">
-          {posts.map((post, index) => (
-            <PostCard key={index} {...post} />
+        <div className="flex flex-col items-center gap-8">
+          {posts.map((post) => (
+            <PostCard key={post.id} {...post} />
           ))}
         </div>
       </div>

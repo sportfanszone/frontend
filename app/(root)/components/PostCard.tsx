@@ -24,44 +24,42 @@ const PostCard = (post: PostCardProps) => {
   );
 
   return (
-    <div className="bg-white flex items-center justify-between gap-4 max-h-10em max-w-130 shadow-card hover:shadow-card-active hover:scale-102 rounded-3xl p-6 cursor-pointer transition-all duration-150 ease-in-out">
+    <div className="bg-white flex items-center justify-between gap-4 w-full max-h-[8em] shadow-card hover:shadow-card-active hover:scale-102 rounded-3xl p-6 cursor-pointer transition-all duration-150 ease-in-out">
       {post.images?.length > 0 ? (
         <Image
           src={post.images[0]}
-          width={170}
-          height={170}
+          width={120}
+          height={120}
           alt="Post Image"
-          className="w-[10.5em] h-[10.5em] object-cover rounded-3xl"
+          className="w-[7.5em] h-[7.5em] object-cover rounded-3xl"
         />
       ) : (
         <Image
           src="/images/gray.png"
-          width={170}
-          height={170}
+          width={120}
+          height={120}
           alt="Post Image"
-          className="w-[10.5em] h-[10.5em] object-cover rounded-3xl"
+          className="w-[7.5em] h-[7.5em] object-cover rounded-3xl"
         />
       )}
-      <div className="min-w-[1em] w-[18em] mxa-h-[10.5em]">
-        <div className="flex justify-start items-center gap-3 mb-2 md:mb-4">
+      <div className="flex-1 min-w-0 max-h-[7.5em]">
+        <div className="flex justify-start items-center gap-3 mb-2">
           <UserAvatar
             src={post.user.profileImageUrl}
             alt={`${post.user?.firstName?.[0]}${post.user?.lastName?.[0]}`}
-            className="h-7 md:h-10 w-7 md:w-10 object-cover rounded-full"
+            className="h-7 w-7 object-cover rounded-full"
           />
           <div className="flex flex-col justify-start gap-0.5">
-            <span className="text-xs md:text-sm font-bold ">
-              {post.user?.username}
-            </span>
-            <span className="text-xs md:text-sm text-gray-500">
+            <span className="text-xs font-bold">{post.user?.username}</span>
+            <span className="text-xs text-gray-500">
               {formatDate(post.createdAt)}
             </span>
           </div>
         </div>
 
-        <h5 className="font-bold text-md md:text-lg">{post.title}</h5>
-        <p className="text-sm mb-2 md:mb-4 line-clamp-2">{post.content}</p>
-        <div className="flex justify-between items-center text-sm md:text-base">
+        <h5 className="font-bold text-sm">{post.title}</h5>
+        <p className="text-xs mb-2 line-clamp-2">{post.content}</p>
+        <div className="flex justify-between items-center text-sm">
           <div className="flex justify-between items-center gap-5">
             <Like
               postId={post.id}
@@ -79,7 +77,7 @@ const PostCard = (post: PostCardProps) => {
               onSuccess={() => setCommentCount((prev) => prev + 1)}
             >
               <div className="flex justify-between items-center gap-1">
-                <FiMessageCircle className="text-lg" /> <b>{commentCount}</b>
+                <FiMessageCircle className="text-base" /> <b>{commentCount}</b>
               </div>
             </CreateComment>
 
