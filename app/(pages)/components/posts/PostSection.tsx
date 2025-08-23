@@ -20,8 +20,10 @@ const CreateComment = dynamic(
   () => import("@/app/components/ui/CreateComment"),
   { ssr: false }
 );
-
 const Like = dynamic(() => import("@/app/components/ui/Like"), { ssr: false });
+const Share = dynamic(() => import("@/app/components/ui/Share"), {
+  ssr: false,
+});
 
 type PostSectionProps = {
   showBackbutton?: boolean;
@@ -36,6 +38,7 @@ const PostSection = ({ post, showBackbutton = true }: PostSectionProps) => {
   const [likedByUser, setLikedByUser] = useState<boolean>(
     post?.likedByUser || false
   ); // eslint-disable-line @typescript-eslint/no-unused-vars
+  const [shareCount, setShareCount] = useState<number>(post?.shares || 0); // eslint-disable-line @typescript-eslint/no-unused-vars
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -294,9 +297,15 @@ const PostSection = ({ post, showBackbutton = true }: PostSectionProps) => {
             <FiMessageCircle className="text-lg" /> <b>{commentCount}</b>
           </div>
         </CreateComment>
-        <div className="flex items-center gap-1 bg-gray-100 px-3 py-1.5 rounded-full cursor-pointer hover:bg-gray-200">
-          <FiShare2 className="text-lg" /> <b>{post.shares}</b>
-        </div>
+        <Share
+          postId={post.id}
+          initialShareCount={post.shares}
+          onSuccess={() => setShareCount((prev) => prev + 1)}
+        >
+          <div className="flex items-center gap-1 bg-gray-100 px-3 py-1.5 rounded-full cursor-pointer hover:bg-gray-200">
+            <FiShare2 className="text-lg" /> <b>{shareCount}</b>
+          </div>
+        </Share>
       </div>
     </section>
   );
