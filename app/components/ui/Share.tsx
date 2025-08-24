@@ -16,6 +16,7 @@ type Props = {
   postId?: string;
   commentId?: string;
   initialShareCount?: number;
+  shareUrl?: string;
   onSuccess?: (shareCount: number) => void;
 };
 
@@ -24,16 +25,21 @@ const Share = ({
   postId,
   commentId,
   initialShareCount = 0,
+  shareUrl,
   onSuccess,
 }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [shareCount, setShareCount] = useState(initialShareCount);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-  // Construct postUrl if not provided
-  const shareUrl = postId
-    ? `${process.env.NEXT_PUBLIC_FRONTEND_URL}/post/${postId}`
-    : "";
+  // Construct shareUrl based on postId or commentId if not provided
+  const computedShareUrl =
+    shareUrl ||
+    (postId
+      ? `${process.env.NEXT_PUBLIC_FRONTEND_URL}/post/${postId}`
+      : commentId
+      ? `${process.env.NEXT_PUBLIC_FRONTEND_URL}/comment/${commentId}`
+      : "");
 
   const Toast = Swal.mixin({
     toast: true,
@@ -49,9 +55,9 @@ const Share = ({
 
   const handleShare = useCallback(
     async (action: "copy" | "native") => {
-      if (isLoading || !shareUrl) {
-        console.log("isLoading or no shareUrl, exiting");
-        if (!shareUrl) {
+      if (isLoading || !computedShareUrl) {
+        console.log("isLoading or no computedShareUrl, exiting");
+        if (!computedShareUrl) {
           Toast.fire({
             icon: "error",
             title: "No URL available to share",
@@ -69,25 +75,25 @@ const Share = ({
 
       try {
         if (action === "copy") {
-          console.log("Copying link to clipboard:", shareUrl);
-          await navigator.clipboard.writeText(shareUrl);
+          console.log("Copying link to clipboard:", computedShareUrl);
+          await navigator.clipboard.writeText(computedShareUrl);
           Toast.fire({
             icon: "success",
             title: "Link copied to clipboard!",
           });
         } else if (action === "native") {
-          console.log("Attempting native share with URL:", shareUrl);
+          console.log("Attempting native share with URL:", computedShareUrl);
           if (typeof navigator.share === "function") {
             await navigator.share({
-              title: "Share Post",
-              url: shareUrl,
+              title: postId ? "Share Post" : "Share Comment",
+              url: computedShareUrl,
             });
             wasNativeShareSuccessful = true; // Mark native share as successful
           } else {
             console.log(
               "Native share not available, falling back to clipboard"
             );
-            await navigator.clipboard.writeText(shareUrl);
+            await navigator.clipboard.writeText(computedShareUrl);
             Toast.fire({
               icon: "success",
               title: "Link copied to clipboard!",
@@ -124,7 +130,9 @@ const Share = ({
             // Toast already shown above for these cases
           } else if (action === "native" && wasNativeShareSuccessful) {
             // No toast for successful native share, mimicking X.com
-            console.log("Native share completed, no toast shown");
+            console.log(
+              `${postId ? "Post" : "Comment"} share completed, no toast shown`
+            );
           }
         } else {
           setShareCount(shareCount); // Revert on failure
@@ -146,7 +154,7 @@ const Share = ({
         console.log("handleShare completed");
       }
     },
-    [postId, commentId, isLoading, onSuccess, shareCount, shareUrl]
+    [postId, commentId, isLoading, onSuccess, shareCount, computedShareUrl]
   );
 
   return (
@@ -177,7 +185,7 @@ const Share = ({
               onClick={() => {
                 handleShare("native");
               }}
-              disabled={isLoading || !shareUrl}
+              disabled={isLoading || !computedShareUrl}
               className="flex items-center gap-2 p-2 bg-primary text-white hover:bg-primary/80 transition-all"
             >
               <span>Share via</span>
