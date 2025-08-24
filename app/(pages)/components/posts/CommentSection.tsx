@@ -12,8 +12,10 @@ const CreateComment = dynamic(
   () => import("@/app/components/ui/CreateComment"),
   { ssr: false }
 );
-
 const Like = dynamic(() => import("@/app/components/ui/Like"), { ssr: false });
+const Share = dynamic(() => import("@/app/components/ui/Share"), {
+  ssr: false,
+});
 
 import { CommentType } from "@/types";
 
@@ -30,6 +32,7 @@ const Comment: FC<Props> = ({ comment, level = 0 }) => {
   const [likedByUser, setLikedByUser] = useState<boolean>(
     comment?.likedByUser || false
   ); // eslint-disable-line @typescript-eslint/no-unused-vars
+  const [shareCount, setShareCount] = useState<number>(comment?.shares || 0); // eslint-disable-line @typescript-eslint/no-unused-vars
   const [isPlaying, setIsPlaying] = useState(false);
   const [isAudioLoading, setIsAudioLoading] = useState(false);
   const [audioError, setAudioError] = useState<string | null>(null);
@@ -258,9 +261,16 @@ const Comment: FC<Props> = ({ comment, level = 0 }) => {
                 <b className="text-gray-700">{replyCount}</b>
               </div>
             </CreateComment>
-            <div className="text-sm flex justify-between items-center gap-1 cursor-pointer">
-              <FiShare2 /> <b className="text-gray-700">{comment.shares}</b>
-            </div>
+            <Share
+              commentId={comment.id}
+              initialShareCount={comment.shares}
+              shareUrl={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/comment/${comment.id}`}
+              onSuccess={() => setShareCount((prev) => prev + 1)}
+            >
+              <div className="text-sm flex justify-between items-center gap-1 cursor-pointer">
+                <FiShare2 /> <b className="text-gray-700">{comment.shares}</b>
+              </div>
+            </Share>
           </div>
         </div>
       </div>
