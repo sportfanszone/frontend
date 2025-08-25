@@ -300,6 +300,7 @@ const PostSection = ({ post, showBackbutton = true }: PostSectionProps) => {
         <Share
           postId={post.id}
           initialShareCount={post.shares}
+          shareUrl={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/post/${post.id}`}
           onSuccess={() => setShareCount((prev) => prev + 1)}
         >
           <div className="flex items-center gap-1 bg-gray-100 px-3 py-1.5 rounded-full cursor-pointer hover:bg-gray-200">
