@@ -340,7 +340,7 @@ const CreateComment = ({
       <DialogTrigger asChild>{children}</DialogTrigger>
 
       <DialogContent
-        className={`w-full max-w-full h-full sm:max-h-[90vh] sm:h-fit sm:max-w-[425px] rounded-none sm:rounded-lg overflow-y-auto ${
+        className={`w-full max-w-full h-full sm:max-h-[90vh] sm:h-fit sm:max-w-[600px] rounded-none sm:rounded-lg overflow-y-auto ${
           isDragActive
             ? "bg-blue-100 border-2 border-dashed border-blue-500"
             : ""
@@ -367,7 +367,7 @@ const CreateComment = ({
                 className="size-13"
               />
               <div className="flex flex-col">
-                <div className="flex items-center max-w-[250px] overflow-hidden whitespace-nowrap gap-2">
+                <div className="flex items-center max-w-[250px] sm:max-w-[450px] overflow-hidden whitespace-nowrap gap-2">
                   <span className="font-bold truncate">
                     {`${replyTo.firstName} ${replyTo.middleName} ${replyTo.lastName}`}
                   </span>
@@ -404,7 +404,7 @@ const CreateComment = ({
                   value={postData.content}
                   onChange={handleInputChange}
                   placeholder="Write your comment here..."
-                  className="resize-none border-none shadow-none focus:outline-none p-0 outline-0"
+                  className="text-xl md:text-2xl resize-none border-none shadow-none focus:outline-none focus-visible:ring-0 p-0 outline-0"
                 />
                 {errors.content && (
                   <p className="text-red-500 text-sm mt-1">{errors.content}</p>
