@@ -58,7 +58,6 @@ const PostCard = (post: PostCardProps) => {
         </div>
 
         <h5 className="font-bold text-sm">{post.title}</h5>
-        <p className="text-xs mb-2 line-clamp-2">{post.content}</p>
         <div className="flex justify-between items-center text-sm">
           <div className="flex justify-between items-center gap-5">
             <Like
