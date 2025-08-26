@@ -64,13 +64,15 @@ const Header = ({ user }: HeaderProps) => {
         </button>
 
         {/* Logo */}
-        <Image
-          className="max-w-5.5 w-30 md:max-w-40 md:w-40"
-          src={logo}
-          alt="Logo"
-          width={160}
-          height={160}
-        />
+        <Link href="/">
+          <Image
+            className="max-w-5.5 w-30 md:max-w-40 md:w-40"
+            src={logo}
+            alt="Logo"
+            width={160}
+            height={160}
+          />
+        </Link>
       </div>
 
       {/* Searchbar */}

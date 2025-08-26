@@ -81,13 +81,15 @@ const Header = ({ theme = null, className = "", user }: HeaderProps) => {
   return (
     <>
       <header className={computedClasses}>
-        <Image
-          className="w-40 sm:w-40 md:w-50"
-          src="/images/logo.png"
-          alt="Logo"
-          width={160}
-          height={160}
-        />
+        <Link href="/">
+          <Image
+            className="w-40 sm:w-40 md:w-50"
+            src="/images/logo.png"
+            alt="Logo"
+            width={160}
+            height={160}
+          />
+        </Link>
 
         <div className="hidden md:flex items-center gap-6">
           {navItems.map((item, index) => (
