@@ -36,7 +36,7 @@ export default async function Clubs({
               <div className="flex gap-3">
                 <BackButton />
                 <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl mb-10">
-                  Clubs
+                  Choose Category
                 </h2>
               </div>
 
