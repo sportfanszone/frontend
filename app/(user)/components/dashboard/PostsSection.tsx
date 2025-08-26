@@ -64,14 +64,13 @@ const PostsSection = ({ userId, initialPosts }: Props) => {
 
   return (
     <section className="p-2 md:p-10 px-0 font-medium max-w-350 mx-auto @container">
-      {posts.map((post) => (
-        <Link key={post.id} href={`/post/${post.id}`} className="block mb-6">
-          <PostSection
-            className="bg-white border-2 border-gray-200 rounded-xl p-5 md:p-7.5"
-            post={post}
-            showBackbutton={false}
-          />
-        </Link>
+      {posts.map((post, index) => (
+        <PostSection
+          key={index}
+          className="bg-white border-2 border-gray-200 rounded-xl p-5 md:p-7.5 mb-5"
+          post={post}
+          showBackbutton={false}
+        />
       ))}
       {isLoading && (
         <div className="text-center text-gray-500">Loading more posts...</div>

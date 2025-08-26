@@ -2,6 +2,7 @@
 import { useState, useRef } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import Link from "next/link";
 import YouTube from "react-youtube";
 import BackButton from "@/app/components/ui/BackButton";
 import UserAvatar from "@/app/components/ui/UserAvatar";
@@ -125,7 +126,10 @@ const PostSection = ({
       <div className="flex items-center justify-start gap-2 sm:gap-3 mb-3 sm:mb-4">
         {showBackbutton && <BackButton />}
         {post.user ? (
-          <div className="flex items-center gap-2 sm:gap-3">
+          <Link
+            href={`/account/@${post.user.username}`}
+            className="flex items-center gap-2 sm:gap-3 hover:underline hover:text-primary"
+          >
             <UserAvatar
               src={post.user.profileImageUrl ?? ""}
               alt={`${post.user.firstName?.[0] ?? ""}${
@@ -148,7 +152,7 @@ const PostSection = ({
                 {post.user.lastName ?? ""}
               </div>
             </div>
-          </div>
+          </Link>
         ) : (
           <div className="text-gray-500 text-xs sm:text-sm">
             User information not available
@@ -157,10 +161,12 @@ const PostSection = ({
       </div>
 
       {/* Post */}
-      <h2 className="font-semibold text-lg sm:text-2xl">{post.title}</h2>
-      <p className="text-gray-700 text-sm sm:text-base mb-3 sm:mb-4">
-        {post.content}
-      </p>
+      <Link href={`/post/${post.id}`}>
+        <h2 className="font-semibold text-lg sm:text-2xl">{post.title}</h2>
+        <p className="text-gray-700 text-sm sm:text-base mb-3 sm:mb-4">
+          {post.content}
+        </p>
+      </Link>
 
       {/* YouTube Video Player */}
       {videoId && (
