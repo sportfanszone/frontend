@@ -14,7 +14,7 @@ import {
 } from "react-icons/fi";
 import moment from "moment";
 import { Post } from "@/types";
-import { isValidYouTubeUrl } from "@/lib/utils";
+import { isValidYouTubeUrl, cn } from "@/lib/utils";
 
 const CreateComment = dynamic(
   () => import("@/app/components/ui/CreateComment"),
@@ -28,9 +28,14 @@ const Share = dynamic(() => import("@/app/components/ui/Share"), {
 type PostSectionProps = {
   showBackbutton?: boolean;
   post: Post;
+  className?: string;
 };
 
-const PostSection = ({ post, showBackbutton = true }: PostSectionProps) => {
+const PostSection = ({
+  post,
+  showBackbutton = true,
+  className,
+}: PostSectionProps) => {
   const [commentCount, setCommentCount] = useState<number>(
     post?.commentCount || 0
   );
@@ -105,7 +110,7 @@ const PostSection = ({ post, showBackbutton = true }: PostSectionProps) => {
     imageCount > maxImagesToShow ? imageCount - maxImagesToShow : 0;
 
   return (
-    <section className="max-w-3xl mx-auto p-4 pt-0">
+    <section className={cn("max-w-3xl mx-auto p-4 pt-0", className)}>
       <style jsx>{`
         .hide-scrollbar {
           -ms-overflow-style: none; /* IE and Edge */
