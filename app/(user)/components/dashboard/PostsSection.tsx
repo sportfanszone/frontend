@@ -33,11 +33,11 @@ const PostsSection = async ({ userId }: Props) => {
   }
 
   return (
-    <section className="p-10 font-medium max-w-300 mx-auto @container">
+    <section className="p-2 md:p-10 px-0 font-medium max-w-350 mx-auto @container">
       {posts.map((post) => (
         <Link key={post.id} href={`/post/${post.id}`} className="block mb-6">
           <PostSection
-            className="bg-white border-2 border-gray-200 rounded-xl p-10"
+            className="bg-white border-2 border-gray-200 rounded-xl p-5 md:p-7.5"
             post={post}
             showBackbutton={false}
           />
