@@ -15,7 +15,6 @@ import {
   DropdownMenuSeparator,
 } from "@/app/components/ui/dropdown-menu";
 import { Logout } from "@/app/components/ui/Logout";
-import { useLogout } from "@/hooks/useLogout";
 import UserAvatar from "@/app/components/ui/UserAvatar";
 
 const navItems = [
@@ -83,7 +82,7 @@ const Header = ({ theme = null, className = "", user }: HeaderProps) => {
     <>
       <header className={computedClasses}>
         <Image
-          className="w-30 sm:w-30 md:w-40"
+          className="w-40 sm:w-40 md:w-50"
           src="/images/logo.png"
           alt="Logo"
           width={160}
