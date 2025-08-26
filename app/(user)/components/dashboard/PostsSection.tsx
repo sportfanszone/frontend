@@ -37,7 +37,7 @@ const PostsSection = async ({ userId }: Props) => {
       {posts.map((post) => (
         <Link key={post.id} href={`/post/${post.id}`} className="block mb-6">
           <PostSection
-            className="bg-white rounded-xl p-10"
+            className="bg-white border-2 border-gray-200 rounded-xl p-10"
             post={post}
             showBackbutton={false}
           />
