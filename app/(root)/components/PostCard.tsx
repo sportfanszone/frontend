@@ -10,6 +10,9 @@ const CreateComment = dynamic(
   () => import("@/app/components/ui/CreateComment"),
   { ssr: false }
 );
+const Share = dynamic(() => import("@/app/components/ui/Share"), {
+  ssr: false,
+});
 
 import { PostCardProps } from "@/types";
 import formatDate from "@/lib/formatDate";
@@ -22,6 +25,7 @@ const PostCard = (post: PostCardProps) => {
   const [likedByUser, setLikedByUser] = useState<boolean>(
     post?.likedByUser || false
   );
+  const [shareCount, setShareCount] = useState<number>(post?.shares || 0); // eslint-disable-line @typescript-eslint/no-unused-vars
 
   return (
     <div className="bg-white flex items-center justify-between gap-4 w-full max-h-[8em] shadow-card hover:shadow-card-active hover:scale-102 rounded-3xl p-6 cursor-pointer transition-all duration-150 ease-in-out">
@@ -80,9 +84,16 @@ const PostCard = (post: PostCardProps) => {
               </div>
             </CreateComment>
 
-            <div className="flex justify-between items-center gap-1">
-              <FiShare2 />
-            </div>
+            <Share
+              postId={post.id}
+              initialShareCount={post.shares}
+              shareUrl={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/post/${post.id}`}
+              onSuccess={() => setShareCount((prev) => prev + 1)}
+            >
+              <div className="flex justify-between items-center gap-1">
+                <FiShare2 />
+              </div>
+            </Share>
           </div>
         </div>
       </div>
