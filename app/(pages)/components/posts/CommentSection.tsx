@@ -152,7 +152,7 @@ const Comment: FC<Props> = ({ comment, level = 0 }) => {
   }, [isAudioLoading, audioError]);
 
   return (
-    <section className="relative pl-4 border-l-1 border-gray-400/40 max-w-180 2xl:max-w-200 mx-auto p-4 pt-0">
+    <section className="relative pl-4 border-l-1 border-gray-400/40 max-w-2xl mx-auto p-4 pt-0">
       <div className="flex items-start gap-3 mb-2">
         <div className="flex items-center gap-3 mb-4">
           <UserAvatar
