@@ -1,30 +1,60 @@
-import Link from "next/link";
-import PostSection from "@/app/(pages)/components/posts/PostSection";
+"use client";
 
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
+import PostSection from "@/app/(pages)/components/posts/PostSection";
 import { Post } from "@/types";
-import getUserPostsData from "@/lib/getUserPostsData";
+import clientFetcher from "@/lib/clientFetcher";
+import { Post as PostType } from "@/types";
 
 type Props = {
   userId: string;
+  initialPosts: Post[];
 };
 
-const PostsSection = async ({ userId }: Props) => {
-  let posts: Post[] = [];
+const PostsSection = ({ userId, initialPosts }: Props) => {
+  const [posts, setPosts] = useState<Post[]>(initialPosts);
+  const [page, setPage] = useState(1); // Start at 1 since initialPosts is page 0
+  const [hasMore, setHasMore] = useState(initialPosts.length === 10);
+  const [isLoading, setIsLoading] = useState(false);
+  const { ref, inView } = useInView({
+    threshold: 0,
+  });
 
-  try {
-    const data = await getUserPostsData(userId);
-    posts = data?.posts || [];
-  } catch (error) {
-    console.error("Failed to fetch user posts:", error);
-    // You can return an error UI or keep it empty
-    return (
-      <section className="p-10 text-center text-red-600">
-        Failed to load posts.
-      </section>
-    );
-  }
+  const loadMorePosts = async () => {
+    if (isLoading || !hasMore) return;
 
-  if (posts.length === 0) {
+    setIsLoading(true);
+    try {
+      const response: { posts: PostType[] } = await clientFetcher(
+        `${
+          process.env.NEXT_PUBLIC_DOMAIN_URL
+        }/api/user/get_user_posts/${userId}?offset=${page * 10}&limit=10`,
+        "GET"
+      );
+
+      const newPosts = response.posts || [];
+      if (newPosts.length < 10) {
+        setHasMore(false);
+      }
+      setPosts((prevPosts) => [...prevPosts, ...newPosts]);
+      setPage((prevPage) => prevPage + 1);
+    } catch (error) {
+      console.error("Failed to fetch more posts:", error);
+      setHasMore(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (inView && hasMore && !isLoading) {
+      loadMorePosts();
+    }
+  }, [inView, hasMore, isLoading]);
+
+  if (posts.length === 0 && !isLoading) {
     return (
       <section className="p-10 text-center text-gray-500">
         No posts to display.
@@ -43,6 +73,13 @@ const PostsSection = async ({ userId }: Props) => {
           />
         </Link>
       ))}
+      {isLoading && (
+        <div className="text-center text-gray-500">Loading more posts...</div>
+      )}
+      {hasMore && !isLoading && <div ref={ref} className="h-10" />}
+      {!hasMore && posts.length > 0 && (
+        <div className="text-center text-gray-500">No more posts to load.</div>
+      )}
     </section>
   );
 };
