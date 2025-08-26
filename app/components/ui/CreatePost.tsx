@@ -293,7 +293,7 @@ const CreatePost = ({ user }: Props) => {
 
       <DialogContent
         aria-description="Post Card"
-        className={`w-full max-w-full h-full sm:max-h-[90vh] sm:h-fit sm:max-w-[425px] rounded-none sm:rounded-lg overflow-y-auto ${
+        className={`w-full max-w-full h-full sm:max-h-[90vh] sm:h-fit sm:max-w-[600px] rounded-none sm:rounded-lg overflow-y-auto ${
           isDragActive
             ? "bg-gray-100 border-2 border-dashed border-primary"
             : ""
@@ -341,7 +341,7 @@ const CreatePost = ({ user }: Props) => {
           <Textarea
             id="postContent"
             placeholder="Write your post here..."
-            className="resize-none border-none shadow-none focus:outline-none focus:ring-0 focus-visible:ring-0 p-0"
+            className="text-xl md:text-2xl resize-none border-none shadow-none focus:outline-none focus:ring-0 focus-visible:ring-0 p-0"
             autoFocus
             name="content"
             value={postData.content}
