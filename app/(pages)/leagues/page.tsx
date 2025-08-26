@@ -15,7 +15,7 @@ export default async function LeaguesPage() {
       return (
         <section className="p-10 font-medium max-w-300 mx-auto">
           <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl text-center mb-10">
-            No Leagues Available
+            Fanszone
           </h2>
           <p className="text-center">Please check back later.</p>
         </section>

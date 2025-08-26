@@ -10,7 +10,7 @@ const LeaguesSection = ({ leagues }: { leagues: League[] }) => {
       <div className="flex gap-3">
         <BackButton />
         <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl mb-10">
-          Leagues
+          Fanszone
         </h2>
       </div>
 

@@ -19,7 +19,7 @@ import UserAvatar from "@/app/components/ui/UserAvatar";
 
 const navItems = [
   { name: "Home", href: "/" },
-  { name: "Leagues", href: "/leagues" },
+  { name: "Fanszone", href: "/leagues" },
   { name: "FAQs", href: "#" },
   { name: "About", href: "#" },
 ];

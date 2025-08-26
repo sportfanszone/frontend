@@ -12,7 +12,7 @@ import LeftSidebarLink from "@/app/components/ui/LeftSidebarLink";
 
 const navItems = [
   { href: "/", text: "Home", icon: FiHome },
-  { href: "/leagues", text: "Leagues", icon: FiUsers },
+  { href: "/leagues", text: "Fanszone", icon: FiUsers },
   { href: "/topics", text: "Topics", icon: FiCalendar },
 ];
 
