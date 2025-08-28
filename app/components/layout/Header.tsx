@@ -1,9 +1,8 @@
 "use client";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useContext } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight, FiMenu, FiX } from "react-icons/fi";
-import { User } from "@/types";
 import { useLogoutStore } from "@/stores/useLogoutStore";
 import {
   DropdownMenu,
@@ -16,6 +15,7 @@ import {
 } from "@/app/components/ui/dropdown-menu";
 import { Logout } from "@/app/components/ui/Logout";
 import UserAvatar from "@/app/components/ui/UserAvatar";
+import { UserContext } from "@/app/context/UserContext";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -27,10 +27,10 @@ const navItems = [
 interface HeaderProps {
   theme?: "dark" | "light" | "transparent" | null;
   className?: string;
-  user: User;
 }
 
-const Header = ({ theme = null, className = "", user }: HeaderProps) => {
+const Header = ({ theme = null, className = "" }: HeaderProps) => {
+  const { user } = useContext(UserContext);
   const { setShowLogoutConfirm } = useLogoutStore();
   const [navOpen, setNavOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
