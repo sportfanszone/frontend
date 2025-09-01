@@ -247,10 +247,6 @@ const CreatePost = ({ user }: Props) => {
 
       if (res.ok || data.status === "success") {
         if (data.post && typeof data.post === "object" && data.post.id) {
-          Toast.fire({
-            icon: "success",
-            title: "Post created successfully!",
-          });
           addPost(data.post); // Add the new post to the Zustand store
           // Reset form
           setPostData({
