@@ -2,9 +2,9 @@ import Image from "next/image";
 import { FiCalendar } from "react-icons/fi";
 import getClubsData from "@/lib/getClubsData";
 import { ClubPageData } from "@/types";
-import formatDate from "@/lib/formatDate";
 import moment from "moment";
 import Link from "next/link";
+import formatRelativeTime from "@/lib/formatRelativeTime";
 
 interface ClubsSidebarProps {
   leagueId: string;
@@ -35,7 +35,7 @@ const ClubsSidebar = async ({ leagueId }: ClubsSidebarProps) => {
               />
               <span className="text-sm">{league.description}</span>
             </div>
-            <div className="flex justify-between items-center gap-3">
+            <div className="flex items-center gap-3">
               <div className="flex flex-col">
                 <span className="text-gray-500 text-sm mb-1">CLUBS</span>
                 <span className="font-bold text-lg">{league.clubCount}</span>
@@ -45,7 +45,7 @@ const ClubsSidebar = async ({ leagueId }: ClubsSidebarProps) => {
                   LAST ACTIVITY
                 </span>
                 <span className="font-bold text-lg">
-                  {formatDate(league.lastAccess)}
+                  {formatRelativeTime(league.lastAccess)}
                 </span>
               </div>
             </div>

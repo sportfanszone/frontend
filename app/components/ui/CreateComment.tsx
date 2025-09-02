@@ -278,10 +278,6 @@ const CreateComment = ({
         const data = await res.json();
 
         if (res.ok || data.status === "success") {
-          Toast.fire({
-            icon: "success",
-            title: "Comment created successfully!",
-          });
           setPostData({
             content: "",
             image: undefined,

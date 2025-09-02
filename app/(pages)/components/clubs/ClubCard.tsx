@@ -1,7 +1,7 @@
 import Image from "next/image";
 import * as motion from "motion/react-client";
 import { Club } from "@/types";
-import formatDate from "@/lib/formatDate";
+import formatRelativeTime from "@/lib/formatRelativeTime";
 
 const ClubCard = ({
   name,
@@ -19,14 +19,16 @@ const ClubCard = ({
       >
         <h1 className="font-bold text-xl">{name}</h1>
       </div>
-      <div className="flex justify0between align-center gap-3">
+      <div className="flex align-center gap-3">
         <div className="flex flex-col justify-center mb-4">
           <span className="text-gray-500 text-sm mb-1">TOPICS</span>
           <span className="font-bold text-lg">{topicCount}</span>
         </div>
         <div className="flex flex-col justify-center mb-4">
           <span className="text-gray-500 text-sm mb-1">LAST ACTIVITY</span>
-          <span className="font-bold text-lg">{formatDate(lastAccess)}</span>
+          <span className="font-bold text-lg">
+            {formatRelativeTime(lastAccess)}
+          </span>
         </div>
       </div>
       <div className="flex flex-col justify-center">
