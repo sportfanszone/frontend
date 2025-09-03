@@ -2,7 +2,6 @@ export const dynamic = "force-dynamic";
 
 import { Suspense } from "react";
 import ClubCard from "@/app/(pages)/components/clubs/ClubCard";
-import Link from "next/link";
 import getClubsData from "@/lib/getClubsData";
 import { ClubPageData } from "@/types";
 import ClubsSidebar from "@/app/(pages)/components/clubs/ClubsSidebar";
@@ -42,17 +41,7 @@ export default async function Clubs({
 
               <div className="flex justify-center items-center flex-wrap gap-8">
                 {clubs.map((club, index) => (
-                  <Link href={`/topics/?club=${club.id}`} key={index}>
-                    <ClubCard
-                      id={club.id}
-                      name={club.name}
-                      topicCount={club.topicCount}
-                      lastAccess={club.lastAccess}
-                      description={club.description}
-                      logo={club.logo}
-                      backgroundImage={club.backgroundImage}
-                    />
-                  </Link>
+                  <ClubCard key={index} club={club} />
                 ))}
               </div>
             </section>

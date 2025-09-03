@@ -53,6 +53,7 @@ export type Club = {
   logo: string;
   backgroundImage: string;
   pinned?: boolean;
+  followedByUser?: boolean;
 };
 
 export type League = {
