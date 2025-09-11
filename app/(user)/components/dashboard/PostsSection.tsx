@@ -1,60 +1,57 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import PostSection from "@/app/(pages)/components/posts/PostSection";
 import { Post } from "@/types";
-import clientFetcher from "@/lib/clientFetcher";
-import { Post as PostType } from "@/types";
+import { usePostStore } from "@/stores/postStore";
 
 type Props = {
   userId: string;
-  initialPosts: Post[];
+  initialPosts: Post[] | null | undefined;
 };
 
 const PostsSection = ({ userId, initialPosts }: Props) => {
-  const [posts, setPosts] = useState<Post[]>(initialPosts);
+  const { posts, setPosts, fetchNewPosts, fetchMorePosts } = usePostStore();
   const [page, setPage] = useState(1); // Start at 1 since initialPosts is page 0
-  const [hasMore, setHasMore] = useState(initialPosts.length === 10);
+  const [hasMore, setHasMore] = useState(
+    Array.isArray(initialPosts) && initialPosts.length === 10
+  );
   const [isLoading, setIsLoading] = useState(false);
   const { ref, inView } = useInView({
     threshold: 0,
   });
 
-  const loadMorePosts = async () => {
-    if (isLoading || !hasMore) return;
+  // Initialize posts
+  useEffect(() => {
+    setPosts(initialPosts);
+  }, [initialPosts, setPosts]);
 
-    setIsLoading(true);
-    try {
-      const response: { posts: PostType[] } = await clientFetcher(
-        `${
-          process.env.NEXT_PUBLIC_DOMAIN_URL
-        }/api/user/get_user_posts/${userId}?offset=${page * 10}&limit=10`,
-        "GET"
-      );
+  // Fetch new posts every 30 seconds
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     const latestPost = posts[0];
+  //     fetchNewPosts(userId, latestPost?.createdAt);
+  //   }, 60 * 1000);
+  //   return () => clearInterval(interval);
+  // }, [posts, userId, fetchNewPosts]);
 
-      const newPosts = response.posts || [];
-      if (newPosts.length < 10) {
-        setHasMore(false);
-      }
-      setPosts((prevPosts) => [...prevPosts, ...newPosts]);
-      setPage((prevPage) => prevPage + 1);
-    } catch (error) {
-      console.error("Failed to fetch more posts:", error);
-      setHasMore(false);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+  // Infinite scrolling
   useEffect(() => {
     if (inView && hasMore && !isLoading) {
-      loadMorePosts();
+      setIsLoading(true);
+      fetchMorePosts(userId, page).then((hasMorePosts) => {
+        setHasMore(hasMorePosts);
+        setPage((prev) => prev + 1);
+        setIsLoading(false);
+      });
     }
-  }, [inView, hasMore, isLoading]);
+  }, [inView, hasMore, isLoading, userId, page, fetchMorePosts]);
 
-  if (posts.length === 0 && !isLoading) {
+  // Ensure posts is an array
+  const safePosts = Array.isArray(posts) ? posts : [];
+
+  if (safePosts.length === 0 && !isLoading) {
     return (
       <section className="p-10 text-center text-gray-500">
         No posts to display.
@@ -64,7 +61,7 @@ const PostsSection = ({ userId, initialPosts }: Props) => {
 
   return (
     <section className="p-2 md:p-10 px-0 font-medium max-w-350 mx-auto @container">
-      {posts.map((post, index) => (
+      {safePosts.map((post, index) => (
         <PostSection
           key={index}
           className="bg-white border-2 border-gray-200 rounded-xl p-5 md:p-7.5 mb-5"
@@ -76,7 +73,7 @@ const PostsSection = ({ userId, initialPosts }: Props) => {
         <div className="text-center text-gray-500">Loading more posts...</div>
       )}
       {hasMore && !isLoading && <div ref={ref} className="h-10" />}
-      {!hasMore && posts.length > 0 && (
+      {!hasMore && safePosts.length > 0 && (
         <div className="text-center text-gray-500">No more posts to load.</div>
       )}
     </section>

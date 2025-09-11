@@ -1,9 +1,9 @@
 "use client";
+
 import { useState, useEffect, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { FiArrowRight, FiPlus, FiLink, FiImage } from "react-icons/fi";
 import { getYouTubeThumbnail, isValidYouTubeUrl } from "@/lib/utils";
-
 import {
   Dialog,
   DialogContent,
@@ -17,9 +17,10 @@ import { Textarea } from "@/app/components/ui/textarea";
 import UserAvatar from "@/app/components/ui/UserAvatar";
 import ClubsDropdown from "@/app/components/ui/ClubsDropdown";
 import PostFiles from "@/app/components/ui/PostFiles";
-
 import { postSchema, PostSchema } from "@/lib/validation/postSchema";
 import Swal from "sweetalert2";
+import { Post } from "@/types";
+import { usePostStore } from "@/stores/postStore";
 
 // Maximum number of files allowed
 const MAX_FILES = 10;
@@ -34,6 +35,7 @@ type Props = {
 };
 
 const CreatePost = ({ user }: Props) => {
+  const { addPost } = usePostStore();
   const [postData, setPostData] = useState<PostSchema>({
     title: "",
     content: "",
@@ -240,17 +242,27 @@ const CreatePost = ({ user }: Props) => {
       );
 
       const data = await res.json();
-
-      console.log("res");
-      console.log(res);
-      console.log("data");
-      console.log(data);
+      console.log("Create post response:", data); // Debug log
 
       if (res.ok || data.status === "success") {
-        Toast.fire({
-          icon: "success",
-          title: "Post created successfully!",
-        });
+        if (data.post && typeof data.post === "object" && data.post.id) {
+          Toast.fire({
+            icon: "success",
+            title: "Post created successfully!",
+          });
+          addPost(data.post); // Add the new post to the Zustand store
+          // Reset form
+          setPostData({
+            title: "",
+            content: "",
+            link: "",
+            clubId: "",
+            files: [],
+          });
+          setThumbnailUrl(null);
+        } else {
+          throw new Error("Invalid post data received from server");
+        }
       } else {
         if (data?.errors?.length > 0) {
           const fieldErrors: Partial<typeof errors> = {};

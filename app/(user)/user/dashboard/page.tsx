@@ -7,12 +7,13 @@ import ProfileHeader from "@/app/(user)/components/dashboard/ProfileHeader";
 import PostsSection from "@/app/(user)/components/dashboard/PostsSection";
 
 export default async function UserDashboard() {
-  const user = await getUserFromCookie();
+  const user: User | null = await getUserFromCookie();
+
   let initialPosts: Post[] = [];
 
   try {
     const data = await getUserPostsData(user?.id as string, 0, 10);
-    initialPosts = data?.posts || [];
+    initialPosts = Array.isArray(data?.posts) ? data.posts : [];
   } catch (error) {
     console.error("Failed to fetch initial user posts:", error);
   }
@@ -20,6 +21,7 @@ export default async function UserDashboard() {
   return (
     <>
       <ProfileHeader user={user as User} />
+
       <PostsSection userId={user?.id as string} initialPosts={initialPosts} />
     </>
   );
