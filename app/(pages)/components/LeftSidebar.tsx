@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect, useContext } from "react";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "@/app/(pages)/context/SideBarContext";
 import {
@@ -9,6 +10,7 @@ import {
   FiGrid,
 } from "react-icons/fi";
 import LeftSidebarLink from "@/app/components/ui/LeftSidebarLink";
+import { UserContext } from "@/app/context/UserContext";
 
 const navItems = [
   { href: "/", text: "Home", icon: FiHome },
@@ -18,7 +20,8 @@ const navItems = [
 
 import { LeftSidebarProps } from "@/types";
 
-const LeftSidebar = ({ user }: LeftSidebarProps) => {
+const LeftSidebar = () => {
+  const { user } = useContext(UserContext);
   const pathName = usePathname();
   const { isBarOpen, toggleSidebar } = useSidebar();
   return (

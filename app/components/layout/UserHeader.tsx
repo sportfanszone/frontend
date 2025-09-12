@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useLogoutStore } from "@/stores/useLogoutStore";
 import { useSidebar } from "@/app/(pages)/context/SideBarContext";
-import { HeaderProps } from "@/types";
+import { HeaderProps, User } from "@/types";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -22,8 +22,10 @@ import { Logout } from "@/app/components/ui/Logout";
 import { Badge } from "@/app/components/ui/badge";
 import CreatePost from "@/app/components/ui/CreatePost";
 import Searchbar from "@/app/components/ui/Searchbar";
+import { UserContext } from "@/app/context/UserContext";
 
-const Header = ({ user }: HeaderProps) => {
+const Header = () => {
+  const { user } = useContext(UserContext);
   const { setShowLogoutConfirm } = useLogoutStore();
   const { isBarOpen, toggleSidebar } = useSidebar();
   const [logo, setLogo] = useState("/images/logo.png");

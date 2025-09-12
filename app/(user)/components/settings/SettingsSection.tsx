@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useContext } from "react";
 import { useDropzone } from "react-dropzone";
 import { z } from "zod";
 import Image from "next/image";
@@ -17,6 +17,7 @@ import {
   photoSchema,
 } from "@/lib/validation/userSettingsSchema";
 import { User } from "@/types";
+import { UserContext } from "@/app/context/UserContext";
 
 type PersonalInfoErrors = z.inferFlattenedErrors<
   typeof personalInfoSchema
@@ -27,6 +28,7 @@ type SecurityInfoErrors = z.inferFlattenedErrors<
 type PhotoErrors = z.inferFlattenedErrors<typeof photoSchema>["fieldErrors"];
 
 const SettingsSection = ({ user }: { user: User }) => {
+  const { setUser } = useContext(UserContext);
   const [personalInfo, setPersonalInfo] = useState<
     Pick<User, "firstName" | "middleName" | "lastName" | "username">
   >({
@@ -208,6 +210,7 @@ const SettingsSection = ({ user }: { user: User }) => {
         icon: "success",
         title: "Personal info updated successfully",
       });
+      setUser({ ...user, ...personalInfo });
     } catch (err: { message?: string } | any) {
       console.error("Error updating personal info:", err);
       Toast.fire({
@@ -318,9 +321,13 @@ const SettingsSection = ({ user }: { user: User }) => {
         title: "Photos updated successfully",
       });
       setPhotos({ profilePhoto: null, coverPhoto: null });
-      setCurrentImages({
+      const updatedImages = {
         profilePhoto: data.profileImageUrl || currentImages.profilePhoto,
         coverPhoto: data.coverPhotoUrl || currentImages.coverPhoto,
+      };
+      setCurrentImages(updatedImages);
+      setUser({
+        ...data.user,
       });
     } catch (err: { message?: string } | any) {
       console.error("Error updating photos:", err);
