@@ -111,7 +111,7 @@ const Header = ({ user }: HeaderProps) => {
                 <Link href="/user/dashboard">
                   <DropdownMenuItem>Profile</DropdownMenuItem>
                 </Link>
-                <Link href="#">
+                <Link href="/user/settings">
                   <DropdownMenuItem>Settings</DropdownMenuItem>
                 </Link>
                 <Link href="#">
