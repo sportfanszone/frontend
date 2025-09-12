@@ -288,7 +288,49 @@ const SettingsSection = ({ user }: { user: User }) => {
       return;
     }
     setErrors((prev) => ({ ...prev, photos: {} }));
-    // TODO: Handle successful form submission (e.g., API call)
+
+    try {
+      const formData = new FormData();
+      if (photos.profilePhoto) {
+        formData.append("profilePhoto", photos.profilePhoto);
+      }
+      if (photos.coverPhoto) {
+        formData.append("coverPhoto", photos.coverPhoto);
+      }
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/user/settings/update_photos`,
+        {
+          method: "POST",
+          credentials: "include",
+          body: formData,
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok || data.status === "error") {
+        throw new Error(data.message || "Failed to update photos");
+      }
+
+      Toast.fire({
+        icon: "success",
+        title: "Photos updated successfully",
+      });
+      setPhotos({ profilePhoto: null, coverPhoto: null });
+      setCurrentImages({
+        profilePhoto: data.profileImageUrl || currentImages.profilePhoto,
+        coverPhoto: data.coverPhotoUrl || currentImages.coverPhoto,
+      });
+    } catch (err: { message?: string } | any) {
+      console.error("Error updating photos:", err);
+      Toast.fire({
+        icon: "error",
+        title: err?.message || "An error occurred. Please try again.",
+      });
+    } finally {
+      setIsSubmittingPhotos(false);
+    }
   };
 
   return (
