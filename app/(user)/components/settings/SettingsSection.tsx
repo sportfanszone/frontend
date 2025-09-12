@@ -232,7 +232,47 @@ const SettingsSection = ({ user }: { user: User }) => {
       return;
     }
     setErrors((prev) => ({ ...prev, securityInfo: {} }));
-    // TODO: Handle successful form submission (e.g., API call)
+
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/user/settings/update_password`,
+        {
+          method: "POST",
+          credentials: "include",
+          body: JSON.stringify({
+            oldPassword: securityInfo.oldPassword,
+            newPassword: securityInfo.newPassword,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok || data.status === "error") {
+        throw new Error(data.message || "Failed to update password");
+      }
+
+      Toast.fire({
+        icon: "success",
+        title: "Password updated successfully",
+      });
+      setSecurityInfo({
+        oldPassword: "",
+        newPassword: "",
+        passwordConfirm: "",
+      });
+    } catch (err: { message?: string } | any) {
+      console.error("Error updating password:", err);
+      Toast.fire({
+        icon: "error",
+        title: err?.message || "An error occurred. Please try again.",
+      });
+    } finally {
+      setIsSubmittingSecurityInfo(false);
+    }
   };
 
   const handlePhotosSubmit = async (e: React.FormEvent) => {
