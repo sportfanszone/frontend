@@ -67,7 +67,11 @@ const SettingsSection = ({ user }: { user: User }) => {
     securityInfo: {},
     photos: {},
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmittingPersonalInfo, setIsSubmittingPersonalInfo] =
+    useState(false);
+  const [isSubmittingSecurityInfo, setIsSubmittingSecurityInfo] =
+    useState(false);
+  const [isSubmittingPhotos, setIsSubmittingPhotos] = useState(false);
 
   const handlePersonalInfoChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -169,14 +173,14 @@ const SettingsSection = ({ user }: { user: User }) => {
 
   const handlePersonalInfoSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    setIsSubmittingPersonalInfo(true);
     const result = personalInfoSchema.safeParse(personalInfo);
     if (!result.success) {
       setErrors((prev) => ({
         ...prev,
         personalInfo: result.error.flatten().fieldErrors,
       }));
-      setIsSubmitting(false);
+      setIsSubmittingPersonalInfo(false);
       return;
     }
     setErrors((prev) => ({ ...prev, personalInfo: {} }));
@@ -205,48 +209,46 @@ const SettingsSection = ({ user }: { user: User }) => {
         title: "Personal info updated successfully",
       });
     } catch (err: { message?: string } | any) {
-      console.error("Error adding post:", err);
+      console.error("Error updating personal info:", err);
       Toast.fire({
         icon: "error",
         title: err?.message || "An error occurred. Please try again.",
       });
     } finally {
-      setIsSubmitting(false);
+      setIsSubmittingPersonalInfo(false);
     }
   };
 
-  const handleSecurityInfoSubmit = (e: React.FormEvent) => {
+  const handleSecurityInfoSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    setIsSubmittingSecurityInfo(true);
     const result = securityInfoSchema.safeParse(securityInfo);
     if (!result.success) {
       setErrors((prev) => ({
         ...prev,
         securityInfo: result.error.flatten().fieldErrors,
       }));
-      setIsSubmitting(false);
+      setIsSubmittingSecurityInfo(false);
       return;
     }
     setErrors((prev) => ({ ...prev, securityInfo: {} }));
     // TODO: Handle successful form submission (e.g., API call)
-    setIsSubmitting(false);
   };
 
-  const handlePhotosSubmit = (e: React.FormEvent) => {
+  const handlePhotosSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    setIsSubmittingPhotos(true);
     const result = photoSchema.safeParse(photos);
     if (!result.success) {
       setErrors((prev) => ({
         ...prev,
         photos: result.error.flatten().fieldErrors,
       }));
-      setIsSubmitting(false);
+      setIsSubmittingPhotos(false);
       return;
     }
     setErrors((prev) => ({ ...prev, photos: {} }));
     // TODO: Handle successful form submission (e.g., API call)
-    setIsSubmitting(false);
   };
 
   return (
@@ -364,9 +366,9 @@ const SettingsSection = ({ user }: { user: User }) => {
         <Button
           type="submit"
           className="bg-primary text-white cursor-pointer hover:bg-primary/80 hover:text-white transition-all"
-          disabled={isSubmitting}
+          disabled={isSubmittingPhotos}
         >
-          {isSubmitting ? "Submitting..." : "Save Photos"}
+          {isSubmittingPhotos ? "Submitting..." : "Save Photos"}
         </Button>
       </form>
 
@@ -452,9 +454,9 @@ const SettingsSection = ({ user }: { user: User }) => {
         <Button
           type="submit"
           className="bg-primary text-white cursor-pointer hover:bg-primary/80 hover:text-white transition-all"
-          disabled={isSubmitting}
+          disabled={isSubmittingPersonalInfo}
         >
-          {isSubmitting ? "Submitting..." : "Save"}
+          {isSubmittingPersonalInfo ? "Submitting..." : "Save"}
         </Button>
       </form>
 
@@ -503,14 +505,14 @@ const SettingsSection = ({ user }: { user: User }) => {
             )}
           </div>
           <div>
-            <Label htmlFor="confirmPassword" className="mb-2">
+            <Label htmlFor="passwordConfirm" className="mb-2">
               Confirm Password
             </Label>
             <Input
-              id="confirmPassword"
+              id="passwordConfirm"
               placeholder="Confirm Password"
               className="mb-1"
-              name="confirmPassword"
+              name="passwordConfirm"
               value={securityInfo.passwordConfirm}
               type="password"
               onChange={handleSecurityInfoChange}
@@ -525,9 +527,9 @@ const SettingsSection = ({ user }: { user: User }) => {
         <Button
           type="submit"
           className="bg-primary text-white cursor-pointer hover:bg-primary/80 hover:text-white transition-all"
-          disabled={isSubmitting}
+          disabled={isSubmittingSecurityInfo}
         >
-          {isSubmitting ? "Submitting..." : "Save"}
+          {isSubmittingSecurityInfo ? "Submitting..." : "Save"}
         </Button>
       </form>
     </section>
