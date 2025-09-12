@@ -9,6 +9,7 @@ import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Button } from "@/app/components/ui/button";
 import BackButton from "@/app/components/ui/BackButton";
+import Swal from "sweetalert2";
 
 import {
   personalInfoSchema,
@@ -154,7 +155,19 @@ const SettingsSection = ({ user }: { user: User }) => {
     maxFiles: 1,
   });
 
-  const handlePersonalInfoSubmit = (e: React.FormEvent) => {
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "bottom-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
+
+  const handlePersonalInfoSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     const result = personalInfoSchema.safeParse(personalInfo);
@@ -167,8 +180,39 @@ const SettingsSection = ({ user }: { user: User }) => {
       return;
     }
     setErrors((prev) => ({ ...prev, personalInfo: {} }));
-    // TODO: Handle successful form submission (e.g., API call)
-    setIsSubmitting(false);
+
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/user/settings/update_personal_info`,
+        {
+          method: "POST",
+          credentials: "include",
+          body: JSON.stringify(personalInfo),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok || data.status === "error") {
+        throw new Error(data.message || "Failed to update personal info");
+      }
+
+      Toast.fire({
+        icon: "success",
+        title: "Personal info updated successfully",
+      });
+    } catch (err: { message?: string } | any) {
+      console.error("Error adding post:", err);
+      Toast.fire({
+        icon: "error",
+        title: err?.message || "An error occurred. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleSecurityInfoSubmit = (e: React.FormEvent) => {
