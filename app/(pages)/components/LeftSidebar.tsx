@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "@/app/(pages)/context/SideBarContext";
 import {
@@ -17,8 +17,6 @@ const navItems = [
   { href: "/leagues", text: "Fanszone", icon: FiUsers },
   { href: "/topics", text: "Topics", icon: FiCalendar },
 ];
-
-import { LeftSidebarProps } from "@/types";
 
 const LeftSidebar = () => {
   const { user } = useContext(UserContext);

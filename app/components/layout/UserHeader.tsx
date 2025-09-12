@@ -3,7 +3,6 @@
 import { useState, useEffect, useContext } from "react";
 import { useLogoutStore } from "@/stores/useLogoutStore";
 import { useSidebar } from "@/app/(pages)/context/SideBarContext";
-import { HeaderProps, User } from "@/types";
 
 import Image from "next/image";
 import Link from "next/link";
