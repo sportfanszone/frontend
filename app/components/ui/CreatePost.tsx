@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { useDropzone } from "react-dropzone";
 import { FiArrowRight, FiPlus, FiLink, FiImage } from "react-icons/fi";
 import { getYouTubeThumbnail, isValidYouTubeUrl } from "@/lib/utils";
@@ -19,7 +20,6 @@ import ClubsDropdown from "@/app/components/ui/ClubsDropdown";
 import PostFiles from "@/app/components/ui/PostFiles";
 import { postSchema, PostSchema } from "@/lib/validation/postSchema";
 import Swal from "sweetalert2";
-import { Post } from "@/types";
 import { usePostStore } from "@/stores/postStore";
 
 // Maximum number of files allowed
@@ -35,6 +35,7 @@ type Props = {
 };
 
 const CreatePost = ({ user }: Props) => {
+  const router = useRouter();
   const { addPost } = usePostStore();
   const [postData, setPostData] = useState<PostSchema>({
     title: "",
@@ -260,6 +261,7 @@ const CreatePost = ({ user }: Props) => {
             files: [],
           });
           setThumbnailUrl(null);
+          router.push(`/post/${data.post.id}`);
         } else {
           throw new Error("Invalid post data received from server");
         }
