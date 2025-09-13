@@ -34,6 +34,7 @@ export const photoSchema = z.object({
   profilePhoto: z
     .instanceof(File)
     .optional()
+    .nullable()
     .refine((file) => {
       if (!file) return true; // Allow optional file
       const validTypes = ["image/png", "image/jpeg", "image/jpg"];
@@ -46,6 +47,7 @@ export const photoSchema = z.object({
   coverPhoto: z
     .instanceof(File)
     .optional()
+    .nullable()
     .refine((file) => {
       if (!file) return true;
       const validTypes = ["image/png", "image/jpeg", "image/jpg"];
