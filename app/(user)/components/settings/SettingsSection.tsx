@@ -8,6 +8,7 @@ import Image from "next/image";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Button } from "@/app/components/ui/button";
+import { Checkbox } from "@/app/components/ui/checkbox";
 import BackButton from "@/app/components/ui/BackButton";
 import Swal from "sweetalert2";
 
@@ -15,6 +16,7 @@ import {
   personalInfoSchema,
   securityInfoSchema,
   photoSchema,
+  notificationSchema,
 } from "@/lib/validation/userSettingsSchema";
 import { User } from "@/types";
 import { UserContext } from "@/app/context/UserContext";
@@ -26,6 +28,9 @@ type SecurityInfoErrors = z.inferFlattenedErrors<
   typeof securityInfoSchema
 >["fieldErrors"];
 type PhotoErrors = z.inferFlattenedErrors<typeof photoSchema>["fieldErrors"];
+type NotificationErrors = z.inferFlattenedErrors<
+  typeof notificationSchema
+>["fieldErrors"];
 
 const SettingsSection = ({ user }: { user: User }) => {
   const { setUser } = useContext(UserContext);
@@ -53,6 +58,16 @@ const SettingsSection = ({ user }: { user: User }) => {
     profilePhoto: null,
     coverPhoto: null,
   });
+  const [notifications, setNotifications] = useState({
+    profileView: user.notificationPreferences?.profileView ?? true,
+    topicComment: user.notificationPreferences?.topicComment ?? true,
+    achievement: user.notificationPreferences?.achievement ?? true,
+    commentReply: user.notificationPreferences?.commentReply ?? true,
+    follow: user.notificationPreferences?.follow ?? true,
+    clubTopic: user.notificationPreferences?.clubTopic ?? true,
+    adminBroadcast: user.notificationPreferences?.adminBroadcast ?? true,
+    postLike: user.notificationPreferences?.postLike ?? true,
+  });
   const [currentImages, setCurrentImages] = useState<{
     profilePhoto: string | null;
     coverPhoto: string | null;
@@ -64,16 +79,20 @@ const SettingsSection = ({ user }: { user: User }) => {
     personalInfo: PersonalInfoErrors;
     securityInfo: SecurityInfoErrors;
     photos: PhotoErrors;
+    notifications: NotificationErrors;
   }>({
     personalInfo: {},
     securityInfo: {},
     photos: {},
+    notifications: {},
   });
   const [isSubmittingPersonalInfo, setIsSubmittingPersonalInfo] =
     useState(false);
   const [isSubmittingSecurityInfo, setIsSubmittingSecurityInfo] =
     useState(false);
   const [isSubmittingPhotos, setIsSubmittingPhotos] = useState(false);
+  const [isSubmittingNotifications, setIsSubmittingNotifications] =
+    useState(false);
 
   const handlePersonalInfoChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -87,6 +106,10 @@ const SettingsSection = ({ user }: { user: User }) => {
   ) => {
     const { name, value } = e.target;
     setSecurityInfo((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleNotificationChange = (name: keyof typeof notifications) => {
+    setNotifications((prev) => ({ ...prev, [name]: !prev[name] }));
   };
 
   const onDropProfile = useCallback((acceptedFiles: File[]) => {
@@ -327,7 +350,9 @@ const SettingsSection = ({ user }: { user: User }) => {
       };
       setCurrentImages(updatedImages);
       setUser({
-        ...data.user,
+        ...user,
+        profileImageUrl: updatedImages.profilePhoto,
+        coverPhotoUrl: updatedImages.coverPhoto,
       });
     } catch (err: { message?: string } | any) {
       console.error("Error updating photos:", err);
@@ -337,6 +362,55 @@ const SettingsSection = ({ user }: { user: User }) => {
       });
     } finally {
       setIsSubmittingPhotos(false);
+    }
+  };
+
+  const handleNotificationsSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmittingNotifications(true);
+    const result = notificationSchema.safeParse(notifications);
+    if (!result.success) {
+      setErrors((prev) => ({
+        ...prev,
+        notifications: result.error.flatten().fieldErrors,
+      }));
+      setIsSubmittingNotifications(false);
+      return;
+    }
+    setErrors((prev) => ({ ...prev, notifications: {} }));
+
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/user/settings/update_notifications`,
+        {
+          method: "POST",
+          credentials: "include",
+          body: JSON.stringify(notifications),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok || data.status === "error") {
+        throw new Error(data.message || "Failed to update notifications");
+      }
+
+      Toast.fire({
+        icon: "success",
+        title: "Notification preferences updated successfully",
+      });
+      setUser({ ...user, notificationPreferences: notifications });
+    } catch (err: { message?: string } | any) {
+      console.error("Error updating notifications:", err);
+      Toast.fire({
+        icon: "error",
+        title: err?.message || "An error occurred. Please try again.",
+      });
+    } finally {
+      setIsSubmittingNotifications(false);
     }
   };
 
@@ -619,6 +693,100 @@ const SettingsSection = ({ user }: { user: User }) => {
           disabled={isSubmittingSecurityInfo}
         >
           {isSubmittingSecurityInfo ? "Submitting..." : "Save"}
+        </Button>
+      </form>
+
+      <form
+        onSubmit={handleNotificationsSubmit}
+        className="bg-white border-2 border-gray-200 rounded-xl p-5 md:p-7.5 mb-5"
+      >
+        <h2 className="mb-3 font-bold">Email Notifications</h2>
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 mb-4">
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="profileView"
+              checked={notifications.profileView}
+              onCheckedChange={() => handleNotificationChange("profileView")}
+            />
+            <Label htmlFor="profileView">When someone views your profile</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="topicComment"
+              checked={notifications.topicComment}
+              onCheckedChange={() => handleNotificationChange("topicComment")}
+            />
+            <Label htmlFor="topicComment">
+              When a topic you follow has a new comment
+            </Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="achievement"
+              checked={notifications.achievement}
+              onCheckedChange={() => handleNotificationChange("achievement")}
+            />
+            <Label htmlFor="achievement">When you receive an achievement</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="commentReply"
+              checked={notifications.commentReply}
+              onCheckedChange={() => handleNotificationChange("commentReply")}
+            />
+            <Label htmlFor="commentReply">
+              When someone comments on your comment
+            </Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="follow"
+              checked={notifications.follow}
+              onCheckedChange={() => handleNotificationChange("follow")}
+            />
+            <Label htmlFor="follow">When someone follows you</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="clubTopic"
+              checked={notifications.clubTopic}
+              onCheckedChange={() => handleNotificationChange("clubTopic")}
+            />
+            <Label htmlFor="clubTopic">
+              When there is a new topic in a club you joined
+            </Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="adminBroadcast"
+              checked={notifications.adminBroadcast}
+              onCheckedChange={() => handleNotificationChange("adminBroadcast")}
+            />
+            <Label htmlFor="adminBroadcast">
+              When an admin broadcasts a message
+            </Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="postLike"
+              checked={notifications.postLike}
+              onCheckedChange={() => handleNotificationChange("postLike")}
+            />
+            <Label htmlFor="postLike">When someone likes your post</Label>
+          </div>
+        </div>
+        {errors.notifications &&
+          Object.keys(errors.notifications).length > 0 && (
+            <p className="text-red-500 text-sm mb-2">
+              Please correct the errors in your notification settings
+            </p>
+          )}
+        <Button
+          type="submit"
+          className="bg-primary text-white cursor-pointer hover:bg-primary/80 hover:text-white transition-all"
+          disabled={isSubmittingNotifications}
+        >
+          {isSubmittingNotifications ? "Submitting..." : "Save Notifications"}
         </Button>
       </form>
     </section>

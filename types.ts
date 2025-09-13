@@ -19,6 +19,16 @@ export type User = {
   lastAccess: string;
   createdAt: string;
   updatedAt: string;
+  notificationPreferences?: {
+    profileView: boolean;
+    topicComment: boolean;
+    achievement: boolean;
+    commentReply: boolean;
+    follow: boolean;
+    clubTopic: boolean;
+    adminBroadcast: boolean;
+    postLike: boolean;
+  };
 };
 
 export type Topic = Post;

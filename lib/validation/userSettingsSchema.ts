@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-// Zod schemas for validation
 export const personalInfoSchema = z.object({
   firstName: z
     .string()
@@ -30,31 +29,47 @@ export const securityInfoSchema = z
     path: ["passwordConfirm"],
   });
 
-export const photoSchema = z.object({
-  profilePhoto: z
-    .instanceof(File)
-    .optional()
-    .nullable()
-    .refine((file) => {
-      if (!file) return true; // Allow optional file
-      const validTypes = ["image/png", "image/jpeg", "image/jpg"];
-      return validTypes.includes(file.type);
-    }, "Only PNG, JPG, or JPEG files are allowed")
-    .refine((file) => {
-      if (!file) return true;
-      return file.size <= 5 * 1024 * 1024; // 5MB limit
-    }, "File size must be less than 5MB"),
-  coverPhoto: z
-    .instanceof(File)
-    .optional()
-    .nullable()
-    .refine((file) => {
-      if (!file) return true;
-      const validTypes = ["image/png", "image/jpeg", "image/jpg"];
-      return validTypes.includes(file.type);
-    }, "Only PNG, JPG, or JPEG files are allowed")
-    .refine((file) => {
-      if (!file) return true;
-      return file.size <= 5 * 1024 * 1024; // 5MB limit
-    }, "File size must be less than 5MB"),
+export const photoSchema = z
+  .object({
+    profilePhoto: z
+      .instanceof(File)
+      .optional()
+      .nullable()
+      .refine((file) => {
+        if (!file) return true;
+        const validTypes = ["image/png", "image/jpeg", "image/jpg"];
+        return validTypes.includes(file.type);
+      }, "Only PNG, JPG, or JPEG files are allowed")
+      .refine((file) => {
+        if (!file) return true;
+        return file.size <= 5 * 1024 * 1024; // 5MB limit
+      }, "File size must be less than 5MB"),
+    coverPhoto: z
+      .instanceof(File)
+      .optional()
+      .nullable()
+      .refine((file) => {
+        if (!file) return true;
+        const validTypes = ["image/png", "image/jpeg", "image/jpg"];
+        return validTypes.includes(file.type);
+      }, "Only PNG, JPG, or JPEG files are allowed")
+      .refine((file) => {
+        if (!file) return true;
+        return file.size <= 5 * 1024 * 1024; // 5MB limit
+      }, "File size must be less than 5MB"),
+  })
+  .refine((data) => data.profilePhoto || data.coverPhoto, {
+    message: "At least one photo (profile or cover) must be provided",
+    path: [],
+  });
+
+export const notificationSchema = z.object({
+  profileView: z.boolean(),
+  topicComment: z.boolean(),
+  achievement: z.boolean(),
+  commentReply: z.boolean(),
+  follow: z.boolean(),
+  clubTopic: z.boolean(),
+  adminBroadcast: z.boolean(),
+  postLike: z.boolean(),
 });
