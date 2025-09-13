@@ -15,7 +15,8 @@ export default async function PostsPage({
     id: string;
   };
 }) {
-  const postId = params?.id as string;
+  const awaitedParams = await params;
+  const postId = awaitedParams?.id as string;
 
   const { post }: { post: Post } = await getPostData(postId);
   const { comments }: { comments: Comment[] } = await getCommentData(postId);
