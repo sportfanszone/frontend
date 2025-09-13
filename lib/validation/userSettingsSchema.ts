@@ -42,8 +42,8 @@ export const photoSchema = z
       }, "Only PNG, JPG, or JPEG files are allowed")
       .refine((file) => {
         if (!file) return true;
-        return file.size <= 5 * 1024 * 1024; // 5MB limit
-      }, "File size must be less than 5MB"),
+        return file.size <= 2 * 1024 * 1024; // 2MB limit
+      }, "File size must be less than 2MB"),
     coverPhoto: z
       .instanceof(File)
       .optional()
@@ -55,8 +55,8 @@ export const photoSchema = z
       }, "Only PNG, JPG, or JPEG files are allowed")
       .refine((file) => {
         if (!file) return true;
-        return file.size <= 5 * 1024 * 1024; // 5MB limit
-      }, "File size must be less than 5MB"),
+        return file.size <= 2 * 1024 * 1024; // 2MB limit
+      }, "File size must be less than 2MB"),
   })
   .refine((data) => data.profilePhoto || data.coverPhoto, {
     message: "At least one photo (profile or cover) must be provided",
