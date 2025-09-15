@@ -139,9 +139,9 @@ export default function Login() {
 
         document.cookie = `userToken=${encodeURIComponent(
           data.token
-        )}; expires=${expires.toUTCString()}; path=/; SameSite=${
-          process.env.NODE_ENV === "production" ? "None" : "Lax"
-        }; ${process.env.NODE_ENV === "production" ? "Secure" : ""}`;
+        )}; expires=${expires.toUTCString()}; path=/; ${
+          isProd ? "Domain=.sportfanszone.com;" : ""
+        } SameSite=${isProd ? "None" : "Lax"}; ${isProd ? "Secure" : ""}`;
 
         setUser({ ...data.user });
 
