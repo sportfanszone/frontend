@@ -15,7 +15,6 @@ import {
   FiEyeOff,
   FiFlag,
   FiMessageCircle,
-  FiThumbsUp,
 } from "react-icons/fi";
 import { TopicCardProp } from "@/types";
 import UserAvatar from "@/app/components/ui/UserAvatar";
