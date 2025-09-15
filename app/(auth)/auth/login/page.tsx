@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -7,6 +7,7 @@ import InputGroup from "@/app/(auth)/components/InputGroup";
 import PasswordInputGroup from "@/app/(auth)/components/PasswordInputGroup";
 import { loginSchema } from "@/lib/validation/loginSchema";
 import Swal from "sweetalert2";
+import { UserContext } from "@/app/context/UserContext";
 
 type FormFields = {
   email: string;
@@ -17,6 +18,7 @@ type FormFields = {
 type PasswordFormFields = Pick<FormFields, "password">;
 
 export default function Login() {
+  const { setUser } = useContext(UserContext);
   const router = useRouter();
 
   const [form, setForm] = useState<FormFields>({
@@ -140,6 +142,8 @@ export default function Login() {
         )}; expires=${expires.toUTCString()}; path=/; SameSite=${
           process.env.NODE_ENV === "production" ? "None" : "Lax"
         }; ${process.env.NODE_ENV === "production" ? "Secure" : ""}`;
+
+        setUser({ ...data.user });
 
         router.push("/user/dashboard");
         Toast.fire({
