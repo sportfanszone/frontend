@@ -1,3 +1,4 @@
+// app/api/logout/route.ts
 import { NextResponse } from "next/server";
 
 export async function POST() {
@@ -5,34 +6,15 @@ export async function POST() {
     const res = NextResponse.json({ status: "success" });
     const isProd = process.env.NODE_ENV === "production";
 
-    // Common cookie attributes
-    const cookieAttributes = {
+    res.cookies.set({
+      name: "userToken",
       value: "",
-      path: "/",
-      expires: new Date(0),
       secure: isProd,
       sameSite: isProd ? "none" : "lax",
-    };
-
-    // Manually craft Set-Cookie headers for both domains
-    const cookieHeader1 = `userToken=${cookieAttributes.value}; Path=${
-      cookieAttributes.path
-    }; Expires=${cookieAttributes.expires.toUTCString()}; Domain=${
-      isProd ? ".sportfanszone.com" : "localhost"
-    }; ${cookieAttributes.secure ? "Secure; " : ""}SameSite=${
-      cookieAttributes.sameSite
-    }`;
-    const cookieHeader2 = `userToken=${cookieAttributes.value}; Path=${
-      cookieAttributes.path
-    }; Expires=${cookieAttributes.expires.toUTCString()}; Domain=${
-      isProd ? "api.sportfanszone.com" : "localhost"
-    }; ${cookieAttributes.secure ? "Secure; " : ""}SameSite=${
-      cookieAttributes.sameSite
-    }`;
-
-    // Append both Set-Cookie headers
-    res.headers.append("Set-Cookie", cookieHeader1);
-    res.headers.append("Set-Cookie", cookieHeader2);
+      path: "/",
+      domain: isProd ? ".sportfanszone.com" : "localhost",
+      expires: new Date(0),
+    });
 
     return res;
   } catch (error) {
