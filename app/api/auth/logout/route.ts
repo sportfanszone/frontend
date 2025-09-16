@@ -12,7 +12,8 @@ export async function POST() {
       secure: isProd,
       sameSite: isProd ? "none" : "lax",
       path: "/",
-      maxAge: 2 * 60 * 60,
+      domain: isProd ? ".sportfanszone.com" : "",
+      expires: new Date(0),
     });
 
     return res;
