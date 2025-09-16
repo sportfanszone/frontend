@@ -5,24 +5,34 @@ export async function POST() {
     const res = NextResponse.json({ status: "success" });
     const isProd = process.env.NODE_ENV === "production";
 
-    const cookieOptions = {
-      name: "userToken",
+    // Common cookie attributes
+    const cookieAttributes = {
       value: "",
-      secure: isProd,
-      sameSite: isProd ? ("none" as const) : ("lax" as const),
       path: "/",
       expires: new Date(0),
+      secure: isProd,
+      sameSite: isProd ? "none" : "lax",
     };
 
-    res.cookies.set({
-      ...cookieOptions,
-      domain: isProd ? ".sportfanszone.com" : "localhost",
-    });
+    // Manually craft Set-Cookie headers for both domains
+    const cookieHeader1 = `userToken=${cookieAttributes.value}; Path=${
+      cookieAttributes.path
+    }; Expires=${cookieAttributes.expires.toUTCString()}; Domain=${
+      isProd ? ".sportfanszone.com" : "localhost"
+    }; ${cookieAttributes.secure ? "Secure; " : ""}SameSite=${
+      cookieAttributes.sameSite
+    }`;
+    const cookieHeader2 = `userToken=${cookieAttributes.value}; Path=${
+      cookieAttributes.path
+    }; Expires=${cookieAttributes.expires.toUTCString()}; Domain=${
+      isProd ? "api.sportfanszone.com" : "localhost"
+    }; ${cookieAttributes.secure ? "Secure; " : ""}SameSite=${
+      cookieAttributes.sameSite
+    }`;
 
-    res.cookies.set({
-      ...cookieOptions,
-      domain: isProd ? "api.sportfanszone.com" : "localhost",
-    });
+    // Append both Set-Cookie headers
+    res.headers.append("Set-Cookie", cookieHeader1);
+    res.headers.append("Set-Cookie", cookieHeader2);
 
     return res;
   } catch (error) {
