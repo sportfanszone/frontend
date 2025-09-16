@@ -1,4 +1,3 @@
-// app/api/logout/route.ts
 import { NextResponse } from "next/server";
 
 export async function POST() {
@@ -6,14 +5,23 @@ export async function POST() {
     const res = NextResponse.json({ status: "success" });
     const isProd = process.env.NODE_ENV === "production";
 
-    res.cookies.set({
+    const cookieOptions = {
       name: "userToken",
       value: "",
       secure: isProd,
-      sameSite: isProd ? "none" : "lax",
+      sameSite: isProd ? ("none" as const) : ("lax" as const),
       path: "/",
-      domain: isProd ? ".sportfanszone.com" : "",
       expires: new Date(0),
+    };
+
+    res.cookies.set({
+      ...cookieOptions,
+      domain: isProd ? ".sportfanszone.com" : "localhost",
+    });
+
+    res.cookies.set({
+      ...cookieOptions,
+      domain: isProd ? "api.sportfanszone.com" : "localhost",
     });
 
     return res;
