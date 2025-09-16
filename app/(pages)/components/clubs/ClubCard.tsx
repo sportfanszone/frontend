@@ -1,5 +1,6 @@
 "use client";
 
+import { useContext } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/app/components/ui/button";
@@ -8,6 +9,7 @@ import { Club } from "@/types";
 import formatRelativeTime from "@/lib/formatRelativeTime";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import { UserContext } from "@/app/context/UserContext";
 
 const ClubCard = ({
   club: {
@@ -23,6 +25,7 @@ const ClubCard = ({
 }: {
   club: Club;
 }) => {
+  const { user } = useContext(UserContext);
   const [isJoining, setIsJoining] = useState(false);
   const [isMember, setIsMember] = useState(followedByUser);
 
@@ -108,7 +111,7 @@ const ClubCard = ({
           </div>
         </div>
 
-        <div className="flex flex-col justify-center mb-4">
+        <div className="flex flex-col justify-center">
           <span className="text-gray-500 text-xs sm:text-sm mb-1">
             DESCRIPTION
           </span>
@@ -127,23 +130,25 @@ const ClubCard = ({
         </div>
       </Link>
 
-      <Button
-        className={`w-full ${
-          isMember
-            ? "text-blue-700 bg-transparent border-2 border-blue-700 hover:text-white hover:bg-blue-700"
-            : "text-white bg-blue-700 hover:bg-blue-700"
-        } py-2 px-4 rounded-xl transition-colors duration-200 text-sm sm:text-base font-medium`}
-        onClick={handleToggleMembership}
-        disabled={isJoining}
-      >
-        {isJoining
-          ? isMember
-            ? "Unfollowing..."
-            : "Following..."
-          : isMember
-          ? "Unfollow"
-          : "Follow"}
-      </Button>
+      {user && (
+        <Button
+          className={`w-full ${
+            isMember
+              ? "text-blue-700 bg-transparent border-2 border-blue-700 hover:text-white hover:bg-blue-700"
+              : "text-white bg-blue-700 hover:bg-blue-700"
+          } py-2 px-4 rounded-xl transition-colors duration-200 text-sm sm:text-base font-medium mt-4`}
+          onClick={handleToggleMembership}
+          disabled={isJoining}
+        >
+          {isJoining
+            ? isMember
+              ? "Unfollowing..."
+              : "Following..."
+            : isMember
+            ? "Unfollow"
+            : "Follow"}
+        </Button>
+      )}
     </motion.div>
   );
 };
