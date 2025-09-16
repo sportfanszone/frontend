@@ -108,6 +108,7 @@ export type LeftSidebarLinkProps = {
 export type Achievement = {
   name: string;
   image: string;
+  description: string;
 };
 
 export type AchievementCardProps = {

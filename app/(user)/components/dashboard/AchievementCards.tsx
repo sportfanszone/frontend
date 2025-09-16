@@ -8,7 +8,7 @@ const AchievementCards = ({ achievements }: AchievementCardProps) => {
       {achievements.map(({ name, image }, index) => (
         <div
           key={index}
-          className="-m-[0.4em] w-5 sm:w-6 md:w-7 h-5 sm:h-6 md:h-7 rounded-full overflow-hidden border-blue-800 border-2"
+          className="-m-[0.4em] w-5 sm:w-6 md:w-7 h-5 sm:h-6 md:h-7 rounded-full overflow-hidden border-white border-2"
         >
           <Image
             className="w-full h-full object-cover"
