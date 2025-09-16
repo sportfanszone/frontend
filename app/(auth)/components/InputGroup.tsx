@@ -21,13 +21,13 @@ const InputGroup = <T extends Record<string, string | boolean>>({
 }: InputGroupProps<T>) => {
   return (
     <div className="mb-5 sm:mb-6 md:mb-8.5">
+      <label
+        className={errors[id] ? "formLabelError" : "formLabel"}
+        htmlFor={id as string}
+      >
+        {label}
+      </label>
       <div className={errors[id] ? "formGroupError" : "formGroup"}>
-        <label
-          className={errors[id] ? "formLabelError" : "formLabel"}
-          htmlFor={id as string}
-        >
-          {label}
-        </label>
         <input
           className="formInput"
           id={id as string}

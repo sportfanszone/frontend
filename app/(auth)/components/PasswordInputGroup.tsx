@@ -26,17 +26,17 @@ const PasswordInputGroup = <T extends Record<string, string>>({
 
   return (
     <div key={String(id)} className="mb-5 sm:mb-6 md:mb-8.5">
+      <label
+        className={errors[id] ? "formLabelError" : "formLabel"}
+        htmlFor={String(id)}
+      >
+        {label}
+      </label>
       <div
         className={`${
           errors[id] ? "formGroupError" : "formGroup"
         } flex items-center justify-between`}
       >
-        <label
-          className={errors[id] ? "formLabelError" : "formLabel"}
-          htmlFor={String(id)}
-        >
-          {label}
-        </label>
         <input
           className="formInput"
           id={String(id)}

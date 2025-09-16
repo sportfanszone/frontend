@@ -55,16 +55,16 @@
   @apply border-2 border-red-800/50 rounded-full relative bg-red-100;
 }
 .formLabel {
-  @apply text-sm sm:text-base md:text-lg font-bold absolute top-0 left-4 md:left-7 -translate-y-[50%];
+  @apply text-white/85 text-sm sm:text-base md:text-lg font-bold md:left-7;
 }
 .formLabelError {
-  @apply text-red-800 text-sm sm:text-base md:text-lg font-bold absolute top-0 left-4 md:left-7 -translate-y-[50%];
+  @apply text-red-800 text-sm sm:text-base md:text-lg font-bold md:left-7;
 }
 .formInput {
   @apply text-xs sm:text-base md:text-lg w-full p-3 sm:p-3 md:p-4 outline-none bg-transparent;
 }
 .formButton {
-  @apply text-white text-sm sm:text-base md:text-lg font-bold flex items-center justify-center gap-4 w-full mx-auto p-3 sm:p-3 md:p-4 rounded-full bg-green-500 transition-all duration-200 cursor-pointer  mb-7 sm:mb-8 md:mb-10;
+  @apply text-blue-500 text-sm sm:text-base md:text-lg font-bold flex items-center justify-center gap-4 w-full mx-auto p-3 sm:p-3 md:p-4 rounded-full bg-white transition-all duration-200 cursor-pointer  mb-7 sm:mb-8 md:mb-10;
 }
 .formInputIcon {
   @apply text-base sm:text-lg md:text-xl font-bold p-2 mr-2 cursor-pointer;

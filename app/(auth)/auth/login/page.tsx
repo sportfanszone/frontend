@@ -179,11 +179,11 @@ export default function Login() {
 
   return (
     <main
-      className="p-7 font-medium max-w-400 mx-auto min-h-screen pt-21 sm:pt-27 md:pt-35 bg-no-repeat bg-cover"
-      style={{ backgroundImage: "url(/images/animated-world-map.gif)" }}
+      className="p-7 font-medium max-w-400 mx-auto min-h-screen pt-21 sm:pt-27 md:pt-35 bg-no-repeat bg-cover bg-primary-gradient"
+      // style={{ backgroundImage: "url(/images/animated-world-map.gif)" }}
     >
-      <div className="text-center max-w-xs sm:max-w-sm md:max-w-md mx-auto">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-7 md:mb-10">
+      <div className="max-w-xs sm:max-w-sm md:max-w-md mx-auto">
+        <h1 className="text-center text-white text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-7 md:mb-10">
           Welcome Back
         </h1>
 
@@ -203,9 +203,9 @@ export default function Login() {
 
         {/* Divider */}
         <div className="flex items-center justify-center gap-4 mb-6 sm:mb-7 md:mb-10">
-          <hr className="border-b w-full border-black/20" />
-          <span className="md:text-lg">or</span>
-          <hr className="border-b w-full border-black/20" />
+          <hr className="border-white border-b w-full" />
+          <span className="text-white md:text-lg">or</span>
+          <hr className="border-white border-b w-full" />
         </div>
 
         {/* Form */}
@@ -235,15 +235,17 @@ export default function Login() {
             <input
               id="rememberMe"
               type="checkbox"
-              className="w-5 h-5 accent-green-600 border-gray-300 rounded focus:ring-green-500 cursor-pointer"
+              className="w-5 h-5 accent-blue-800 border-white 00 rounded focus:ring-blue-900 cursor-pointer"
               onChange={(e) => handleChange("rememberMe", e.target.checked)}
               checked={form.rememberMe}
             />
-            <span className="text-sm sm:text-md md:text-lg">Remember me</span>
+            <span className="text-white/80 text-sm sm:text-md md:text-lg">
+              Remember me
+            </span>
           </label>
 
           <button
-            className="formButton mt-6"
+            className="formButton mt-2"
             type="submit"
             disabled={isSubmitting}
           >
@@ -251,9 +253,9 @@ export default function Login() {
           </button>
         </form>
 
-        <div className="text-sm sm:text-md md:text-lg font-bold flex items-center justify-center gap-4 mb-6">
+        <div className="text-white/80 text-sm sm:text-md md:text-lg font-bold flex items-center justify-center gap-4 mb-6">
           <span>Don&apos;t have an account?</span>
-          <Link className="text-green-500" href="/auth/signup">
+          <Link className="text-white" href="/auth/signup">
             Sign Up Now
           </Link>
         </div>
