@@ -17,12 +17,7 @@ import { Logout } from "@/app/components/ui/Logout";
 import UserAvatar from "@/app/components/ui/UserAvatar";
 import { UserContext } from "@/app/context/UserContext";
 
-const navItems = [
-  { name: "Home", href: "/" },
-  { name: "Fanszone", href: "/leagues" },
-  { name: "FAQs", href: "#" },
-  { name: "About", href: "#" },
-];
+import { navItems } from "@/data";
 
 interface HeaderProps {
   theme?: "dark" | "light" | "transparent" | null;
