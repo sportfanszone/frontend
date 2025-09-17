@@ -175,9 +175,9 @@ export default function Signup() {
   };
 
   return (
-    <main className="p-7 font-medium max-w-400 mx-auto min-h-screen pt-21 sm:pt-27 md:pt-35">
-      <div className="text-center max-w-xs sm:max-w-sm md:max-w-md mx-auto">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-7 md:mb-10">
+    <main className="p-7 font-medium max-w-400 mx-auto min-h-screen pt-21 sm:pt-27 md:pt-35 bg-primary-gradient">
+      <div className="max-w-xs sm:max-w-sm md:max-w-md mx-auto">
+        <h1 className="text-center text-white text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-7 md:mb-10">
           Sign up
         </h1>
 
@@ -195,9 +195,9 @@ export default function Signup() {
         </div>
 
         <div className="flex items-center justify-center gap-4 mb-6 sm:mb-7 md:mb-10">
-          <hr className="border-b w-full border-black/20" />
-          <span className="md:text-lg">or</span>
-          <hr className="border-b w-full border-black/20" />
+          <hr className="border-b w-full border-white" />
+          <span className="md:text-lg text-white">or</span>
+          <hr className="border-b w-full border-white" />
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -251,9 +251,9 @@ export default function Signup() {
               }
               checked={form.termsAndConditions}
             />
-            <span className="text-sm sm:text-md md:text-lg">
+            <span className="text-white/80 text-sm sm:text-md md:text-lg">
               Accept{" "}
-              <Link className="text-green-500" href="/terms">
+              <Link className="text-white" href="/terms">
                 terms and conditions
               </Link>
             </span>
@@ -271,9 +271,9 @@ export default function Signup() {
           </button>
         </form>
 
-        <div className="text-sm sm:text-md md:text-lg font-bold flex items-center justify-center gap-4 mb-6">
+        <div className="text-white/80 text-sm sm:text-md md:text-lg font-bold flex items-center justify-center gap-4 mb-6">
           <span>Already have an account?</span>
-          <Link className="text-green-500" href="/auth/login">
+          <Link className="text-white" href="/auth/login">
             Login Now
           </Link>
         </div>
