@@ -158,12 +158,12 @@ export default function OtpVerification({
   };
 
   return (
-    <main className="p-7 font-medium max-w-400 mx-auto min-h-screen pt-21 sm:pt-27 md:pt-35">
+    <main className="p-7 font-medium max-w-400 mx-auto min-h-screen pt-21 sm:pt-27 md:pt-35 bg-primary-gradient">
       <div className="text-center max-w-xs sm:max-w-sm md:max-w-md mx-auto">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6">
+        <h1 className="text-white text-2xl sm:text-3xl md:text-4xl font-bold mb-6">
           Enter OTP
         </h1>
-        <p className="text-sm sm:text-md md:text-lg text-gray-700 mb-6">
+        <p className="text-white/80 text-sm sm:text-md md:text-lg mb-6">
           We&apos;ve sent a 6-digit code to your email. Please enter it below.
         </p>
 
@@ -194,11 +194,11 @@ export default function OtpVerification({
         </form>
 
         <div className="text-sm sm:text-md md:text-lg font-bold mt-6">
-          <span>Didn&apos;t receive a code? </span>
+          <span className="text-white/80">Didn&apos;t receive a code? </span>
           <button
             type="button"
             onClick={() => resendOtp()}
-            className="text-green-500 cursor-pointer hover:underline"
+            className="text-white cursor-pointer hover:underline"
           >
             Resend
           </button>
